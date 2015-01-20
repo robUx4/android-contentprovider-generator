@@ -263,6 +263,7 @@ public class Main {
         root.put("config", getConfig(arguments.inputDir));
         root.put("header", Model.get().getHeader());
         root.put("model", Model.get());
+        root.put("annotations", arguments.supportAnnotations);
 
         // Entities
         for (Entity entity : Model.get().getEntities()) {
@@ -288,6 +289,7 @@ public class Main {
         root.put("config", getConfig(arguments.inputDir));
         root.put("header", Model.get().getHeader());
         root.put("model", Model.get());
+        root.put("annotations", arguments.supportAnnotations);
 
         // Entities
         for (Entity entity : Model.get().getEntities()) {
@@ -316,6 +318,7 @@ public class Main {
         root.put("config", getConfig(arguments.inputDir));
         root.put("header", Model.get().getHeader());
         root.put("model", Model.get());
+        root.put("annotations", arguments.supportAnnotations);
 
         // Entities
         for (Entity entity : Model.get().getEntities()) {
@@ -339,6 +342,7 @@ public class Main {
         root.put("config", getConfig(arguments.inputDir));
         root.put("header", Model.get().getHeader());
         root.put("model", Model.get());
+        root.put("annotations", arguments.supportAnnotations);
 
         // Entities
         for (Entity entity : Model.get().getEntities()) {
@@ -362,6 +366,7 @@ public class Main {
         root.put("config", getConfig(arguments.inputDir));
         root.put("header", Model.get().getHeader());
         root.put("model", Model.get());
+        root.put("annotations", arguments.supportAnnotations);
 
         // Entities
         for (Entity entity : Model.get().getEntities()) {
@@ -388,6 +393,7 @@ public class Main {
         root.put("config", getConfig(arguments.inputDir));
         root.put("header", Model.get().getHeader());
         root.put("model", Model.get());
+        root.put("annotations", arguments.supportAnnotations);
 
         // AbstractCursor
         Template template = getFreeMarkerConfig().getTemplate("abstractcursor.ftl");
@@ -417,7 +423,7 @@ public class Main {
         template.process(root, out);
         IOUtils.closeQuietly(out);
 
-    	if (arguments.asyncdb) {
+        if (arguments.asyncdb) {
             template = getFreeMarkerConfig().getTemplate("abstractdatasource.ftl");
             outputFile = new File(baseClassesDir, "AbstractDataSource.java");
             out = new OutputStreamWriter(new FileOutputStream(outputFile));
@@ -435,7 +441,7 @@ public class Main {
             out = new OutputStreamWriter(new FileOutputStream(outputFile));
             template.process(root, out);
             IOUtils.closeQuietly(out);
-    	}
+        }
         
         // Entities
         for (Entity entity : Model.get().getEntities()) {
@@ -494,6 +500,7 @@ public class Main {
         root.put("config", config);
         root.put("model", Model.get());
         root.put("header", Model.get().getHeader());
+        root.put("annotations", arguments.supportAnnotations);
 
         template.process(root, out);
     }
@@ -511,6 +518,7 @@ public class Main {
         root.put("config", config);
         root.put("model", Model.get());
         root.put("header", Model.get().getHeader());
+        root.put("annotations", arguments.supportAnnotations);
 
         template.process(root, out);
     }
@@ -532,6 +540,7 @@ public class Main {
         root.put("config", config);
         root.put("model", Model.get());
         root.put("header", Model.get().getHeader());
+        root.put("annotations", arguments.supportAnnotations);
 
         template.process(root, out);
     }
@@ -545,6 +554,7 @@ public class Main {
         root.put("config", config);
         root.put("model", Model.get());
         root.put("header", Model.get().getHeader());
+        root.put("annotations", arguments.supportAnnotations);
 
         Log.i(TAG, "\nProvider declaration to paste in the AndroidManifest.xml file: ");
         template.process(root, out);
@@ -559,6 +569,10 @@ public class Main {
             jCommander.usage();
             return;
         }
+        
+        if (arguments.asyncdb) {
+            arguments.supportAnnotations = true;
+        }
 
         getConfig(arguments.inputDir);
 
@@ -569,7 +583,7 @@ public class Main {
         generateColumns(arguments);
         generateWrappers(arguments);
         generateModels(arguments);
-       	generateAsyncDb(arguments);
+        generateAsyncDb(arguments);
         generateContentProvider(arguments);
         generateSqliteOpenHelper(arguments);
         generateSqliteOpenHelperCallbacks(arguments);
