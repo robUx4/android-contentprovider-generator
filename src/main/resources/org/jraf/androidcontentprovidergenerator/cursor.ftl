@@ -45,7 +45,7 @@ public class ${entity.nameCamelCase}Cursor extends AbstractCursor {
     @Nullable
         <#else>
             <#if !field.type.hasNotNullableJavaType()>
-    @NotNull
+    @NonNull
             </#if>
         </#if>
     </#if>
