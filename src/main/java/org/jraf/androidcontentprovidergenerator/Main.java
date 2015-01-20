@@ -303,6 +303,80 @@ public class Main {
         }
     }
 
+    private void generateAsyncDb(Arguments arguments) throws IOException, JSONException, TemplateException {
+    	if (!arguments.asyncdb)
+    		return;
+    	
+        Template template = getFreeMarkerConfig().getTemplate("datasource.ftl");
+        JSONObject config = getConfig(arguments.inputDir);
+        String providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
+
+        File providerDir = new File(arguments.outputDir, providerJavaPackage.replace('.', '/'));
+        Map<String, Object> root = new HashMap<>();
+        root.put("config", getConfig(arguments.inputDir));
+        root.put("header", Model.get().getHeader());
+        root.put("model", Model.get());
+
+        // Entities
+        for (Entity entity : Model.get().getEntities()) {
+            File outputDir = new File(providerDir, entity.getPackageName());
+            outputDir.mkdirs();
+            File outputFile = new File(outputDir, entity.getNameCamelCase() + "DataSource.java");
+            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
+
+            root.put("entity", entity);
+
+            template.process(root, out);
+            IOUtils.closeQuietly(out);
+        }
+
+        template = getFreeMarkerConfig().getTemplate("elementhandler.ftl");
+        config = getConfig(arguments.inputDir);
+        providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
+
+        providerDir = new File(arguments.outputDir, providerJavaPackage.replace('.', '/'));
+        root = new HashMap<>();
+        root.put("config", getConfig(arguments.inputDir));
+        root.put("header", Model.get().getHeader());
+        root.put("model", Model.get());
+
+        // Entities
+        for (Entity entity : Model.get().getEntities()) {
+            File outputDir = new File(providerDir, entity.getPackageName());
+            outputDir.mkdirs();
+            File outputFile = new File(outputDir, entity.getNameCamelCase() + "ElementHandler.java");
+            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
+
+            root.put("entity", entity);
+
+            template.process(root, out);
+            IOUtils.closeQuietly(out);
+        }
+
+        template = getFreeMarkerConfig().getTemplate("serializer.ftl");
+        config = getConfig(arguments.inputDir);
+        providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
+
+        providerDir = new File(arguments.outputDir, providerJavaPackage.replace('.', '/'));
+        root = new HashMap<>();
+        root.put("config", getConfig(arguments.inputDir));
+        root.put("header", Model.get().getHeader());
+        root.put("model", Model.get());
+
+        // Entities
+        for (Entity entity : Model.get().getEntities()) {
+            File outputDir = new File(providerDir, entity.getPackageName());
+            outputDir.mkdirs();
+            File outputFile = new File(outputDir, entity.getNameCamelCase() + "Serializer.java");
+            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
+
+            root.put("entity", entity);
+
+            template.process(root, out);
+            IOUtils.closeQuietly(out);
+        }
+    }
+
     private void generateWrappers(Arguments arguments) throws IOException, JSONException, TemplateException {
         JSONObject config = getConfig(arguments.inputDir);
         String providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
@@ -343,6 +417,26 @@ public class Main {
         template.process(root, out);
         IOUtils.closeQuietly(out);
 
+    	if (arguments.asyncdb) {
+            template = getFreeMarkerConfig().getTemplate("abstractdatasource.ftl");
+            outputFile = new File(baseClassesDir, "AbstractDataSource.java");
+            out = new OutputStreamWriter(new FileOutputStream(outputFile));
+            template.process(root, out);
+            IOUtils.closeQuietly(out);
+
+            template = getFreeMarkerConfig().getTemplate("databaseserializer.ftl");
+            outputFile = new File(baseClassesDir, "DatabaseSerializer.java");
+            out = new OutputStreamWriter(new FileOutputStream(outputFile));
+            template.process(root, out);
+            IOUtils.closeQuietly(out);
+
+            template = getFreeMarkerConfig().getTemplate("abstractelementhandler.ftl");
+            outputFile = new File(baseClassesDir, "AbstractElementHandler.java");
+            out = new OutputStreamWriter(new FileOutputStream(outputFile));
+            template.process(root, out);
+            IOUtils.closeQuietly(out);
+    	}
+        
         // Entities
         for (Entity entity : Model.get().getEntities()) {
             File entityDir = new File(providerDir, entity.getPackageName());
@@ -475,6 +569,7 @@ public class Main {
         generateColumns(arguments);
         generateWrappers(arguments);
         generateModels(arguments);
+       	generateAsyncDb(arguments);
         generateContentProvider(arguments);
         generateSqliteOpenHelper(arguments);
         generateSqliteOpenHelperCallbacks(arguments);
