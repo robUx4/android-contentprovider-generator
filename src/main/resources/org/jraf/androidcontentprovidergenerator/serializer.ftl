@@ -3,7 +3,7 @@ ${header}
 </#if>
 package ${config.providerJavaPackage}.${entity.packageName};
 
-import com.levelup.palabre.provider.base.DatabaseSerializer;
+import ${config.providerJavaPackage}.base.DatabaseSerializer;
 
 /**
 <#if entity.documentation??>

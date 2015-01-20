@@ -6,7 +6,7 @@ package ${config.providerJavaPackage}.${entity.packageName};
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.levelup.palabre.provider.base.AbstractElementHandler;
+import ${config.providerJavaPackage}.base.AbstractElementHandler;
 
 /**
 <#if entity.documentation??>

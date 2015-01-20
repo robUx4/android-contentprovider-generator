@@ -8,7 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 
-import com.levelup.palabre.provider.base.AbstractDataSource;
+import ${config.providerJavaPackage}.base.AbstractDataSource;
 
 /**
 <#if entity.documentation??>
