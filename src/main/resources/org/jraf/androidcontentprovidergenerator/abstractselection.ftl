@@ -28,8 +28,8 @@ public abstract class AbstractSelection <T extends AbstractSelection<?>> {
     private static final String NOT_EQ = "<>?";
     private static final String LIKE = " LIKE ?";
     private static final String CONTAINS = " LIKE '%' || ? || '%'";
-    private static final String STARTS = "LIKE ? || '%'";
-    private static final String ENDS = "LIKE '%' || ?";
+    private static final String STARTS = " LIKE ? || '%'";
+    private static final String ENDS = " LIKE '%' || ?";
 
     private StringBuilder mSelection = new StringBuilder();
     private List<String> mSelectionArgs = new ArrayList<String>(5);
