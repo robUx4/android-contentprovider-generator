@@ -3,6 +3,8 @@ ${header}
 </#if>
 package ${config.providerJavaPackage}.${entity.packageName};
 
+import org.gawst.asyncdb.InvalidDbEntry;
+
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -34,5 +36,11 @@ public class ${entity.nameCamelCase}ElementHandler extends AbstractElementHandle
     @Override
     public String[] getItemSelectArgs(@NonNull ${entity.nameCamelCase}Model itemToSelect) {
         return new ${entity.nameCamelCase}Selection().id(itemToSelect.getId()).args();
+    }
+
+    @NonNull
+    @Override
+    public ${entity.nameCamelCase}Model cursorToItem(@NonNull ${entity.nameCamelCase}Cursor cursor) throws InvalidDbEntry {
+        return serializer.getValueFromCursor(cursor);
     }
 }
