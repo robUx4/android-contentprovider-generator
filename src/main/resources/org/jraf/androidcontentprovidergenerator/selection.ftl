@@ -198,6 +198,11 @@ public class ${entity.nameCamelCase}Selection extends AbstractSelection<${entity
         return this;
     }
 
+    public ${entity.nameCamelCase}Selection <#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if>Contains(String... value) {
+        addContains(${field.entity.nameCamelCase}Columns.${field.nameUpperCase}, value);
+        return this;
+    }
+
     public ${entity.nameCamelCase}Selection <#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if>StartsWith(String... value) {
         addStartsWith(${field.entity.nameCamelCase}Columns.${field.nameUpperCase}, value);
         return this;
