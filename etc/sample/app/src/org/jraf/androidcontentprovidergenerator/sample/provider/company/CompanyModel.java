@@ -22,45 +22,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jraf.androidcontentprovidergenerator.sample.provider.serialnumber;
+package org.jraf.androidcontentprovidergenerator.sample.provider.company;
+
+import org.jraf.androidcontentprovidergenerator.sample.provider.base.BaseModel;
 
 import java.util.Date;
 
-import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractCursor;
-
 /**
- * Cursor wrapper for the {@code serial_number} table.
+ * A commercial business.
  */
-public class SerialNumberCursor extends AbstractCursor {
-    public SerialNumberCursor(Cursor cursor) {
-        super(cursor);
-    }
+public interface CompanyModel extends BaseModel {
 
     /**
-     * Unique id, first part.
+     * The commercial name of this company.
      * Cannot be {@code null}.
      */
     @NonNull
-    public String getPart0() {
-        String res = getStringOrNull(SerialNumberColumns.PART0);
-        if (res == null)
-            throw new NullPointerException("The value of 'part0' in the database was null, which is not allowed according to the model definition");
-        return res;
-    }
+    String getName();
 
     /**
-     * Unique id, second part.
-     * Cannot be {@code null}.
+     * The full address of this company.
+     * Can be {@code null}.
      */
-    @NonNull
-    public String getPart1() {
-        String res = getStringOrNull(SerialNumberColumns.PART1);
-        if (res == null)
-            throw new NullPointerException("The value of 'part1' in the database was null, which is not allowed according to the model definition");
-        return res;
-    }
+    @Nullable
+    String getAddress();
+
+    /**
+     * The serial number of this company.
+     */
+    long getSerialNumberId();
 }

@@ -5,12 +5,12 @@ package ${config.providerJavaPackage}.${entity.packageName};
 
 import ${config.providerJavaPackage}.base.BaseModel;
 
-<#if annotations>
+import java.util.Date;
+<#if config.useAnnotations>
+
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 </#if>
-
-import java.util.Date;
 
 /**
 <#if entity.documentation??>
@@ -20,7 +20,7 @@ import java.util.Date;
 </#if>
  */
 public interface ${entity.nameCamelCase}Model extends BaseModel {
-    <#list entity.getFieldsIncludingJoins() as field>
+    <#list entity.getFields() as field>
         <#if !field.isId>
 
     /**
@@ -37,7 +37,7 @@ public interface ${entity.nameCamelCase}Model extends BaseModel {
             </#if>
         </#if>
      */
-     <#if annotations>
+     <#if config.useAnnotations>
         <#if field.isNullable>
     @Nullable
         <#else>

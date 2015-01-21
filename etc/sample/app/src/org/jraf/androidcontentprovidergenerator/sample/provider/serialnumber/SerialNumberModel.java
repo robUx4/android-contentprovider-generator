@@ -24,43 +24,29 @@
  */
 package org.jraf.androidcontentprovidergenerator.sample.provider.serialnumber;
 
+import org.jraf.androidcontentprovidergenerator.sample.provider.base.BaseModel;
+
 import java.util.Date;
 
-import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractCursor;
-
 /**
- * Cursor wrapper for the {@code serial_number} table.
+ * A serial number.
  */
-public class SerialNumberCursor extends AbstractCursor {
-    public SerialNumberCursor(Cursor cursor) {
-        super(cursor);
-    }
+public interface SerialNumberModel extends BaseModel {
 
     /**
      * Unique id, first part.
      * Cannot be {@code null}.
      */
     @NonNull
-    public String getPart0() {
-        String res = getStringOrNull(SerialNumberColumns.PART0);
-        if (res == null)
-            throw new NullPointerException("The value of 'part0' in the database was null, which is not allowed according to the model definition");
-        return res;
-    }
+    String getPart0();
 
     /**
      * Unique id, second part.
      * Cannot be {@code null}.
      */
     @NonNull
-    public String getPart1() {
-        String res = getStringOrNull(SerialNumberColumns.PART1);
-        if (res == null)
-            throw new NullPointerException("The value of 'part1' in the database was null, which is not allowed according to the model definition");
-        return res;
-    }
+    String getPart1();
 }

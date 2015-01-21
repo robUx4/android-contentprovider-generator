@@ -24,45 +24,25 @@
  */
 package org.jraf.androidcontentprovidergenerator.sample.provider.personteam;
 
+import org.jraf.androidcontentprovidergenerator.sample.provider.base.BaseModel;
+
 import java.util.Date;
 
-import android.content.ContentResolver;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractContentValues;
-
 /**
- * Content values wrapper for the {@code person_team} table.
+ * Entity joining people and teams.  A team contains several people, and a person can belong to several teams.
  */
-public class PersonTeamContentValues extends AbstractContentValues {
-    @Override
-    public Uri uri() {
-        return PersonTeamColumns.CONTENT_URI;
-    }
+public interface PersonTeamModel extends BaseModel {
 
     /**
-     * Update row(s) using the values stored by this object and the given selection.
-     *
-     * @param contentResolver The content resolver to use.
-     * @param where The selection to use (can be {@code null}).
+     * Get the {@code person_id} value.
      */
-    public int update(ContentResolver contentResolver, @Nullable PersonTeamSelection where) {
-        return contentResolver.update(uri(), values(), where == null ? null : where.sel(), where == null ? null : where.args());
-    }
+    long getPersonId();
 
-    public PersonTeamContentValues putPersonId(long value) {
-        mContentValues.put(PersonTeamColumns.PERSON_ID, value);
-        return this;
-    }
-
-
-
-    public PersonTeamContentValues putTeamId(long value) {
-        mContentValues.put(PersonTeamColumns.TEAM_ID, value);
-        return this;
-    }
-
-
+    /**
+     * Get the {@code team_id} value.
+     */
+    long getTeamId();
 }
