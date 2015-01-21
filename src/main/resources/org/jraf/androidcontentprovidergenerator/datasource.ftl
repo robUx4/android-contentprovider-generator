@@ -17,7 +17,7 @@ import ${config.providerJavaPackage}.base.AbstractDataSource;
  * AsyncDB Datasource for the {@code ${entity.nameLowerCase}} table.
 </#if>
  */
-public class ${entity.nameCamelCase}DataSource extends AbstractDataSource<${entity.nameCamelCase}Model, ${entity.nameCamelCase}Cursor> {
+public class ${entity.nameCamelCase}DataSource extends AbstractDataSource<${entity.nameCamelCase}Model, ${entity.nameCamelCase}Cursor, ${entity.nameCamelCase}Selection> {
     public ${entity.nameCamelCase}DataSource(@NonNull ContentResolver contentResolver, @NonNull ${entity.nameCamelCase}Serializer serializer) {
         this(contentResolver, new ${entity.nameCamelCase}ElementHandler(serializer));
     }
