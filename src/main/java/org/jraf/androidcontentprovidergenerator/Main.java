@@ -230,12 +230,12 @@ public class Main {
         ensureString(Json.PROVIDER_CLASS_NAME);
         ensureString(Json.SQLITE_OPEN_HELPER_CLASS_NAME);
         ensureString(Json.SQLITE_OPEN_HELPER_CALLBACKS_CLASS_NAME);
-        ensureBoolean(Json.FIELD_CASE_NAME);
         ensureString(Json.AUTHORITY);
         ensureString(Json.DATABASE_FILE_NAME);
         ensureInt(Json.DATABASE_VERSION);
         ensureBoolean(Json.ENABLE_FOREIGN_KEY);
         ensureBoolean(Json.USE_ANNOTATIONS);
+        ensureBoolean(Json.FIELD_CASE_NAME);
     }
 
     private void ensureString(String field) {
@@ -325,7 +325,6 @@ public class Main {
         root.put("config", getConfig(arguments.inputDir));
         root.put("header", Model.get().getHeader());
         root.put("model", Model.get());
-        root.put("annotations", arguments.supportAnnotations);
 
         // Entities
         for (Entity entity : Model.get().getEntities()) {
@@ -349,7 +348,6 @@ public class Main {
         root.put("config", getConfig(arguments.inputDir));
         root.put("header", Model.get().getHeader());
         root.put("model", Model.get());
-        root.put("annotations", arguments.supportAnnotations);
 
         // Entities
         for (Entity entity : Model.get().getEntities()) {
@@ -373,7 +371,6 @@ public class Main {
         root.put("config", getConfig(arguments.inputDir));
         root.put("header", Model.get().getHeader());
         root.put("model", Model.get());
-        root.put("annotations", arguments.supportAnnotations);
 
         // Entities
         for (Entity entity : Model.get().getEntities()) {
@@ -572,10 +569,6 @@ public class Main {
             return;
         }
         
-        if (arguments.asyncdb) {
-            arguments.supportAnnotations = true;
-        }
-
         getConfig(arguments.inputDir);
 
         loadModel(arguments.inputDir);
