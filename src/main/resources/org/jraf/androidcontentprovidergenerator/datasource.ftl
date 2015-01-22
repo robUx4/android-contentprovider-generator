@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 
 import ${config.providerJavaPackage}.base.AbstractDataSource;
+import ${config.providerJavaPackage}.base.DatabaseSerializer;
 
 /**
 <#if entity.documentation??>
@@ -18,11 +19,11 @@ import ${config.providerJavaPackage}.base.AbstractDataSource;
 </#if>
  */
 public class ${entity.nameCamelCase}DataSource extends AbstractDataSource<${entity.nameCamelCase}Model, ${entity.nameCamelCase}Cursor, ${entity.nameCamelCase}Selection> {
-    public ${entity.nameCamelCase}DataSource(@NonNull ContentResolver contentResolver, @NonNull ${entity.nameCamelCase}Serializer serializer) {
+    public ${entity.nameCamelCase}DataSource(@NonNull ContentResolver contentResolver, @NonNull DatabaseSerializer<${entity.nameCamelCase}Model, ${entity.nameCamelCase}Cursor> serializer) {
         this(contentResolver, new ${entity.nameCamelCase}ElementHandler(serializer));
     }
 
-    public ${entity.nameCamelCase}DataSource(@NonNull Context context, @NonNull ${entity.nameCamelCase}Serializer serializer) {
+    public ${entity.nameCamelCase}DataSource(@NonNull Context context, @NonNull DatabaseSerializer<${entity.nameCamelCase}Model, ${entity.nameCamelCase}Cursor> serializer) {
         this(context, new ${entity.nameCamelCase}ElementHandler(serializer));
     }
 

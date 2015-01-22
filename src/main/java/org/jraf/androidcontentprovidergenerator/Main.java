@@ -115,7 +115,7 @@ public class Main {
             Entity entity = new Entity(entityName, entityDocumentation);
 
             // Implicit _id field
-            Field field = new Field(entity, "_id", "Primary key.", "Long", true, false, false, null, null, null, null, true);
+            Field field = new Field(entity, "_id", "Primary key.", "Long", true, false, false, null, null, null, null, false);
             entity.addField(field);
 
             ArrayList<Field> tableKeys = new ArrayList<Field>();
@@ -387,29 +387,6 @@ public class Main {
             IOUtils.closeQuietly(out);
         }
 
-        template = getFreeMarkerConfig().getTemplate("serializer.ftl");
-        config = getConfig(arguments.inputDir);
-        providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
-
-        providerDir = new File(arguments.outputDir, providerJavaPackage.replace('.', '/'));
-        root = new HashMap<>();
-        root.put("config", getConfig(arguments.inputDir));
-        root.put("header", Model.get().getHeader());
-        root.put("model", Model.get());
-
-        // Entities
-        for (Entity entity : Model.get().getEntities()) {
-            File outputDir = new File(providerDir, entity.getPackageName());
-            outputDir.mkdirs();
-            File outputFile = new File(outputDir, entity.getNameCamelCase() + "Serializer.java");
-            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
-
-            root.put("entity", entity);
-
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-        }
-
         template = getFreeMarkerConfig().getTemplate("abstractserializer.ftl");
         config = getConfig(arguments.inputDir);
         providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
@@ -424,7 +401,7 @@ public class Main {
         for (Entity entity : Model.get().getEntities()) {
             File outputDir = new File(providerDir, entity.getPackageName());
             outputDir.mkdirs();
-            File outputFile = new File(outputDir, "Abstract" + entity.getNameCamelCase() + "Serializer.java");
+            File outputFile = new File(outputDir, "Abstract" + entity.getNameCamelCase() + "DatabaseSerializer.java");
             Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
 
             root.put("entity", entity);

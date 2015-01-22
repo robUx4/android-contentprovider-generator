@@ -6,6 +6,8 @@ package ${config.providerJavaPackage}.${entity.packageName};
 import android.content.ContentValues;
 import android.support.annotation.NonNull;
 
+import ${config.providerJavaPackage}.base.DatabaseSerializer;
+
 /**
 <#if entity.documentation??>
  * ${entity.documentation}
@@ -13,7 +15,7 @@ import android.support.annotation.NonNull;
  * Base Serializer class for the {@code ${entity.nameLowerCase}} table.
 </#if>
  */
-public abstract class Abstract${entity.nameCamelCase}Serializer implements ${entity.nameCamelCase}Serializer {
+public abstract class Abstract${entity.nameCamelCase}DatabaseSerializer implements DatabaseSerializer<${entity.nameCamelCase}Model, ${entity.nameCamelCase}Cursor> {
     @NonNull
     @Override
     public ContentValues getContentValuesFromData(@NonNull ${entity.nameCamelCase}Model data, boolean update) {

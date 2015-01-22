@@ -106,6 +106,25 @@ public class Entity {
 
         return res;
     }
+    
+    public List<Field> getKeys() {
+        List<Field> res = new ArrayList<>();
+        for (Field field : mFields) {
+        	if (field.getIsKey()) {
+        		res.add(field);
+        	}
+        }
+        if (res.isEmpty()) {
+            for (Field field : mFields) {
+            	if (field.getIsId()) {
+            		res.add(field);
+            		break;
+            	}
+            }
+        }
+        
+        return res;
+    }
 
     public List<Entity> getJoinedEntities() {
         List<Entity> res = new ArrayList<>();
