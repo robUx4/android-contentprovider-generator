@@ -3,6 +3,8 @@ ${header}
 </#if>
 package ${config.providerJavaPackage}.base;
 
+import org.gawst.asyncdb.source.typed.TypedContentProviderDataSource;
+
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,29 +13,28 @@ import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import org.gawst.asyncdb.source.typed.TypedContentProviderDataSource;
-
 public abstract class AbstractDataSource<MODEL extends BaseModel, CURSOR extends AbstractCursor, SELECTION extends AbstractSelection<SELECTION>> extends TypedContentProviderDataSource<MODEL, CURSOR> {
-    private final DatabaseSerializer<MODEL, CURSOR> serializer;
+    @NonNull
+    private final AbstractElementHandler<MODEL, CURSOR, SELECTION> databaseElementHandler;
 
-    public AbstractDataSource(@NonNull ContentResolver contentResolver, @NonNull Uri contentProviderUri, @NonNull AbstractElementHandler<MODEL, CURSOR, SELECTION> databaseElementHandler, DatabaseSerializer<MODEL, CURSOR> serializer) {
+    public AbstractDataSource(@NonNull ContentResolver contentResolver, @NonNull Uri contentProviderUri, @NonNull AbstractElementHandler<MODEL, CURSOR, SELECTION> databaseElementHandler) {
         super(contentResolver, contentProviderUri, databaseElementHandler);
-        this.serializer = serializer;
+        this.databaseElementHandler = databaseElementHandler;
     }
 
-    public AbstractDataSource(@NonNull Context context, @NonNull Uri contentProviderUri, @NonNull AbstractElementHandler<MODEL, CURSOR, SELECTION> databaseElementHandler, DatabaseSerializer<MODEL, CURSOR> serializer) {
+    public AbstractDataSource(@NonNull Context context, @NonNull Uri contentProviderUri, @NonNull AbstractElementHandler<MODEL, CURSOR, SELECTION> databaseElementHandler) {
         super(context, contentProviderUri, databaseElementHandler);
-        this.serializer = serializer;
+        this.databaseElementHandler = databaseElementHandler;
     }
 
     public Uri insert(MODEL model) {
-        ContentValues values = serializer.getContentValuesFromData(model, false);
+        ContentValues values = databaseElementHandler.serializer.getContentValuesFromData(model, false);
         if (values.containsKey(BaseColumns._ID)) throw new IllegalStateException("you can't write the _id, values:"+values);
         return insert(values);
     }
 
     public boolean update(MODEL model) {
-        ContentValues values = serializer.getContentValuesFromData(model, true);
+        ContentValues values = databaseElementHandler.serializer.getContentValuesFromData(model, true);
         if (values.containsKey(BaseColumns._ID)) throw new IllegalStateException("you can't write the _id, values:"+values);
         return update(model, values);
     }
@@ -42,7 +43,8 @@ public abstract class AbstractDataSource<MODEL extends BaseModel, CURSOR extends
         return query(columns, selection.sel(), selection.args(), groupBy, having, orderBy, limit);
     }
 
-    public DatabaseSerializer<MODEL, CURSOR> getDatabaseSerializer() {
-        return serializer;
+    @NonNull
+    public AbstractElementHandler<MODEL, CURSOR, SELECTION> getDatabaseElementHandler() {
+        return databaseElementHandler;
     }
 }

@@ -28,11 +28,11 @@ public class ${entity.nameCamelCase}DataSource extends AbstractDataSource<${enti
     }
 
     public ${entity.nameCamelCase}DataSource(@NonNull ContentResolver contentResolver, @NonNull ${entity.nameCamelCase}ElementHandler elementHandler) {
-        super(contentResolver, ${entity.nameCamelCase}Columns.CONTENT_URI, elementHandler, elementHandler.serializer);
+        super(contentResolver, ${entity.nameCamelCase}Columns.CONTENT_URI, elementHandler);
     }
 
     public ${entity.nameCamelCase}DataSource(@NonNull Context context, @NonNull ${entity.nameCamelCase}ElementHandler elementHandler) {
-        super(context, ${entity.nameCamelCase}Columns.CONTENT_URI, elementHandler, elementHandler.serializer);
+        super(context, ${entity.nameCamelCase}Columns.CONTENT_URI, elementHandler);
     }
 
     @Override
