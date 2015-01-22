@@ -4,13 +4,14 @@ ${header}
 package ${config.providerJavaPackage}.base;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
+import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import org.gawst.asyncdb.source.typed.TypedContentProviderDataSource;
-import org.gawst.asyncdb.source.typed.TypedDatabaseElementHandler;
 
 public abstract class AbstractDataSource<MODEL extends BaseModel, CURSOR extends AbstractCursor, SELECTION extends AbstractSelection<SELECTION>> extends TypedContentProviderDataSource<MODEL, CURSOR> {
     private final DatabaseSerializer<MODEL, CURSOR> serializer;
@@ -26,7 +27,15 @@ public abstract class AbstractDataSource<MODEL extends BaseModel, CURSOR extends
     }
 
     public Uri insert(MODEL model) {
-        return insert(serializer.getContentValuesFromData(model));
+        ContentValues values = serializer.getContentValuesFromData(model, false);
+        if (values.containsKey(BaseColumns._ID)) throw new IllegalStateException("you can't write the _id, values:"+values);
+        return insert(values);
+    }
+
+    public boolean update(MODEL model) {
+        ContentValues values = serializer.getContentValuesFromData(model, true);
+        if (values.containsKey(BaseColumns._ID)) throw new IllegalStateException("you can't write the _id, values:"+values);
+        return update(model, values);
     }
 
     public CURSOR query(@Nullable String[] columns, @NonNull SELECTION selection, @Nullable String groupBy, @Nullable String having, @Nullable String orderBy, @Nullable String limit) {

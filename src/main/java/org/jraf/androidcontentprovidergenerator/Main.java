@@ -115,7 +115,7 @@ public class Main {
             Entity entity = new Entity(entityName, entityDocumentation);
 
             // Implicit _id field
-            Field field = new Field(entity, "_id", "Primary key.", "Long", true, false, false, null, null, null, null);
+            Field field = new Field(entity, "_id", "Primary key.", "Long", true, false, false, null, null, null, null, true);
             entity.addField(field);
 
             // Fields
@@ -130,6 +130,7 @@ public class Main {
                 String type = fieldJson.getString(Field.Json.TYPE);
                 boolean isIndex = fieldJson.optBoolean(Field.Json.INDEX, false);
                 boolean isNullable = fieldJson.optBoolean(Field.Json.NULLABLE, true);
+                boolean isKey = fieldJson.optBoolean(Field.Json.IS_KEY_VALUE, false);
                 String defaultValue = fieldJson.optString(Field.Json.DEFAULT_VALUE);
                 String defaultValueLegacy = fieldJson.optString(Field.Json.DEFAULT_VALUE_LEGACY);
                 String enumName = fieldJson.optString(Field.Json.ENUM_NAME);
@@ -159,7 +160,7 @@ public class Main {
                     foreignKey = new ForeignKey(table, onDeleteAction);
                 }
                 field = new Field(entity, name, fieldDocumentation, type, false, isIndex, isNullable, defaultValue != null ? defaultValue : defaultValueLegacy,
-                        enumName, enumValues, foreignKey);
+                        enumName, enumValues, foreignKey, isKey);
                 entity.addField(field);
             }
 

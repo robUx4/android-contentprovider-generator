@@ -46,6 +46,7 @@ public class Field {
         public static final String FOREIGN_KEY = "foreignKey";
         public static final String FOREIGN_KEY_TABLE = "table";
         public static final String FOREIGN_KEY_ON_DELETE_ACTION = "onDelete";
+        public static final String IS_KEY_VALUE = "isKey";
 
         private static final String TYPE_STRING = "String";
         private static final String TYPE_INTEGER = "Integer";
@@ -146,6 +147,7 @@ public class Field {
     private final boolean mIsId;
     private final boolean mIsIndex;
     private final boolean mIsNullable;
+    private final boolean mIsKey;
     private final String mDefaultValue;
     private final String mEnumName;
     private final List<EnumValue> mEnumValues = new ArrayList<>();
@@ -156,7 +158,7 @@ public class Field {
     private String mPath;
 
     public Field(Entity entity, String name, String documentation, String type, boolean isId, boolean isIndex, boolean isNullable, String defaultValue,
-            String enumName, List<EnumValue> enumValues, ForeignKey foreignKey) {
+            String enumName, List<EnumValue> enumValues, ForeignKey foreignKey, boolean isKey) {
         mEntity = entity;
         mName = name;
         mDocumentation = documentation;
@@ -165,13 +167,14 @@ public class Field {
         mIsIndex = isIndex;
         mIsNullable = isNullable;
         mDefaultValue = defaultValue;
+        mIsKey = isKey;
         mEnumName = enumName;
         if (enumValues != null) mEnumValues.addAll(enumValues);
         mForeignKey = foreignKey;
     }
 
     public Field asForeignField(String path) {
-        Field res = new Field(mEntity, mName, mDocumentation, mType.mJsonName, mIsId, mIsIndex, mIsNullable, mDefaultValue, mEnumName, mEnumValues, mForeignKey);
+        Field res = new Field(mEntity, mName, mDocumentation, mType.mJsonName, mIsId, mIsIndex, mIsNullable, mDefaultValue, mEnumName, mEnumValues, mForeignKey, mIsKey);
         res.mIsForeign = true;
         res.mOriginalField = this;
         res.mPath = path;
@@ -238,6 +241,10 @@ public class Field {
 
     public boolean getIsNullable() {
         return mIsNullable;
+    }
+
+    public boolean getIsKey() {
+        return mIsKey;
     }
 
     public String getDefaultValue() {

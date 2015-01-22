@@ -16,11 +16,16 @@ import android.support.annotation.NonNull;
 public abstract class Abstract${entity.nameCamelCase}Serializer implements ${entity.nameCamelCase}Serializer {
     @NonNull
     @Override
-    public ContentValues getContentValuesFromData(@NonNull ${entity.nameCamelCase}Model data) {
+    public ContentValues getContentValuesFromData(@NonNull ${entity.nameCamelCase}Model data, boolean update) {
         ${entity.nameCamelCase}ContentValues values = new ${entity.nameCamelCase}ContentValues();
     <#list entity.fields as field>
         <#if !field.isId>
+        <#if field.isKey>
+        if (!update)
+            values.put${field.nameCamelCase}(data.get${field.nameCamelCase}());
+        <#else>
         values.put${field.nameCamelCase}(data.get${field.nameCamelCase}());
+        </#if>
         </#if>
     </#list>
         return values.values();
