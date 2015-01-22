@@ -15,26 +15,40 @@ import android.support.annotation.Nullable;
 
 public abstract class AbstractDataSource<MODEL extends BaseModel, CURSOR extends AbstractCursor, SELECTION extends AbstractSelection<SELECTION>> extends TypedContentProviderDataSource<MODEL, CURSOR> {
     @NonNull
-    private final AbstractElementHandler<MODEL, CURSOR, SELECTION> databaseElementHandler;
+    private final DatabaseModelHandler<MODEL, CURSOR, SELECTION> databaseModelHandler;
 
-    public AbstractDataSource(@NonNull ContentResolver contentResolver, @NonNull Uri contentProviderUri, @NonNull AbstractElementHandler<MODEL, CURSOR, SELECTION> databaseElementHandler) {
-        super(contentResolver, contentProviderUri, databaseElementHandler);
-        this.databaseElementHandler = databaseElementHandler;
+    /**
+     * Contructor.
+     *
+     * @param contentResolver ContentResolver used to access the {@link android.content.ContentProvider ContentProvider}
+     * @param contentProviderUri {@link android.net.Uri Uri} to access the data from the {@link android.content.ContentProvider ContentProvider}
+     * @param databaseModelHandler to handle model objects read/write/query in the Content Provider.
+     */
+    public AbstractDataSource(@NonNull ContentResolver contentResolver, @NonNull Uri contentProviderUri, @NonNull DatabaseModelHandler<MODEL, CURSOR, SELECTION> databaseModelHandler) {
+        super(contentResolver, contentProviderUri, databaseModelHandler);
+        this.databaseModelHandler = databaseModelHandler;
     }
 
-    public AbstractDataSource(@NonNull Context context, @NonNull Uri contentProviderUri, @NonNull AbstractElementHandler<MODEL, CURSOR, SELECTION> databaseElementHandler) {
-        super(context, contentProviderUri, databaseElementHandler);
-        this.databaseElementHandler = databaseElementHandler;
+    /**
+     * Contructor.
+     *
+     * @param context Context used to get the {@link android.content.ContentResolver ContentResolver} used to access the {@link android.content.ContentProvider ContentProvider}
+     * @param contentProviderUri {@link android.net.Uri Uri} to access the data from the {@link android.content.ContentProvider ContentProvider}
+     * @param databaseModelHandler to handle model objects read/write/query in the Content Provider.
+     */
+    public AbstractDataSource(@NonNull Context context, @NonNull Uri contentProviderUri, @NonNull DatabaseModelHandler<MODEL, CURSOR, SELECTION> databaseModelHandler) {
+        super(context, contentProviderUri, databaseModelHandler);
+        this.databaseModelHandler = databaseModelHandler;
     }
 
     public Uri insert(MODEL model) {
-        ContentValues values = databaseElementHandler.serializer.getContentValuesFromData(model, false);
+        ContentValues values = databaseModelHandler.serializer.getContentValuesFromData(model, false);
         if (values.containsKey(BaseColumns._ID)) throw new IllegalStateException("you can't write the _id, values:"+values);
         return insert(values);
     }
 
     public boolean update(MODEL model) {
-        ContentValues values = databaseElementHandler.serializer.getContentValuesFromData(model, true);
+        ContentValues values = databaseModelHandler.serializer.getContentValuesFromData(model, true);
         if (values.containsKey(BaseColumns._ID)) throw new IllegalStateException("you can't write the _id, values:"+values);
         return update(model, values);
     }
@@ -44,7 +58,7 @@ public abstract class AbstractDataSource<MODEL extends BaseModel, CURSOR extends
     }
 
     @NonNull
-    public AbstractElementHandler<MODEL, CURSOR, SELECTION> getDatabaseElementHandler() {
-        return databaseElementHandler;
+    public DatabaseModelHandler<MODEL, CURSOR, SELECTION> getDatabaseModelHandler() {
+        return databaseModelHandler;
     }
 }

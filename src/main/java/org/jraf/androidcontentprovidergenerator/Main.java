@@ -378,7 +378,7 @@ public class Main {
         for (Entity entity : Model.get().getEntities()) {
             File outputDir = new File(providerDir, entity.getPackageName());
             outputDir.mkdirs();
-            File outputFile = new File(outputDir, entity.getNameCamelCase() + "ElementHandler.java");
+            File outputFile = new File(outputDir, entity.getNameCamelCase() + "DatabaseModelHandler.java");
             Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
 
             root.put("entity", entity);
@@ -465,7 +465,7 @@ public class Main {
             IOUtils.closeQuietly(out);
 
             template = getFreeMarkerConfig().getTemplate("abstractelementhandler.ftl");
-            outputFile = new File(baseClassesDir, "AbstractElementHandler.java");
+            outputFile = new File(baseClassesDir, "DatabaseModelHandler.java");
             out = new OutputStreamWriter(new FileOutputStream(outputFile));
             template.process(root, out);
             IOUtils.closeQuietly(out);

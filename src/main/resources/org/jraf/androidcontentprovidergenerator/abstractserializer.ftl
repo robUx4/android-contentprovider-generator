@@ -12,8 +12,11 @@ import ${config.providerJavaPackage}.base.DatabaseSerializer;
 <#if entity.documentation??>
  * ${entity.documentation}
 <#else>
- * Base Serializer class for the {@code ${entity.nameLowerCase}} table.
+ * Abstract Serializer class for the {@code ${entity.nameLowerCase}} table.
 </#if>
+ * <p>You need to implement {@link #getValueFromCursor(com.levelup.touiteur.base.AbstractCursor) getValueFromCursor(${entity.nameCamelCase}Cursor)}
+ * to turn a {@code Cursor} into your model object(s).</p>
+ * <p>Use this class to build a fully working {@link ${config.providerJavaPackage}.${entity.packageName}.${entity.nameCamelCase}DataSource}.</p>
  */
 public abstract class Abstract${entity.nameCamelCase}DatabaseSerializer implements DatabaseSerializer<${entity.nameCamelCase}Model, ${entity.nameCamelCase}Cursor> {
     @NonNull
