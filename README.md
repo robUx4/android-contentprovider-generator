@@ -23,7 +23,7 @@ This is where you declare a few parameters that will be used to generate the cod
 These are self-explanatory so here is an example:
 ```json
 {
-	"syntaxVersion": 3,
+	"syntaxVersion": 4,
 	"projectPackageId": "com.example.app",
 	"authority": "com.example.app.provider",
 	"providerJavaPackage": "com.example.app.provider",
@@ -34,6 +34,7 @@ These are self-explanatory so here is an example:
 	"databaseVersion": 1,
 	"enableForeignKeys": true,
 	"useAnnotations": true,
+	"keepFieldCase": true,
 }
 ```
 
@@ -67,6 +68,7 @@ Here is a `person.json` file as an example:
 			"name": "first_name",
 			"type": "String",
 			"defaultValue": "John",
+			"isKey": true,
 		},
 		{
 			"documentation": "Last name (a.k.a. Given name) of this person. For instance, Smith.",
@@ -74,6 +76,7 @@ Here is a `person.json` file as an example:
 			"type": "String",
 			"nullable": true,
 			"defaultValue": "Doe",
+			"isKey": true,
 		},
 		{
 			"name": "age",
@@ -92,13 +95,6 @@ Here is a `person.json` file as an example:
 			"nullable": false,
 		},
 	],
-
-	"constraints": [
-		{
-			"name": "unique_name",
-			"definition": "UNIQUE (first_name, last_name) ON CONFLICT REPLACE"
-		},
-	]
 }
 ```
 

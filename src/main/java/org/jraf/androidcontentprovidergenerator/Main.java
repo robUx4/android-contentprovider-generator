@@ -118,6 +118,8 @@ public class Main {
             Field field = new Field(entity, "_id", "Primary key.", "Long", true, false, false, null, null, null, null, true);
             entity.addField(field);
 
+            ArrayList<Field> tableKeys = new ArrayList<Field>();
+
             // Fields
             JSONArray fieldsJson = entityJson.getJSONArray(Entity.Json.FIELDS);
             int len = fieldsJson.length();
@@ -162,7 +164,29 @@ public class Main {
                 field = new Field(entity, name, fieldDocumentation, type, false, isIndex, isNullable, defaultValue != null ? defaultValue : defaultValueLegacy,
                         enumName, enumValues, foreignKey, isKey);
                 entity.addField(field);
+                if (isKey) {
+                    tableKeys.add(field);
+                }
             }
+
+            // key constraint
+            if (!tableKeys.isEmpty()) {
+                StringBuilder definition = new StringBuilder("UNIQUE (");
+                for (int i=0; i<tableKeys.size(); ++i) {
+                    if (i != 0)
+                        definition.append(", ");
+                    if (mConfig.optBoolean(Json.FIELD_CASE_NAME, false)) {
+                        definition.append(tableKeys.get(i).getCaseFieldNameOrPrefixed());
+                    } else {
+                        definition.append(tableKeys.get(i).getNameLowerCaseOrPrefixed());
+                    }
+                }
+                definition.append(") ON CONFLICT REPLACE");
+                Constraint constraint = new Constraint("unique_name", definition.toString());
+                entity.addConstraint(constraint);
+                if (Config.LOGD) Log.i(TAG, "added constraint from isKey fields: " + constraint);
+            }
+
 
             // Constraints (optional)
             JSONArray constraintsJson = entityJson.optJSONArray(Entity.Json.CONSTRAINTS);
@@ -314,9 +338,9 @@ public class Main {
     }
 
     private void generateAsyncDb(Arguments arguments) throws IOException, JSONException, TemplateException {
-    	if (!arguments.asyncdb)
-    		return;
-    	
+        if (!arguments.asyncdb)
+            return;
+        
         Template template = getFreeMarkerConfig().getTemplate("datasource.ftl");
         JSONObject config = getConfig(arguments.inputDir);
         String providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
