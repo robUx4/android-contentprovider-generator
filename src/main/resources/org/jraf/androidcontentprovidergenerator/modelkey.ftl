@@ -9,20 +9,19 @@ import java.util.Date;
 <#if config.useAnnotations>
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 </#if>
 
 /**
 <#if entity.documentation??>
  * ${entity.documentation}
 <#else>
- * Data model for the {@code ${entity.nameLowerCase}} table.
+ * Data model for the key of {@code ${entity.nameLowerCase}} table.
 </#if>
- * @see ${entity.nameCamelCase}Impl
+ * @see ${entity.nameCamelCase}KeyImpl
  */
-public interface ${entity.nameCamelCase}Model extends ${entity.nameCamelCase}Key {
+public interface ${entity.nameCamelCase}Key extends BaseModel {
     <#list entity.getFields() as field>
-        <#if !field.isId && !field.isKey>
+        <#if field.isId || field.isKey>
 
     /**
     <#if field.documentation??>

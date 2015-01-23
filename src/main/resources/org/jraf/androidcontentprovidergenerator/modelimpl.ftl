@@ -19,10 +19,12 @@ import android.support.annotation.Nullable;
  *
  * @see ${entity.nameCamelCase}Impl.Builder
  */
-public class ${entity.nameCamelCase}Impl implements ${entity.nameCamelCase}Model {
-    public static class Builder implements ${entity.nameCamelCase}Model {
+public class ${entity.nameCamelCase}Impl extends ${entity.nameCamelCase}KeyImpl implements ${entity.nameCamelCase}Model {
+    public static class Builder extends ${entity.nameCamelCase}KeyImpl.Builder implements ${entity.nameCamelCase}Model {
     <#list entity.getFields() as field>
-        private ${field.javaTypeSimpleName} <#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if>; 
+        <#if !field.isId && !field.isKey>
+        private ${field.javaTypeSimpleName} <#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if>;
+        </#if> 
     </#list>
 
         public Builder() {
@@ -32,11 +34,15 @@ public class ${entity.nameCamelCase}Impl implements ${entity.nameCamelCase}Model
          * Construct a copy of the specified {@link ${entity.nameCamelCase}Model}
          */
         public Builder(${entity.nameCamelCase}Model copy) {
+            super(copy);
     <#list entity.getFields() as field>
+        <#if !field.isId && !field.isKey>
             this.<#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if> = copy.get<#if field.isForeign>${field.path}</#if>${field.nameCamelCase}();
+        </#if>
     </#list>
         }
     <#list entity.getFields() as field>
+      <#if !field.isId && !field.isKey>
 
 	    <#if config.useAnnotations && !field.isNullable && !field.type.hasNotNullableJavaType()>
         public Builder set<#if field.isForeign>${field.path}</#if>${field.nameCamelCase}(@NonNull ${field.javaTypeSimpleName} <#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if>) {
@@ -62,33 +68,30 @@ public class ${entity.nameCamelCase}Impl implements ${entity.nameCamelCase}Model
         public ${field.javaTypeSimpleName} get<#if field.isForeign>${field.path}</#if>${field.nameCamelCase}() {
             return <#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if>;
         }
+      </#if>
     </#list>
     
         public ${entity.nameCamelCase}Impl build() {
-        <#list entity.getKeys() as field>
-            <#switch field.type.name()>
-            <#case "STRING">
-            <#case "ENUM">
-            <#case "DATE">
-            if (null == <#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if>) throw new IllegalStateException("<#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if> is a key and cannot be null");
-            <#break>
-            <#default>
-            </#switch>
-        </#list>
             return new ${entity.nameCamelCase}Impl(this);
         }
     }
 
     <#list entity.getFields() as field>
-    private final ${field.javaTypeSimpleName} <#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if>; 
+      <#if !field.isId && !field.isKey>
+    private final ${field.javaTypeSimpleName} <#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if>;
+      </#if> 
     </#list>
 
     private ${entity.nameCamelCase}Impl(${entity.nameCamelCase}Model model) {
+        super(model);
     <#list entity.getFields() as field>
+      <#if !field.isId && !field.isKey>
         this.<#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if> = model.get<#if field.isForeign>${field.path}</#if>${field.nameCamelCase}();
+      </#if>
     </#list>
     }
     <#list entity.getFields() as field>
+    <#if !field.isId && !field.isKey>
 
     /**
     <#if field.documentation??>
@@ -117,5 +120,6 @@ public class ${entity.nameCamelCase}Impl implements ${entity.nameCamelCase}Model
     public ${field.javaTypeSimpleName} get<#if field.isForeign>${field.path}</#if>${field.nameCamelCase}() {
         return <#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if>;
     }
+    </#if>
     </#list>
 }

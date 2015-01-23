@@ -35,7 +35,7 @@ public class ${entity.nameCamelCase}DatabaseModelHandler extends DatabaseModelHa
             return new ${entity.nameCamelCase}Selection()
         <#list entity.getKeys() as key>
             <#if key.isId>
-            .id(itemToSelect.getId())
+            .id(itemToSelect.getId())<#if !(key_has_next)>;<#else>.and()</#if>
             <#else>
             .<#if key.isForeign>${key.path?uncap_first}${key.nameCamelCase}<#else>${key.nameCamelCaseLowerCase}</#if>(itemToSelect.get<#if key.isForeign>${key.path}</#if>${key.nameCamelCase}())<#if !(key_has_next)>;<#else>.and()</#if>
             </#if>
