@@ -21,6 +21,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import ${config.projectPackageId}.BuildConfig;
+import ${config.providerJavaPackage}.base.AbstractDataSource;
 <#list model.entities as entity>
 import ${config.providerJavaPackage}.${entity.packageName}.${entity.nameCamelCase}Columns;
 </#list>
@@ -38,6 +39,7 @@ public class ${config.providerClassName} extends ContentProvider {
 
     public static final String QUERY_NOTIFY = "QUERY_NOTIFY";
     public static final String QUERY_GROUP_BY = "QUERY_GROUP_BY";
+    public static final String QUERY_LIMIT_BY = AbstractDataSource.QUERY_LIMIT_BY;
 
 	<#assign i=0>
     <#list model.entities as entity>
@@ -165,13 +167,14 @@ public class ${config.providerClassName} extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         String groupBy = uri.getQueryParameter(QUERY_GROUP_BY);
+        String limitBy = uri.getQueryParameter(QUERY_LIMIT_BY);
         if (DEBUG)
             Log.d(TAG, "query uri=" + uri + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs) + " sortOrder=" + sortOrder
                     + " groupBy=" + groupBy);
         QueryParams queryParams = getQueryParams(uri, selection, projection);
         projection = ensureIdIsFullyQualified(projection, queryParams.table);
         Cursor res = m${config.sqliteOpenHelperClassName}.getReadableDatabase().query(queryParams.tablesWithJoins, projection, queryParams.selection, selectionArgs, groupBy,
-                null, sortOrder == null ? queryParams.orderBy : sortOrder);
+                null, sortOrder == null ? queryParams.orderBy : sortOrder, limitBy);
         res.setNotificationUri(getContext().getContentResolver(), uri);
         return res;
     }
@@ -267,5 +270,9 @@ public class ${config.providerClassName} extends ContentProvider {
 
     public static Uri groupBy(Uri uri, String groupBy) {
         return uri.buildUpon().appendQueryParameter(QUERY_GROUP_BY, groupBy).build();
+    }
+
+    public static Uri limitBy(Uri uri, String limitBy) {
+        return uri.buildUpon().appendQueryParameter(QUERY_LIMIT_BY, limitBy).build();
     }
 }

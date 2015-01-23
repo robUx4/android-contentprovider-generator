@@ -14,6 +14,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 public abstract class AbstractDataSource<MODEL extends BaseModel, CURSOR extends AbstractCursor, SELECTION extends AbstractSelection<SELECTION>> extends TypedContentProviderDataSource<MODEL, CURSOR> {
+    public static final String QUERY_LIMIT_BY = "QUERY_LIMIT_BY";
+
     @NonNull
     private final DatabaseModelHandler<MODEL, CURSOR, SELECTION> databaseModelHandler;
 
@@ -55,6 +57,18 @@ public abstract class AbstractDataSource<MODEL extends BaseModel, CURSOR extends
 
     public CURSOR query(@Nullable String[] columns, @NonNull SELECTION selection, @Nullable String groupBy, @Nullable String having, @Nullable String orderBy, @Nullable String limit) {
         return query(columns, selection.sel(), selection.args(), groupBy, having, orderBy, limit);
+    }
+
+    @Override
+    protected String getLimitOrderBy(@Nullable String orderBy, @NonNull String limit) {
+        if (orderBy == null)
+            return null;
+        return super.getLimitOrderBy(orderBy, limit);
+    }
+
+    @Override
+    protected Uri getLimitUri(@NonNull Uri uri, @NonNull String limit) {
+        return uri.buildUpon().appendQueryParameter(QUERY_LIMIT_BY, limit).build();
     }
 
     @NonNull
