@@ -165,7 +165,7 @@ public class Field {
         mType = Type.fromJsonName(type);
         mIsId = isId;
         mIsIndex = isIndex;
-        mIsNullable = isNullable;
+        mIsNullable = !isKey && isNullable;
         mDefaultValue = defaultValue;
         mIsKey = isKey;
         mEnumName = enumName;
