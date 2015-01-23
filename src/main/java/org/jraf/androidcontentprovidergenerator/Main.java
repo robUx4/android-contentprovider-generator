@@ -335,6 +335,29 @@ public class Main {
             template.process(root, out);
             IOUtils.closeQuietly(out);
         }
+
+        template = getFreeMarkerConfig().getTemplate("modelimpl.ftl");
+        config = getConfig(arguments.inputDir);
+        providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
+
+        providerDir = new File(arguments.outputDir, providerJavaPackage.replace('.', '/'));
+        root = new HashMap<>();
+        root.put("config", getConfig(arguments.inputDir));
+        root.put("header", Model.get().getHeader());
+        root.put("model", Model.get());
+
+        // Entities
+        for (Entity entity : Model.get().getEntities()) {
+            File outputDir = new File(providerDir, entity.getPackageName());
+            outputDir.mkdirs();
+            File outputFile = new File(outputDir, entity.getNameCamelCase() + "Impl.java");
+            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
+
+            root.put("entity", entity);
+
+            template.process(root, out);
+            IOUtils.closeQuietly(out);
+        }
     }
 
     private void generateAsyncDb(Arguments arguments) throws IOException, JSONException, TemplateException {
@@ -401,7 +424,7 @@ public class Main {
         for (Entity entity : Model.get().getEntities()) {
             File outputDir = new File(providerDir, entity.getPackageName());
             outputDir.mkdirs();
-            File outputFile = new File(outputDir, "Abstract" + entity.getNameCamelCase() + "DatabaseSerializer.java");
+            File outputFile = new File(outputDir, entity.getNameCamelCase() + "DatabaseSerializer.java");
             Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
 
             root.put("entity", entity);

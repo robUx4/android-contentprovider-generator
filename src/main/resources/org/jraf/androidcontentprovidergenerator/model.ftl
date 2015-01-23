@@ -18,6 +18,7 @@ import android.support.annotation.Nullable;
 <#else>
  * Data model for the {@code ${entity.nameLowerCase}} table.
 </#if>
+ * @see ${entity.nameCamelCase}Impl
  */
 public interface ${entity.nameCamelCase}Model extends BaseModel {
     <#list entity.getFields() as field>

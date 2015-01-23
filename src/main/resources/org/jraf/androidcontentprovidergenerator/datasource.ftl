@@ -19,9 +19,29 @@ import ${config.providerJavaPackage}.base.DatabaseSerializer;
  * Content Provider data source for the {@code ${entity.nameLowerCase}} table.
 </#if>
  * <p>A data source to be used with {@link org.gawst.asyncdb.AsynchronousDbHelper AsynchronousDbHelper}.</p>
- * @see ${config.providerJavaPackage}.${entity.packageName}.Abstract${entity.nameCamelCase}DatabaseSerializer
+ * @see ${entity.nameCamelCase}DatabaseSerializer
  */
 public class ${entity.nameCamelCase}DataSource extends AbstractDataSource<${entity.nameCamelCase}Model, ${entity.nameCamelCase}Cursor, ${entity.nameCamelCase}Selection> {
+    /**
+     * Contructor.
+     * <p>Uses a {@link ${config.providerJavaPackage}.${entity.packageName}.${entity.nameCamelCase}DatabaseModelHandler} to read/write data in the Content Provider.</p>
+     *
+     * @param contentResolver ContentResolver used to access the {@link android.content.ContentProvider ContentProvider}
+     */
+    public ${entity.nameCamelCase}DataSource(@NonNull ContentResolver contentResolver) {
+        this(contentResolver, new ${entity.nameCamelCase}DatabaseSerializer());
+    }
+
+    /**
+     * Contructor.
+     * <p>Uses a {@link ${config.providerJavaPackage}.${entity.packageName}.${entity.nameCamelCase}DatabaseModelHandler} to read/write data in the Content Provider.</p>
+     *
+     * @param context    Context used to get the {@link android.content.ContentResolver ContentResolver} used to access the {@link android.content.ContentProvider ContentProvider}
+     */
+    public ${entity.nameCamelCase}DataSource(@NonNull Context context) {
+        this(context, new ${entity.nameCamelCase}DatabaseSerializer());
+    }
+
     /**
      * Contructor.
      * <p>Uses a {@link ${config.providerJavaPackage}.${entity.packageName}.${entity.nameCamelCase}DatabaseModelHandler} to read/write data in the Content Provider.</p>
@@ -50,7 +70,7 @@ public class ${entity.nameCamelCase}DataSource extends AbstractDataSource<${enti
      * Contructor.
      *
      * @param contentResolver ContentResolver used to access the {@link android.content.ContentProvider ContentProvider}.
-     * @param modelHandler to handle {@link ${config.providerJavaPackage}.${entity.packageName}.${entity.nameCamelCase}Model} read/write/query in the Content Provider.
+     * @param modelHandler to handle {@link ${entity.nameCamelCase}Model} read/write/query in the Content Provider.
      */
     public ${entity.nameCamelCase}DataSource(@NonNull ContentResolver contentResolver, @NonNull DatabaseModelHandler<${entity.nameCamelCase}Model, ${entity.nameCamelCase}Cursor, ${entity.nameCamelCase}Selection> modelHandler) {
         super(contentResolver, ${entity.nameCamelCase}Columns.CONTENT_URI, modelHandler);
@@ -60,7 +80,7 @@ public class ${entity.nameCamelCase}DataSource extends AbstractDataSource<${enti
      * Contructor.
      *
      * @param context      Context used to get the {@link android.content.ContentResolver ContentResolver} used to access the {@link android.content.ContentProvider ContentProvider}
-     * @param modelHandler to handle {@link ${config.providerJavaPackage}.${entity.packageName}.${entity.nameCamelCase}Model} read/write/query in the Content Provider.
+     * @param modelHandler to handle {@link ${entity.nameCamelCase}Model} read/write/query in the Content Provider.
      */
     public ${entity.nameCamelCase}DataSource(@NonNull Context context, @NonNull DatabaseModelHandler<${entity.nameCamelCase}Model, ${entity.nameCamelCase}Cursor, ${entity.nameCamelCase}Selection> modelHandler) {
         super(context, ${entity.nameCamelCase}Columns.CONTENT_URI, modelHandler);

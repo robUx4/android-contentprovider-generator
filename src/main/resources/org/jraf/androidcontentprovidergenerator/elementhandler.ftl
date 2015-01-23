@@ -14,7 +14,7 @@ import ${config.providerJavaPackage}.base.DatabaseSerializer;
 <#else>
  * Database model handler for the {@code ${entity.nameLowerCase}} table.
 </#if>
- * <p>Used to read/write {@link ${config.providerJavaPackage}.${entity.packageName}.${entity.nameCamelCase}Model} into a database
+ * <p>Used to read/write {@link ${entity.nameCamelCase}Model} into a database
  * and select items using a {@link ${config.providerJavaPackage}.${entity.packageName}.${entity.nameCamelCase}Selection}</p>
  */
 public class ${entity.nameCamelCase}DatabaseModelHandler extends DatabaseModelHandler<${entity.nameCamelCase}Model, ${entity.nameCamelCase}Cursor, ${entity.nameCamelCase}Selection> {
@@ -23,7 +23,7 @@ public class ${entity.nameCamelCase}DatabaseModelHandler extends DatabaseModelHa
      *
      * @param serializer transforms a {@link ${entity.nameCamelCase}Cursor} to a {@link ${entity.nameCamelCase}Model}
      *                   or a {@link ${entity.nameCamelCase}Model} into {@code ContentValues}
-     * @see ${config.providerJavaPackage}.${entity.packageName}.Abstract${entity.nameCamelCase}DatabaseSerializer
+     * @see ${entity.nameCamelCase}DatabaseSerializer
      */
     public ${entity.nameCamelCase}DatabaseModelHandler(DatabaseSerializer<${entity.nameCamelCase}Model, ${entity.nameCamelCase}Cursor> serializer) {
         super(serializer);
