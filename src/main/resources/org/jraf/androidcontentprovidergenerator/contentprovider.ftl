@@ -21,7 +21,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import ${config.projectPackageId}.BuildConfig;
-import ${config.providerJavaPackage}.base.AbstractDataSource;
+import ${config.providerJavaPackage}.base.AbstractContentProviderDataSource;
 <#list model.entities as entity>
 import ${config.providerJavaPackage}.${entity.packageName}.${entity.nameCamelCase}Columns;
 </#list>
@@ -39,7 +39,7 @@ public class ${config.providerClassName} extends ContentProvider {
 
     public static final String QUERY_NOTIFY = "QUERY_NOTIFY";
     public static final String QUERY_GROUP_BY = "QUERY_GROUP_BY";
-    public static final String QUERY_LIMIT_BY = AbstractDataSource.QUERY_LIMIT_BY;
+    public static final String QUERY_LIMIT_BY = AbstractContentProviderDataSource.QUERY_LIMIT_BY;
 
 	<#assign i=0>
     <#list model.entities as entity>

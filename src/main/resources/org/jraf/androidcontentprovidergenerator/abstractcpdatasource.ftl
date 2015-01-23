@@ -13,7 +13,7 @@ import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-public abstract class AbstractDataSource<MODEL extends BaseModel, CURSOR extends AbstractCursor, SELECTION extends AbstractSelection<SELECTION>> extends TypedContentProviderDataSource<MODEL, CURSOR> {
+public abstract class AbstractContentProviderDataSource<MODEL extends BaseModel, CURSOR extends AbstractCursor, SELECTION extends AbstractSelection<SELECTION>> extends TypedContentProviderDataSource<MODEL, CURSOR> {
     public static final String QUERY_LIMIT_BY = "QUERY_LIMIT_BY";
 
     @NonNull
@@ -26,7 +26,7 @@ public abstract class AbstractDataSource<MODEL extends BaseModel, CURSOR extends
      * @param contentProviderUri {@link android.net.Uri Uri} to access the data from the {@link android.content.ContentProvider ContentProvider}
      * @param databaseModelHandler to handle model objects read/write/query in the Content Provider.
      */
-    public AbstractDataSource(@NonNull ContentResolver contentResolver, @NonNull Uri contentProviderUri, @NonNull DatabaseModelHandler<MODEL, CURSOR, SELECTION> databaseModelHandler) {
+    public AbstractContentProviderDataSource(@NonNull ContentResolver contentResolver, @NonNull Uri contentProviderUri, @NonNull DatabaseModelHandler<MODEL, CURSOR, SELECTION> databaseModelHandler) {
         super(contentResolver, contentProviderUri, databaseModelHandler);
         this.databaseModelHandler = databaseModelHandler;
     }
@@ -38,7 +38,7 @@ public abstract class AbstractDataSource<MODEL extends BaseModel, CURSOR extends
      * @param contentProviderUri {@link android.net.Uri Uri} to access the data from the {@link android.content.ContentProvider ContentProvider}
      * @param databaseModelHandler to handle model objects read/write/query in the Content Provider.
      */
-    public AbstractDataSource(@NonNull Context context, @NonNull Uri contentProviderUri, @NonNull DatabaseModelHandler<MODEL, CURSOR, SELECTION> databaseModelHandler) {
+    public AbstractContentProviderDataSource(@NonNull Context context, @NonNull Uri contentProviderUri, @NonNull DatabaseModelHandler<MODEL, CURSOR, SELECTION> databaseModelHandler) {
         super(context, contentProviderUri, databaseModelHandler);
         this.databaseModelHandler = databaseModelHandler;
     }

@@ -410,7 +410,7 @@ public class Main {
         if (!arguments.asyncdb)
             return;
         
-        Template template = getFreeMarkerConfig().getTemplate("datasource.ftl");
+        Template template = getFreeMarkerConfig().getTemplate("cpdatasource.ftl");
         JSONObject config = getConfig(arguments.inputDir);
         String providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
 
@@ -424,7 +424,30 @@ public class Main {
         for (Entity entity : Model.get().getEntities()) {
             File outputDir = new File(providerDir, entity.getPackageName());
             outputDir.mkdirs();
-            File outputFile = new File(outputDir, entity.getNameCamelCase() + "DataSource.java");
+            File outputFile = new File(outputDir, entity.getNameCamelCase() + "ContentProviderDataSource.java");
+            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
+
+            root.put("entity", entity);
+
+            template.process(root, out);
+            IOUtils.closeQuietly(out);
+        }
+
+        template = getFreeMarkerConfig().getTemplate("sqldatasource.ftl");
+        config = getConfig(arguments.inputDir);
+        providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
+
+        providerDir = new File(arguments.outputDir, providerJavaPackage.replace('.', '/'));
+        root = new HashMap<>();
+        root.put("config", getConfig(arguments.inputDir));
+        root.put("header", Model.get().getHeader());
+        root.put("model", Model.get());
+
+        // Entities
+        for (Entity entity : Model.get().getEntities()) {
+            File outputDir = new File(providerDir, entity.getPackageName());
+            outputDir.mkdirs();
+            File outputFile = new File(outputDir, entity.getNameCamelCase() + "SqliteDataSource.java");
             Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
 
             root.put("entity", entity);
@@ -521,8 +544,14 @@ public class Main {
         IOUtils.closeQuietly(out);
 
         if (arguments.asyncdb) {
-            template = getFreeMarkerConfig().getTemplate("abstractdatasource.ftl");
-            outputFile = new File(baseClassesDir, "AbstractDataSource.java");
+            template = getFreeMarkerConfig().getTemplate("abstractcpdatasource.ftl");
+            outputFile = new File(baseClassesDir, "AbstractContentProviderDataSource.java");
+            out = new OutputStreamWriter(new FileOutputStream(outputFile));
+            template.process(root, out);
+            IOUtils.closeQuietly(out);
+
+            template = getFreeMarkerConfig().getTemplate("abstractsqldatasource.ftl");
+            outputFile = new File(baseClassesDir, "AbstractSqliteDataSource.java");
             out = new OutputStreamWriter(new FileOutputStream(outputFile));
             template.process(root, out);
             IOUtils.closeQuietly(out);

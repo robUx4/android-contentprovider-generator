@@ -19,6 +19,13 @@ import ${config.providerJavaPackage}.base.DatabaseSerializer;
  */
 public class ${entity.nameCamelCase}DatabaseModelHandler extends DatabaseModelHandler<${entity.nameCamelCase}Model, ${entity.nameCamelCase}Cursor, ${entity.nameCamelCase}Selection> {
     /**
+     * Default Constructor.
+     */
+    public ${entity.nameCamelCase}DatabaseModelHandler() {
+        this(new ${entity.nameCamelCase}DatabaseSerializer());
+    }
+
+    /**
      * Constructor.
      *
      * @param serializer transforms a {@link ${entity.nameCamelCase}Cursor} to a {@link ${entity.nameCamelCase}Model}

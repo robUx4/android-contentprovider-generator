@@ -14,8 +14,9 @@ import ${config.providerJavaPackage}.base.DatabaseSerializer;
 <#else>
  * Default Serializer class for the {@code ${entity.nameLowerCase}} table.
 </#if>
- * @see ${entity.nameCamelCase}DataSource#${entity.nameCamelCase}DataSource(android.content.Context, ${config.providerJavaPackage}.base.DatabaseSerializer)
- * @see ${entity.nameCamelCase}DataSource#${entity.nameCamelCase}DataSource(android.content.ContentResolver, ${config.providerJavaPackage}.base.DatabaseSerializer)
+ * @see ${entity.nameCamelCase}ContentProviderDataSource#${entity.nameCamelCase}ContentProviderDataSource(android.content.Context, ${config.providerJavaPackage}.base.DatabaseSerializer)
+ * @see ${entity.nameCamelCase}ContentProviderDataSource#${entity.nameCamelCase}ContentProviderDataSource(android.content.ContentResolver, ${config.providerJavaPackage}.base.DatabaseSerializer)
+ * @see ${entity.nameCamelCase}SqliteDataSource#${entity.nameCamelCase}implements DatabaseSerializer(android.content.Context, ${config.providerJavaPackage}.base.DatabaseSerializer)
  */
 public class ${entity.nameCamelCase}DatabaseSerializer implements DatabaseSerializer<${entity.nameCamelCase}Model, ${entity.nameCamelCase}Cursor> {
     @NonNull
