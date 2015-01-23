@@ -235,7 +235,7 @@ public class ${config.providerClassName} extends ContentProvider {
             case URI_TYPE_${entity.nameUpperCase}_ID:
                 res.table = ${entity.nameCamelCase}Columns.TABLE_NAME;
                 res.tablesWithJoins = ${entity.allJoinedTableNames}
-                res.orderBy = ${entity.nameCamelCase}Columns.DEFAULT_ORDER;
+                //res.orderBy = ${entity.nameCamelCase}Columns.DEFAULT_ORDER;
                 break;
 
             </#list>
