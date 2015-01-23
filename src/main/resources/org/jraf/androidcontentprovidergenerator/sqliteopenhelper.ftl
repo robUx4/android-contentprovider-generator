@@ -64,11 +64,18 @@ public class ${config.sqliteOpenHelperClassName} extends SQLiteOpenHelper {
 
     <#list entity.fields as field>
     <#if field.isIndex>
-    public static final String SQL_CREATE_INDEX_${entity.nameUpperCase}_${field.nameUpperCase} = "CREATE INDEX IDX_${entity.nameUpperCase}_${field.nameUpperCase} "
+    public static final String SQL_CREATE_INDEX_${entity.nameUpperCase}_${field.nameUpperCase} = "CREATE INDEX IF NOT EXISTS IDX_${entity.nameUpperCase}_${field.nameUpperCase} "
             + " ON " + ${entity.nameCamelCase}Columns.TABLE_NAME + " ( " + ${entity.nameCamelCase}Columns.${field.nameUpperCase} + " );";
 
     </#if>
     </#list>
+    <#if entity.getKeys()?has_content>
+    public static final String SQL_CREATE_INDEX_${entity.nameUpperCase}_KEYS = "CREATE INDEX IF NOT EXISTS IDX_${entity.nameUpperCase}_KEYS"
+             + " ON "+ ${entity.nameCamelCase}Columns.TABLE_NAME + " ( "
+      <#list entity.getKeys() as key>
+             + ${entity.nameCamelCase}Columns.${key.nameUpperCase} + <#if !(key_has_next)>" );";<#else>", "</#if>
+      </#list>
+    </#if>
     </#list>
     // @formatter:on
 
