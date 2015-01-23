@@ -75,6 +75,7 @@ public class ${config.sqliteOpenHelperClassName} extends SQLiteOpenHelper {
       <#list entity.getKeys() as key>
              + ${entity.nameCamelCase}Columns.${key.nameUpperCase} + <#if !(key_has_next)>" );";<#else>", "</#if>
       </#list>
+
     </#if>
     </#list>
     // @formatter:on

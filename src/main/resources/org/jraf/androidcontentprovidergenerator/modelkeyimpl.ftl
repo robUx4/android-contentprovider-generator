@@ -41,6 +41,7 @@ public class ${entity.nameCamelCase}KeyImpl implements ${entity.nameCamelCase}Ke
         }
     <#list entity.getFields() as field>
       <#if field.isId || field.isKey>
+
         <#if config.useAnnotations && !field.isNullable && !field.type.hasNotNullableJavaType()>
         public Builder set<#if field.isForeign>${field.path}</#if>${field.nameCamelCase}(@NonNull ${field.javaTypeSimpleName} <#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if>) {
         <#elseif config.useAnnotations && field.isNullable>
