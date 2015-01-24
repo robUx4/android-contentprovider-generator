@@ -5,8 +5,8 @@ package ${config.providerJavaPackage}.${entity.packageName};
 
 import android.support.annotation.NonNull;
 
-import ${config.providerJavaPackage}.base.DatabaseModelHandler;
-import ${config.providerJavaPackage}.base.DatabaseSerializer;
+import ${config.providerJavaPackage}.base.MapDatabaseModelHandler;
+import ${config.providerJavaPackage}.base.MapDatabaseSerializer;
 
 /**
 <#if entity.documentation??>
@@ -14,15 +14,15 @@ import ${config.providerJavaPackage}.base.DatabaseSerializer;
 <#else>
  * Database model handler for the {@code ${entity.nameLowerCase}} table.
 </#if>
- * <p>Used to read/write {@link ${entity.nameCamelCase}Model} into a database
+ * <p>Used to read/write Map elements with {@link ${entity.nameCamelCase}Key}/{@link ${entity.nameCamelCase}Value} into a database
  * and select items using a {@link ${config.providerJavaPackage}.${entity.packageName}.${entity.nameCamelCase}Selection}</p>
  */
-public class ${entity.nameCamelCase}DatabaseModelHandler extends DatabaseModelHandler<${entity.nameCamelCase}Model, ${entity.nameCamelCase}Cursor, ${entity.nameCamelCase}Selection> {
+public class ${entity.nameCamelCase}MapDatabaseModelHandler extends MapDatabaseModelHandler<${entity.nameCamelCase}Key, ${entity.nameCamelCase}Value, ${entity.nameCamelCase}Cursor, ${entity.nameCamelCase}Selection> {
     /**
      * Default Constructor.
      */
-    public ${entity.nameCamelCase}DatabaseModelHandler() {
-        this(new ${entity.nameCamelCase}DatabaseSerializer());
+    public ${entity.nameCamelCase}MapDatabaseModelHandler() {
+        this(new ${entity.nameCamelCase}MapDatabaseSerializer());
     }
 
     /**
@@ -30,14 +30,14 @@ public class ${entity.nameCamelCase}DatabaseModelHandler extends DatabaseModelHa
      *
      * @param serializer transforms a {@link ${entity.nameCamelCase}Cursor} to a {@link ${entity.nameCamelCase}Model}
      *                   or a {@link ${entity.nameCamelCase}Model} into {@code ContentValues}
-     * @see ${entity.nameCamelCase}DatabaseSerializer
+     * @see ${entity.nameCamelCase}MapDatabaseSerializer
      */
-    public ${entity.nameCamelCase}DatabaseModelHandler(DatabaseSerializer<${entity.nameCamelCase}Model, ${entity.nameCamelCase}Cursor> serializer) {
+    public ${entity.nameCamelCase}MapDatabaseModelHandler(@NonNull MapDatabaseSerializer<${entity.nameCamelCase}Key, ${entity.nameCamelCase}Value, ${entity.nameCamelCase}Cursor> serializer) {
         super(serializer);
     }
 
     @Override
-    protected ${entity.nameCamelCase}Selection getItemSelection(@NonNull ${entity.nameCamelCase}Model itemToSelect) {
+    protected ${entity.nameCamelCase}Selection getItemSelection(@NonNull ${entity.nameCamelCase}Key itemToSelect) {
         if (itemToSelect.getId() <= 0) {
             return new ${entity.nameCamelCase}Selection()
         <#list entity.getKeys() as key>
