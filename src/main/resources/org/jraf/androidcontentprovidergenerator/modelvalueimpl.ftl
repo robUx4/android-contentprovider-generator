@@ -14,13 +14,13 @@ import android.support.annotation.Nullable;
 <#if entity.documentation??>
  * ${entity.documentation}
 <#else>
- * Immutable implementation of {@link ${entity.nameCamelCase}Model}
+ * Immutable implementation of {@link ${entity.nameCamelCase}Value}
 </#if>
  *
- * @see ${entity.nameCamelCase}Impl.Builder
+ * @see ${entity.nameCamelCase}ValueImpl.Builder
  */
-public class ${entity.nameCamelCase}Impl extends ${entity.nameCamelCase}KeyImpl implements ${entity.nameCamelCase}Model {
-    public static class Builder extends ${entity.nameCamelCase}KeyImpl.Builder implements ${entity.nameCamelCase}Model {
+public class ${entity.nameCamelCase}ValueImpl implements ${entity.nameCamelCase}Value {
+    public static class Builder implements ${entity.nameCamelCase}Value {
     <#list entity.getFields() as field>
         <#if !field.isId && !field.isKey>
         private ${field.javaTypeSimpleName} <#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if>;
@@ -31,10 +31,9 @@ public class ${entity.nameCamelCase}Impl extends ${entity.nameCamelCase}KeyImpl 
         }
 
         /**
-         * Construct a copy of the specified {@link ${entity.nameCamelCase}Model}
+         * Construct a copy of the specified {@link ${entity.nameCamelCase}Value}
          */
-        public Builder(${entity.nameCamelCase}Model copy) {
-            super(copy);
+        public Builder(${entity.nameCamelCase}Value copy) {
     <#list entity.getFields() as field>
         <#if !field.isId && !field.isKey>
             this.<#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if> = copy.get<#if field.isForeign>${field.path}</#if>${field.nameCamelCase}();
@@ -71,8 +70,8 @@ public class ${entity.nameCamelCase}Impl extends ${entity.nameCamelCase}KeyImpl 
       </#if>
     </#list>
 
-        public ${entity.nameCamelCase}Impl build() {
-            return new ${entity.nameCamelCase}Impl(this);
+        public ${entity.nameCamelCase}ValueImpl build() {
+            return new ${entity.nameCamelCase}ValueImpl(this);
         }
     }
 
@@ -82,8 +81,7 @@ public class ${entity.nameCamelCase}Impl extends ${entity.nameCamelCase}KeyImpl 
       </#if> 
     </#list>
 
-    protected ${entity.nameCamelCase}Impl(Builder builder) {
-        super(builder);
+    protected ${entity.nameCamelCase}ValueImpl(Builder builder) {
     <#list entity.getFields() as field>
       <#if !field.isId && !field.isKey>
         this.<#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if> = builder.<#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if>;

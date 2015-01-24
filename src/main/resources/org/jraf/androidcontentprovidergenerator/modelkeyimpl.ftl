@@ -68,7 +68,7 @@ public class ${entity.nameCamelCase}KeyImpl implements ${entity.nameCamelCase}Ke
         }
       </#if>
     </#list>
-    
+
         public ${entity.nameCamelCase}KeyImpl build() {
         <#list entity.getKeys() as field>
             <#switch field.type.name()>
@@ -90,10 +90,10 @@ public class ${entity.nameCamelCase}KeyImpl implements ${entity.nameCamelCase}Ke
     </#if> 
     </#list>
 
-    protected ${entity.nameCamelCase}KeyImpl(${entity.nameCamelCase}Key key) {
+    protected ${entity.nameCamelCase}KeyImpl(Builder builder) {
     <#list entity.getFields() as field>
       <#if field.isId || field.isKey>
-        this.<#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if> = key.get<#if field.isForeign>${field.path}</#if>${field.nameCamelCase}();
+        this.<#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if> = builder.<#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if>;
       </#if>
     </#list>
     }
