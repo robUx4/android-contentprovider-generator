@@ -41,6 +41,7 @@ public class Entity {
         public static final String FIELDS = "fields";
         public static final String CONSTRAINTS = "constraints";
         public static final String DOCUMENTATION = "documentation";
+        public static final String ID_FIELD = "idField";
     }
 
     private static final String CONCAT = "res.tablesWithJoins += ";
@@ -66,6 +67,7 @@ public class Entity {
     private final List<Field> mFields = new ArrayList<>();
     private final List<Constraint> mConstraints = new ArrayList<>();
     private final String mDocumentation;
+    private Field idField;
 
     public Entity(String name, String documentation) {
         mName = name;
@@ -143,7 +145,7 @@ public class Entity {
 
     public Field getFieldByName(String fieldName) {
         for (Field field : getFields()) {
-            if (fieldName.equals(field.getNameLowerCase())) return field;
+            if (fieldName.toLowerCase(Locale.US).equals(field.getNameLowerCase())) return field;
         }
         return null;
     }
@@ -302,5 +304,13 @@ public class Entity {
                 }
             }
         }
+    }
+
+    public void setIdField(Field idField) {
+        this.idField = idField;
+    }
+    
+    public Field getIdField() {
+        return idField;
     }
 }

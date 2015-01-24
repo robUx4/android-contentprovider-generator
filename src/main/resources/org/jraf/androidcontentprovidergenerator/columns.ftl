@@ -29,13 +29,16 @@ public class ${entity.nameCamelCase}Columns implements BaseColumns {
      */
     </#if>
     <#if field.isId>
-    public static final String ${field.nameUpperCase} = BaseColumns._ID;
+    public static final String _ID = BaseColumns._ID;
     <#else>
-    public static final String ${field.nameUpperCase} = <#if config.keepFieldCase>"${field.caseFieldNameOrPrefixed}"<#else>"${field.nameLowerCaseOrPrefixed}"</#if>;
+    public static final String ${field.nameUpperCase} = <#if config.keepFieldCase>"${field.caseFieldNameOrPrefixed}"<#else>"${field.nameOrPrefixed}"</#if>;
     </#if>
 
     </#list>
+    <#if !entity.idField.isId>
+    public static final String _ID = ${entity.idField.nameUpperCase};
 
+    </#if>
     public static final String DEFAULT_ORDER = TABLE_NAME + "." +_ID;
 
     // @formatter:off
