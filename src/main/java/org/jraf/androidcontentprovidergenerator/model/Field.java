@@ -144,9 +144,10 @@ public class Field {
     private final String mName;
     private final String mDocumentation;
     private final Type mType;
-    private final boolean mIsId;
+    private boolean mIsId;
     private final boolean mIsIndex;
     private final boolean mIsNullable;
+    private final boolean mIsAutoIncrement;
     private final boolean mIsKey;
     private final String mDefaultValue;
     private final String mEnumName;
@@ -157,8 +158,8 @@ public class Field {
     private Field mOriginalField;
     private String mPath;
 
-    public Field(Entity entity, String name, String documentation, String type, boolean isId, boolean isIndex, boolean isNullable, String defaultValue,
-            String enumName, List<EnumValue> enumValues, ForeignKey foreignKey, boolean isKey) {
+    public Field(Entity entity, String name, String documentation, String type, boolean isId, boolean isIndex, boolean isNullable, boolean isAutoIncrement,
+            String defaultValue, String enumName, List<EnumValue> enumValues, ForeignKey foreignKey, boolean isKey) {
         mEntity = entity;
         mName = name;
         mDocumentation = documentation;
@@ -166,6 +167,7 @@ public class Field {
         mIsId = isId;
         mIsIndex = isIndex;
         mIsNullable = !isKey && isNullable;
+        mIsAutoIncrement = isAutoIncrement;
         mDefaultValue = defaultValue;
         mIsKey = isKey;
         mEnumName = enumName;
@@ -174,7 +176,8 @@ public class Field {
     }
 
     public Field asForeignField(String path) {
-        Field res = new Field(mEntity, mName, mDocumentation, mType.mJsonName, mIsId, mIsIndex, mIsNullable, mDefaultValue, mEnumName, mEnumValues, mForeignKey, mIsKey);
+        Field res = new Field(mEntity, mName, mDocumentation, mType.mJsonName, mIsId, mIsIndex, mIsNullable, mIsAutoIncrement, mDefaultValue, mEnumName,
+                mEnumValues, mForeignKey, mIsKey);
         res.mIsForeign = true;
         res.mOriginalField = this;
         res.mPath = path;
@@ -247,6 +250,10 @@ public class Field {
         return mIsNullable;
     }
 
+    public boolean getIsAutoIncrement() {
+        return mIsAutoIncrement;
+    }
+
     public boolean getIsKey() {
         return mIsKey;
     }
@@ -302,10 +309,14 @@ public class Field {
         return mDocumentation;
     }
 
+    public void setIsId(boolean isId) {
+        mIsId = isId;
+    }
+
     @Override
     public String toString() {
         return "Field [mName=" + mName + ", mDocumentation=" + mDocumentation + ", mType=" + mType + ", mIsId=" + mIsId + ", mIsIndex=" + mIsIndex
-                + ", mIsNullable=" + mIsNullable + ", mDefaultValue=" + mDefaultValue + ", mEnumName=" + mEnumName + ", mEnumValues=" + mEnumValues
-                + ", mForeignKey=" + mForeignKey + "]";
+                + ", mIsNullable=" + mIsNullable + ", mIsAutoIncrement=" + mIsAutoIncrement + ", mDefaultValue=" + mDefaultValue + ", mEnumName=" + mEnumName
+                + ", mEnumValues=" + mEnumValues + ", mForeignKey=" + mForeignKey + "]";
     }
 }

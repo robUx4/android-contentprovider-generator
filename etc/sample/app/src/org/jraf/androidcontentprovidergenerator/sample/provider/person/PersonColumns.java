@@ -31,6 +31,7 @@ import org.jraf.androidcontentprovidergenerator.sample.provider.SampleProvider;
 import org.jraf.androidcontentprovidergenerator.sample.provider.company.CompanyColumns;
 import org.jraf.androidcontentprovidergenerator.sample.provider.person.PersonColumns;
 import org.jraf.androidcontentprovidergenerator.sample.provider.personteam.PersonTeamColumns;
+import org.jraf.androidcontentprovidergenerator.sample.provider.product.ProductColumns;
 import org.jraf.androidcontentprovidergenerator.sample.provider.serialnumber.SerialNumberColumns;
 import org.jraf.androidcontentprovidergenerator.sample.provider.team.TeamColumns;
 
@@ -44,7 +45,7 @@ public class PersonColumns implements BaseColumns {
     /**
      * Primary key.
      */
-    public static final String _ID = new String(BaseColumns._ID);
+    public static final String _ID = BaseColumns._ID;
 
     /**
      * First name of this person. For instance, John.

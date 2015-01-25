@@ -67,7 +67,6 @@ public class Entity {
     private final List<Field> mFields = new ArrayList<>();
     private final List<Constraint> mConstraints = new ArrayList<>();
     private final String mDocumentation;
-    private Field idField;
 
     public Entity(String name, String documentation) {
         mName = name;
@@ -77,6 +76,10 @@ public class Entity {
 
     public void addField(Field field) {
         mFields.add(field);
+    }
+
+    public void addField(int index, Field field) {
+        mFields.add(index, field);
     }
 
     public List<Field> getFields() {
@@ -304,13 +307,5 @@ public class Entity {
                 }
             }
         }
-    }
-
-    public void setIdField(Field idField) {
-        this.idField = idField;
-    }
-    
-    public Field getIdField() {
-        return idField;
     }
 }

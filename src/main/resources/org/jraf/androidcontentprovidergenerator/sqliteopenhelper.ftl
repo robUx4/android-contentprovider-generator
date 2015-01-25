@@ -32,12 +32,12 @@ public class ${config.sqliteOpenHelperClassName} extends SQLiteOpenHelper {
     public static final String SQL_CREATE_TABLE_${entity.nameUpperCase} = "CREATE TABLE IF NOT EXISTS "
             + ${entity.nameCamelCase}Columns.TABLE_NAME + " ( "
             <#list entity.fields as field>
-                <#if entity.idField == field>
                 <#if field.isId>
+                    <#if field.isAutoIncrement>
             + ${entity.nameCamelCase}Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                <#else>
-            + ${entity.nameCamelCase}Columns.${field.nameUpperCase} + " INTEGER PRIMARY KEY, "
-                </#if>
+                    <#else>
+            + ${entity.nameCamelCase}Columns._ID + " INTEGER PRIMARY KEY, "
+                    </#if>
                 <#else>
                     <#if field.isNullable>
                         <#if field.hasDefaultValue>
@@ -45,7 +45,7 @@ public class ${config.sqliteOpenHelperClassName} extends SQLiteOpenHelper {
                         <#else>
             + ${entity.nameCamelCase}Columns.${field.nameUpperCase} + " ${field.type.sqlType}<#if field_has_next>,</#if> "
                         </#if>
-                <#else>
+                    <#else>
                         <#if field.hasDefaultValue>
             + ${entity.nameCamelCase}Columns.${field.nameUpperCase} + " ${field.type.sqlType} NOT NULL DEFAULT '${field.defaultValue}'<#if field_has_next>,</#if> "
                         <#else>

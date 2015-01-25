@@ -172,19 +172,19 @@ public class ${config.providerClassName} extends ContentProvider {
             Log.d(TAG, "query uri=" + uri + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs) + " sortOrder=" + sortOrder
                     + " groupBy=" + groupBy);
         QueryParams queryParams = getQueryParams(uri, selection, projection);
-        projection = ensureIdIsFullyQualified(projection, queryParams.table, queryParams.index);
+        projection = ensureIdIsFullyQualified(projection, queryParams.table, queryParams.idColumn);
         Cursor res = m${config.sqliteOpenHelperClassName}.getReadableDatabase().query(queryParams.tablesWithJoins, projection, queryParams.selection, selectionArgs, groupBy,
                 null, sortOrder == null ? queryParams.orderBy : sortOrder, limitBy);
         res.setNotificationUri(getContext().getContentResolver(), uri);
         return res;
     }
 
-    private String[] ensureIdIsFullyQualified(String[] projection, String tableName, String indexName) {
+    private String[] ensureIdIsFullyQualified(String[] projection, String tableName, String idColumn) {
         if (projection == null) return null;
         String[] res = new String[projection.length];
         for (int i = 0; i < projection.length; i++) {
-            if (projection[i].equals(indexName)) {
-                res[i] = tableName + "." + indexName + " AS " + BaseColumns._ID;
+            if (projection[i].equals(idColumn)) {
+                res[i] = tableName + "." + idColumn + " AS " + BaseColumns._ID;
             } else {
                 res[i] = projection[i];
             }
@@ -224,7 +224,7 @@ public class ${config.providerClassName} extends ContentProvider {
     private static class QueryParams {
         public String table;
         public String tablesWithJoins;
-        public String index;
+        public String idColumn;
         public String selection;
         public String orderBy;
     }
@@ -238,7 +238,7 @@ public class ${config.providerClassName} extends ContentProvider {
             case URI_TYPE_${entity.nameUpperCase}:
             case URI_TYPE_${entity.nameUpperCase}_ID:
                 res.table = ${entity.nameCamelCase}Columns.TABLE_NAME;
-                res.index = ${entity.nameCamelCase}Columns._ID;
+                res.idColumn = ${entity.nameCamelCase}Columns._ID;
                 res.tablesWithJoins = ${entity.allJoinedTableNames}
                 //res.orderBy = ${entity.nameCamelCase}Columns.DEFAULT_ORDER;
                 break;
@@ -256,9 +256,9 @@ public class ${config.providerClassName} extends ContentProvider {
         }
         if (id != null) {
             if (selection != null) {
-                res.selection = res.table + "." + res.index + "=" + id + " and (" + selection + ")";
+                res.selection = res.table + "." + res.idColumn + "=" + id + " and (" + selection + ")";
             } else {
-                res.selection = res.table + "." + res.index + "=" + id;
+                res.selection = res.table + "." + res.idColumn + "=" + id;
             }
         } else {
             res.selection = selection;
