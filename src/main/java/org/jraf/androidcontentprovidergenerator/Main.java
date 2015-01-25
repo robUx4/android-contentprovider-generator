@@ -173,7 +173,7 @@ public class Main {
                 final Field idField;
                 if ("_id".equals(idFieldName)) {
                     // Implicit _id field
-                    idField = new Field(entity, "_id", "Primary key.", "Long", true, false, false, null, null, null, null);
+                    idField = new Field(entity, "_id", "Primary key.", "Long", true, false, false, null, null, null, null, false);
                     entity.addField(idField);
                 } else {
                     idField = entity.getFieldByName(idFieldName);
@@ -202,7 +202,7 @@ public class Main {
                     if (mConfig.optBoolean(Json.FIELD_CASE_NAME, false)) {
                         definition.append(tableKeys.get(i).getCaseFieldNameOrPrefixed());
                     } else {
-                        definition.append(tableKeys.get(i).getNameLowerCaseOrPrefixed());
+                        definition.append(tableKeys.get(i).getNameOrPrefixed());
                     }
                 }
                 definition.append(") ON CONFLICT REPLACE");
@@ -848,7 +848,7 @@ public class Main {
             jCommander.usage();
             return;
         }
-        
+
         getConfig(arguments.inputDir);
 
         loadModel(arguments.inputDir);

@@ -38,16 +38,6 @@ public class ${entity.nameCamelCase}DatabaseModelHandler extends DatabaseModelHa
 
     @Override
     protected ${entity.nameCamelCase}Selection getItemSelection(@NonNull ${entity.nameCamelCase}Model itemToSelect) {
-        if (itemToSelect.getId() <= 0) {
-            return new ${entity.nameCamelCase}Selection()
-        <#list entity.getKeys() as key>
-            <#if key.isId>
-                .id(itemToSelect.getId())<#if !(key_has_next)>;<#else>.and()</#if>
-            <#else>
-                .<#if key.isForeign>${key.path?uncap_first}${key.nameCamelCase}<#else>${key.nameCamelCaseLowerCase}</#if>(itemToSelect.get<#if key.isForeign>${key.path}</#if>${key.nameCamelCase}())<#if !(key_has_next)>;<#else>.and()</#if>
-            </#if>
-        </#list>
-        }
-        return new ${entity.nameCamelCase}Selection().id(itemToSelect.getId());
+        return new ${entity.nameCamelCase}Selection(itemToSelect);
     }
 }

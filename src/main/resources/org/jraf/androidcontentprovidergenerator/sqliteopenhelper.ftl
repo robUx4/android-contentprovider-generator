@@ -73,10 +73,10 @@ public class ${config.sqliteOpenHelperClassName} extends SQLiteOpenHelper {
 
     </#if>
     </#list>
-    <#if entity.getKeys()?has_content>
+    <#if entity.keys?has_content>
     public static final String SQL_CREATE_INDEX_${entity.nameUpperCase}_KEYS = "CREATE INDEX IF NOT EXISTS IDX_${entity.nameUpperCase}_KEYS"
              + " ON "+ ${entity.nameCamelCase}Columns.TABLE_NAME + " ( "
-      <#list entity.getKeys() as key>
+      <#list entity.keys as key>
              + ${entity.nameCamelCase}Columns.${key.nameUpperCase} + <#if !(key_has_next)>" );";<#else>", "</#if>
       </#list>
 

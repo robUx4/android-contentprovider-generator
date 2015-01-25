@@ -28,17 +28,7 @@ public class ${entity.nameCamelCase}DatabaseSerializer implements DatabaseSerial
     @NonNull
     @Override
     public ContentValues getContentValuesFromData(@NonNull ${entity.nameCamelCase}Model data, boolean update) {
-        ${entity.nameCamelCase}ContentValues values = new ${entity.nameCamelCase}ContentValues();
-    <#list entity.fields as field>
-        <#if !field.isId>
-        <#if field.isKey>
-        if (!update)
-            values.put${field.nameCamelCase}(data.get${field.nameCamelCase}());
-        <#else>
-        values.put${field.nameCamelCase}(data.get${field.nameCamelCase}());
-        </#if>
-        </#if>
-    </#list>
+        ${entity.nameCamelCase}ContentValues values = new ${entity.nameCamelCase}ContentValues(data, data, update);
         return values.values();
     }
 }

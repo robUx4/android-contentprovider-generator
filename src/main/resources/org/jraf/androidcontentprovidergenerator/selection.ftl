@@ -8,6 +8,9 @@ import java.util.Date;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
+<#if config.useAnnotations>
+import android.support.annotation.NonNull;
+</#if>
 
 import ${config.providerJavaPackage}.base.AbstractSelection;
 <#list entity.joinedEntities as joinedEntity>
@@ -18,6 +21,34 @@ import ${config.providerJavaPackage}.${joinedEntity.packageName}.*;
  * Selection for the {@code ${entity.nameLowerCase}} table.
  */
 public class ${entity.nameCamelCase}Selection extends AbstractSelection<${entity.nameCamelCase}Selection> {
+    public ${entity.nameCamelCase}Selection() {
+    }
+    <#if entity.keys?has_content>
+
+    public ${entity.nameCamelCase}Selection(@NonNull ${entity.nameCamelCase}Key key) {
+        <#if !entity.idField.isId>
+        <#list entity.keys as key>
+        <#if key.isForeign>${key.path?uncap_first}${key.nameCamelCase}<#else>${key.nameCamelCaseLowerCase}</#if>(key.get<#if key.isForeign>${key.path}</#if>${key.nameCamelCase}())<#if !(key_has_next)>;<#else>.and().</#if>
+        </#list>
+        <#else>
+        if (key.getId() <= 0) {
+        <#list entity.keys as key>
+            <#if !key.isId>
+            <#if key.isForeign>${key.path?uncap_first}${key.nameCamelCase}<#else>${key.nameCamelCaseLowerCase}</#if>(key.get<#if key.isForeign>${key.path}</#if>${key.nameCamelCase}())<#if !(key_has_next)>;<#else>.and().</#if>
+            </#if>
+        </#list>
+        } else {
+            id(key.getId());
+        }
+        </#if>
+    }
+    <#else>
+
+    public ${entity.nameCamelCase}Selection(@NonNull ${entity.nameCamelCase}Model key) {
+        id(key.getId());
+    }
+    </#if>
+
     @Override
     public Uri uri() {
         return ${entity.nameCamelCase}Columns.CONTENT_URI;

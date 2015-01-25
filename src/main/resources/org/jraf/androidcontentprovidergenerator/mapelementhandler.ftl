@@ -22,7 +22,7 @@ public class ${entity.nameCamelCase}MapDatabaseModelHandler extends MapDatabaseM
      * Default Constructor.
      */
     public ${entity.nameCamelCase}MapDatabaseModelHandler() {
-        this(new ${entity.nameCamelCase}MapDatabaseSerializer());
+        this(${entity.nameCamelCase}MapDatabaseSerializer.INSTANCE);
     }
 
     /**
@@ -37,17 +37,7 @@ public class ${entity.nameCamelCase}MapDatabaseModelHandler extends MapDatabaseM
     }
 
     @Override
-    protected ${entity.nameCamelCase}Selection getItemSelection(@NonNull ${entity.nameCamelCase}Key itemToSelect) {
-        if (itemToSelect.getId() <= 0) {
-            return new ${entity.nameCamelCase}Selection()
-        <#list entity.getKeys() as key>
-            <#if key.isId>
-                .id(itemToSelect.getId())<#if !(key_has_next)>;<#else>.and()</#if>
-            <#else>
-                .<#if key.isForeign>${key.path?uncap_first}${key.nameCamelCase}<#else>${key.nameCamelCaseLowerCase}</#if>(itemToSelect.get<#if key.isForeign>${key.path}</#if>${key.nameCamelCase}())<#if !(key_has_next)>;<#else>.and()</#if>
-            </#if>
-        </#list>
-        }
-        return new ${entity.nameCamelCase}Selection().id(itemToSelect.getId());
+    protected ${entity.nameCamelCase}Selection getItemSelection(@NonNull ${entity.nameCamelCase}Key key) {
+        return new ${entity.nameCamelCase}Selection(key);
     }
 }

@@ -18,6 +18,24 @@ import ${config.providerJavaPackage}.base.AbstractContentValues;
  * Content values wrapper for the {@code ${entity.nameLowerCase}} table.
  */
 public class ${entity.nameCamelCase}ContentValues extends AbstractContentValues {
+    public ${entity.nameCamelCase}ContentValues() {
+    }
+
+    <#if entity.keys?has_content>
+    public ${entity.nameCamelCase}ContentValues(@NonNull ${entity.nameCamelCase}Key key, @NonNull ${entity.nameCamelCase}Value value, boolean update) {
+    <#list entity.fields as field>
+        <#if !field.isId>
+        <#if field.isKey>
+        if (!update)
+            put${field.nameCamelCase}(key.get${field.nameCamelCase}());
+        <#else>
+        put${field.nameCamelCase}(value.get${field.nameCamelCase}());
+        </#if>
+        </#if>
+    </#list>
+    }
+    </#if>
+
     @Override
     public Uri uri() {
         return ${entity.nameCamelCase}Columns.CONTENT_URI;
@@ -69,14 +87,13 @@ public class ${entity.nameCamelCase}ContentValues extends AbstractContentValues 
         return this;
     }
             </#if>
-
             <#switch field.type.name()>
             <#case "DATE">
+
     public ${entity.nameCamelCase}ContentValues put${field.nameCamelCase}(<#if field.isNullable><#if config.useAnnotations>@Nullable </#if>Long<#else>long</#if> value) {
         mContentValues.put(${entity.nameCamelCase}Columns.${field.nameUpperCase}, value);
         return this;
     }
-
             <#break>
             </#switch>
         </#if>

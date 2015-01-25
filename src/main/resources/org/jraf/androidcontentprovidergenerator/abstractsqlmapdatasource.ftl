@@ -16,7 +16,7 @@ import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-public abstract class AbstractSqliteMapDataSource<KEY extends BaseModel, VALUE, CURSOR extends AbstractCursor, SELECTION extends AbstractSelection<SELECTION>> extends TypedSqliteMapDataSource<KEY, VALUE, CURSOR> {
+public abstract class AbstractSqliteMapDataSource<KEY, VALUE, CURSOR extends AbstractCursor, SELECTION extends AbstractSelection<SELECTION>> extends TypedSqliteMapDataSource<KEY, VALUE, CURSOR> {
     @NonNull
     private final MapDatabaseModelHandler<KEY, VALUE, CURSOR, SELECTION> databaseModelHandler;
 

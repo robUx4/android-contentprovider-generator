@@ -30,7 +30,7 @@ public class ${entity.nameCamelCase}SqliteMapDataSource extends AbstractSqliteMa
      * @param context Context used to get the {@link android.database.sqlite.SQLiteOpenHelper SQLiteOpenHelper} used to access the data
      */
     public ${entity.nameCamelCase}SqliteMapDataSource(@NonNull Context context) {
-        this(context, new ${entity.nameCamelCase}MapDatabaseSerializer());
+        this(context, ${entity.nameCamelCase}MapDatabaseSerializer.INSTANCE);
     }
 
     /**

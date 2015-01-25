@@ -18,7 +18,7 @@ import android.support.annotation.Nullable;
  * @see AbstractCursor
  * @see AbstractSelection
  */
-public abstract class MapDatabaseModelHandler<KEY extends BaseModel, VALUE, CURSOR extends AbstractCursor, SELECTION extends AbstractSelection<SELECTION>> implements TypedMapDatabaseElementHandler<KEY, VALUE, CURSOR> {
+public abstract class MapDatabaseModelHandler<KEY, VALUE, CURSOR extends AbstractCursor, SELECTION extends AbstractSelection<SELECTION>> implements TypedMapDatabaseElementHandler<KEY, VALUE, CURSOR> {
     @NonNull
     public final MapDatabaseSerializer<KEY, VALUE, CURSOR> serializer;
 
@@ -46,20 +46,20 @@ public abstract class MapDatabaseModelHandler<KEY extends BaseModel, VALUE, CURS
     /**
      * Generate a {@link AbstractSelection} object for the specified item.
      */
-    protected abstract SELECTION getItemSelection(@NonNull KEY itemToSelect);
+    protected abstract SELECTION getItemSelection(@NonNull KEY key);
 
     @NonNull
     @Override
-    public String getKeySelectClause(@Nullable KEY itemToSelect) {
-        if (itemToSelect != null) {
-            return getItemSelection(itemToSelect).sel();
+    public String getKeySelectClause(@Nullable KEY key) {
+        if (key != null) {
+            return getItemSelection(key).sel();
         }
         return "";
     }
 
     @NonNull
     @Override
-    public String[] getKeySelectArgs(@NonNull KEY itemToSelect) {
-        return getItemSelection(itemToSelect).args();
+    public String[] getKeySelectArgs(@NonNull KEY key) {
+        return getItemSelection(key).args();
     }
 }

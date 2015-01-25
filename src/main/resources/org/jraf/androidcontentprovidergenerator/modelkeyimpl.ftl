@@ -70,7 +70,7 @@ public class ${entity.nameCamelCase}KeyImpl implements ${entity.nameCamelCase}Ke
     </#list>
 
         public ${entity.nameCamelCase}KeyImpl build() {
-        <#list entity.getKeys() as field>
+        <#list entity.keys as field>
             <#switch field.type.name()>
             <#case "STRING">
             <#case "ENUM">
@@ -135,7 +135,7 @@ public class ${entity.nameCamelCase}KeyImpl implements ${entity.nameCamelCase}Ke
         if (o==this) return true;
         if (!(o instanceof ${entity.nameCamelCase}Key)) return false;
         return
-        <#list entity.getKeys() as field>
+        <#list entity.keys as field>
         <#switch field.type.name()>
         <#default>
             <#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if>.equals(((${entity.nameCamelCase}Key) o).get<#if field.isForeign>${field.path}</#if>${field.nameCamelCase}())<#if field_has_next> && <#else>;</#if>
@@ -158,7 +158,7 @@ public class ${entity.nameCamelCase}KeyImpl implements ${entity.nameCamelCase}Ke
     @Override
     public int hashCode() {
         int result = 17;
-    <#list entity.getKeys() as field>
+    <#list entity.keys as field>
         <#switch field.type.name()>
         <#default>
         result = 31 * result + <#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if>.hashCode();
