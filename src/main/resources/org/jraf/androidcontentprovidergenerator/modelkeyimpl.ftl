@@ -136,6 +136,7 @@ public class ${entity.nameCamelCase}KeyImpl implements ${entity.nameCamelCase}Ke
         if (!(o instanceof ${entity.nameCamelCase}Key)) return false;
         return
         <#list entity.keys as field>
+      <#if field.nameLowerCase != "_id">
         <#switch field.type.name()>
         <#default>
             <#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if>.equals(((${entity.nameCamelCase}Key) o).get<#if field.isForeign>${field.path}</#if>${field.nameCamelCase}())<#if field_has_next> && <#else>;</#if>
@@ -152,6 +153,7 @@ public class ${entity.nameCamelCase}KeyImpl implements ${entity.nameCamelCase}Ke
             Arrays.equals(<#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if>, ((${entity.nameCamelCase}Key) o).get<#if field.isForeign>${field.path}</#if>${field.nameCamelCase}())<#if field_has_next> && <#else>;</#if>
         <#break>
         </#switch>
+      </#if>
     </#list>
     }
 
@@ -159,6 +161,7 @@ public class ${entity.nameCamelCase}KeyImpl implements ${entity.nameCamelCase}Ke
     public int hashCode() {
         int result = 17;
     <#list entity.keys as field>
+      <#if field.nameLowerCase != "_id">
         <#switch field.type.name()>
         <#default>
         result = 31 * result + <#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if>.hashCode();
@@ -181,6 +184,7 @@ public class ${entity.nameCamelCase}KeyImpl implements ${entity.nameCamelCase}Ke
         result = 31 * result + Arrays.hashCode(<#if field.isForeign>${field.path?uncap_first}${field.nameCamelCase}<#else>${field.nameCamelCaseLowerCase}</#if>);
         <#break>
         </#switch>
+      </#if>
     </#list>
         return result;
     }

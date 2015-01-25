@@ -26,14 +26,14 @@ public class ${entity.nameCamelCase}Selection extends AbstractSelection<${entity
     <#if entity.keys?has_content>
 
     public ${entity.nameCamelCase}Selection(@NonNull ${entity.nameCamelCase}Key key) {
-        <#if !entity.idField.isId>
+        <#if !entity.getFieldByName("_id")??>
         <#list entity.keys as key>
         <#if key.isForeign>${key.path?uncap_first}${key.nameCamelCase}<#else>${key.nameCamelCaseLowerCase}</#if>(key.get<#if key.isForeign>${key.path}</#if>${key.nameCamelCase}())<#if !(key_has_next)>;<#else>.and().</#if>
         </#list>
         <#else>
         if (key.getId() <= 0) {
         <#list entity.keys as key>
-            <#if !key.isId>
+            <#if key.nameLowerCase != "_id">
             <#if key.isForeign>${key.path?uncap_first}${key.nameCamelCase}<#else>${key.nameCamelCaseLowerCase}</#if>(key.get<#if key.isForeign>${key.path}</#if>${key.nameCamelCase}())<#if !(key_has_next)>;<#else>.and().</#if>
             </#if>
         </#list>
@@ -90,7 +90,7 @@ public class ${entity.nameCamelCase}Selection extends AbstractSelection<${entity
     }
 
     <#list entity.getFieldsIncludingJoins() as field>
-    <#if !field.isId>
+    <#if field.nameLowerCase != "_id">
     <#switch field.type.name()>
     <#case "BOOLEAN">
 

@@ -173,7 +173,7 @@ public class Main {
             final Field idField;
             if ("_id".equals(idFieldName)) {
                 // Implicit id field: create a Field named "_id"
-                idField = new Field(entity, "_id", "Primary key.", "Long", true, false, false, true, null, null, null, null);
+                idField = new Field(entity, "_id", "Primary key.", "Long", true, false, false, true, null, null, null, null, true);
                 entity.addField(0, idField);
             } else {
                 // Explicit id field (reference)

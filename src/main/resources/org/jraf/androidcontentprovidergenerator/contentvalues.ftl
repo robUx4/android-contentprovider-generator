@@ -24,7 +24,7 @@ public class ${entity.nameCamelCase}ContentValues extends AbstractContentValues 
     <#if entity.keys?has_content>
     public ${entity.nameCamelCase}ContentValues(@NonNull ${entity.nameCamelCase}Key key, @NonNull ${entity.nameCamelCase}Value value, boolean update) {
     <#list entity.fields as field>
-        <#if !field.isId>
+        <#if field.nameLowerCase != "_id">
         <#if field.isKey>
         if (!update)
             put${field.nameCamelCase}(key.get${field.nameCamelCase}());
@@ -51,7 +51,7 @@ public class ${entity.nameCamelCase}ContentValues extends AbstractContentValues 
         return contentResolver.update(uri(), values(), where == null ? null : where.sel(), where == null ? null : where.args());
     }
     <#list entity.fields as field>
-        <#if !field.isId>
+        <#if field.nameLowerCase != "_id">
 
     <#if field.documentation??>
     /**
