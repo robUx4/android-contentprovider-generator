@@ -16,7 +16,7 @@ import ${config.providerJavaPackage}.base.DatabaseSerializer;
 </#if>
  * @see ${entity.nameCamelCase}ContentProviderDataSource#${entity.nameCamelCase}ContentProviderDataSource(android.content.Context, ${config.providerJavaPackage}.base.DatabaseSerializer)
  * @see ${entity.nameCamelCase}ContentProviderDataSource#${entity.nameCamelCase}ContentProviderDataSource(android.content.ContentResolver, ${config.providerJavaPackage}.base.DatabaseSerializer)
- * @see ${entity.nameCamelCase}SqliteDataSource#${entity.nameCamelCase}implements DatabaseSerializer(android.content.Context, ${config.providerJavaPackage}.base.DatabaseSerializer)
+ * @see ${entity.nameCamelCase}SqliteDataSource#${entity.nameCamelCase}SqliteDataSource implements DatabaseSerializer(android.content.Context, ${config.providerJavaPackage}.base.DatabaseSerializer)
  */
 public class ${entity.nameCamelCase}DatabaseSerializer implements DatabaseSerializer<${entity.nameCamelCase}Model, ${entity.nameCamelCase}Cursor> {
     @NonNull
@@ -28,7 +28,7 @@ public class ${entity.nameCamelCase}DatabaseSerializer implements DatabaseSerial
     @NonNull
     @Override
     public ContentValues getContentValuesFromData(@NonNull ${entity.nameCamelCase}Model data, boolean update) {
-        ${entity.nameCamelCase}ContentValues values = new ${entity.nameCamelCase}ContentValues(data, data, update);
+        ${entity.nameCamelCase}ContentValues values = new ${entity.nameCamelCase}ContentValues(data, update);
         return values.values();
     }
 }

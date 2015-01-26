@@ -22,10 +22,14 @@ public class ${entity.nameCamelCase}ContentValues extends AbstractContentValues 
     }
 
     <#if entity.keys?has_content>
+    public ${entity.nameCamelCase}ContentValues(@NonNull ${entity.nameCamelCase}Model model, boolean update) {
+        this(model, model, update);
+    }
+
     public ${entity.nameCamelCase}ContentValues(@NonNull ${entity.nameCamelCase}Key key, @NonNull ${entity.nameCamelCase}Value value, boolean update) {
     <#list entity.fields as field>
         <#if field.nameLowerCase != "_id">
-        <#if field.isKey>
+        <#if field.isKey || field.isId>
         if (!update)
             put${field.nameCamelCase}(key.get${field.nameCamelCase}());
         <#else>
