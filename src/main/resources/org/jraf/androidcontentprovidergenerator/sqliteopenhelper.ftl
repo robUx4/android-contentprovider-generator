@@ -54,6 +54,9 @@ public class ${config.sqliteOpenHelperClassName} extends SQLiteOpenHelper {
                     </#if>
                 </#if>
             </#list>
+            <#if entity.keys?has_content && !entity.keys?first.isId>
+            + ", PRIMARY KEY (<#list entity.keys as key>"+ ${entity.nameCamelCase}Columns.${key.nameUpperCase} +<#if key_has_next>", </#if></#list>") "
+            </#if>
             <#if config.enableForeignKeys >
                 <#list entity.fields as field>
                     <#if field.foreignKey??>

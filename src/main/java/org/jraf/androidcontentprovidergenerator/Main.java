@@ -166,6 +166,29 @@ public class Main {
             }
 
             // ID Field
+            if (entityJson.opt(Entity.Json.ID_FIELD) instanceof JSONArray) {
+                // we are using multiple keys, with no _id
+                JSONArray idFields = entityJson.optJSONArray(Entity.Json.ID_FIELD);
+                for (int i=0; i<idFields.length(); ++i) {
+                    String columnName = idFields.getString(i);
+                    Field columnField = null;
+                    for (Field key : tableKeys) {
+                        if (columnName.equalsIgnoreCase(key.getName())) {
+                            columnField = key;
+                            break;
+                        }
+                    }
+                    
+                    if (columnField == null) {
+                        throw new IllegalArgumentException("Could not find idField '" + columnName + "' value in " + entityFile.getCanonicalPath() + ".");
+                    }
+                    if (!columnField.getIsKey()) {
+                        throw new IllegalArgumentException("The idField '" + columnName + "' is not a key in " + entityFile.getCanonicalPath() + ".");
+                    }
+                }
+                
+            } else {
+
             String idFieldName = entityJson.optString(Entity.Json.ID_FIELD, "_id");
             if (idFieldName == null) {
                 throw new IllegalArgumentException("Invalid idField '" + idFieldName + "' value in " + entityFile.getCanonicalPath() + ".");
@@ -211,6 +234,7 @@ public class Main {
                 Constraint constraint = new Constraint("unique_name", definition.toString());
                 entity.addConstraint(constraint);
                 if (Config.LOGD) Log.i(TAG, "added constraint from isKey fields: " + constraint);
+            }
             }
 
 
@@ -277,7 +301,7 @@ public class Main {
 
         int asyncdbSyntaxVersion;
         try {
-        	asyncdbSyntaxVersion = mConfig.optInt(Json.ASYNCDB_SYNTAX_VERSION);
+            asyncdbSyntaxVersion = mConfig.optInt(Json.ASYNCDB_SYNTAX_VERSION);
         } catch (JSONException e) {
             throw new IllegalArgumentException("Could not find '" + Json.ASYNCDB_SYNTAX_VERSION
                     + "' field in _config.json, which is mandatory and must be equal to " + Constants.ASYNCDB_SYNTAX_VERSION + ".");
@@ -738,7 +762,7 @@ public class Main {
             template.process(root, out);
             IOUtils.closeQuietly(out);
         }
-        
+
         // Entities
         for (Entity entity : Model.get().getEntities()) {
             File entityDir = new File(providerDir, entity.getPackageName());
