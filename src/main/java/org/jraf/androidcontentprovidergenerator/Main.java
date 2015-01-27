@@ -423,13 +423,7 @@ public class Main {
         template = getFreeMarkerConfig().getTemplate("modelkey.ftl");
         config = getConfig(arguments.inputDir);
         providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
-/*
-        providerDir = new File(arguments.outputDir, providerJavaPackage.replace('.', '/'));
-        root = new HashMap<>();
-        root.put("config", getConfig(arguments.inputDir));
-        root.put("header", Model.get().getHeader());
-        root.put("model", Model.get());
-*/
+
         // Entities
         for (Entity entity : Model.get().getEntities()) {
             File outputDir = new File(providerDir, entity.getPackageName());
@@ -504,6 +498,23 @@ public class Main {
             File outputDir = new File(providerDir, entity.getPackageName());
             outputDir.mkdirs();
             File outputFile = new File(outputDir, entity.getNameCamelCase() + "ValueImpl.java");
+            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
+
+            root.put("entity", entity);
+
+            template.process(root, out);
+            IOUtils.closeQuietly(out);
+        }
+
+        template = getFreeMarkerConfig().getTemplate("invalidkey.ftl");
+        config = getConfig(arguments.inputDir);
+        providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
+
+        // Entities
+        for (Entity entity : Model.get().getEntities()) {
+            File outputDir = new File(providerDir, entity.getPackageName());
+            outputDir.mkdirs();
+            File outputFile = new File(outputDir, entity.getNameCamelCase() + "InvalidKey.java");
             Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
 
             root.put("entity", entity);

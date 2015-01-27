@@ -3,6 +3,8 @@ ${header}
 </#if>
 package ${config.providerJavaPackage}.${entity.packageName};
 
+import org.gawst.asyncdb.InvalidDbEntry;
+
 import android.content.ContentValues;
 import android.support.annotation.NonNull;
 
@@ -21,7 +23,7 @@ import ${config.providerJavaPackage}.base.DatabaseSerializer;
 public class ${entity.nameCamelCase}DatabaseSerializer implements DatabaseSerializer<${entity.nameCamelCase}Model, ${entity.nameCamelCase}Cursor> {
     @NonNull
     @Override
-    public ${entity.nameCamelCase}Model getValueFromCursor(${entity.nameCamelCase}Cursor cursor) {
+    public ${entity.nameCamelCase}Model getValueFromCursor(${entity.nameCamelCase}Cursor cursor) throws InvalidDbEntry {
         return new ${entity.nameCamelCase}Impl.Builder(cursor).build();
     }
 

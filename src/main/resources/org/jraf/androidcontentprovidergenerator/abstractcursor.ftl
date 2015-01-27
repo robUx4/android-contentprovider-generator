@@ -18,8 +18,6 @@ public abstract class AbstractCursor extends CursorWrapper {
         mColumnIndexes = new HashMap<String, Integer>(cursor.getColumnCount() * 4 / 3, .75f);
     }
 
-    public abstract long getId();
-
     protected int getCachedColumnIndexOrThrow(String colName) {
         Integer index = mColumnIndexes.get(colName);
         if (index == null) {

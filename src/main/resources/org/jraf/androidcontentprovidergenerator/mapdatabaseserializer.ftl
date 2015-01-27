@@ -3,6 +3,8 @@ ${header}
 </#if>
 package ${config.providerJavaPackage}.base;
 
+import org.gawst.asyncdb.InvalidDbEntry;
+
 import android.content.ContentValues;
 import android.support.annotation.NonNull;
 
@@ -26,7 +28,7 @@ public interface MapDatabaseSerializer<KEY, VALUE, CURSOR extends AbstractCursor
      * Turn a {@code Cursor} into your {@link KEY} object.
      */
     @NonNull
-    KEY getKeyFromCursor(CURSOR cursor);
+    KEY getKeyFromCursor(CURSOR cursor) throws InvalidDbEntry;
 
     /**
      * Turn a {@code Cursor} into your {@link VALUE} object.

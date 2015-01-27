@@ -3,6 +3,8 @@ ${header}
 </#if>
 package ${config.providerJavaPackage}.base;
 
+import org.gawst.asyncdb.InvalidDbEntry;
+
 import android.content.ContentValues;
 import android.support.annotation.NonNull;
 
@@ -25,5 +27,5 @@ public interface DatabaseSerializer<MODEL extends BaseModel, CURSOR extends Abst
      * Turn a {@code Cursor} into your {@link MODEL} object.
      */
     @NonNull
-    MODEL getValueFromCursor(CURSOR cursor);
+    MODEL getValueFromCursor(CURSOR cursor) throws InvalidDbEntry;
 }

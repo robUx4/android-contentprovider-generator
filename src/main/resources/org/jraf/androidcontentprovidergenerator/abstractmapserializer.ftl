@@ -3,6 +3,8 @@ ${header}
 </#if>
 package ${config.providerJavaPackage}.${entity.packageName};
 
+import org.gawst.asyncdb.InvalidDbEntry;
+
 import android.content.ContentValues;
 import android.support.annotation.NonNull;
 
@@ -24,7 +26,7 @@ public class ${entity.nameCamelCase}MapDatabaseSerializer implements MapDatabase
 
     @NonNull
     @Override
-    public ${entity.nameCamelCase}Key getKeyFromCursor(${entity.nameCamelCase}Cursor cursor) {
+    public ${entity.nameCamelCase}Key getKeyFromCursor(${entity.nameCamelCase}Cursor cursor) throws InvalidDbEntry {
         return new ${entity.nameCamelCase}KeyImpl.Builder(cursor).build();
     }
 
