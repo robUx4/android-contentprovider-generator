@@ -24,12 +24,10 @@ public class ${entity.nameCamelCase}Cursor extends AbstractCursor implements ${e
         super(cursor);
     }
 
-    @Override
     public long getId() {
         return getLongOrNull(${entity.nameCamelCase}Columns._ID);
     }
     <#list entity.getFieldsIncludingJoins() as field>
-        <#if !field.isId>
 
     /**
     <#if field.documentation??>
@@ -113,6 +111,5 @@ public class ${entity.nameCamelCase}Cursor extends AbstractCursor implements ${e
             <#break>
             </#switch>
     }
-        </#if>
     </#list>
 }
