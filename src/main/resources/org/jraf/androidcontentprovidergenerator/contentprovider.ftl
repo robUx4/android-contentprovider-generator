@@ -39,7 +39,7 @@ public class ${config.providerClassName} extends ContentProvider {
 
     public static final String QUERY_NOTIFY = "QUERY_NOTIFY";
     public static final String QUERY_GROUP_BY = "QUERY_GROUP_BY";
-    public static final String QUERY_LIMIT_BY = AbstractContentProviderDataSource.QUERY_LIMIT_BY;
+    public static final String QUERY_LIMIT = "QUERY_LIMIT";
 
 	<#assign i=0>
     <#list model.entities as entity>
@@ -167,14 +167,14 @@ public class ${config.providerClassName} extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         String groupBy = uri.getQueryParameter(QUERY_GROUP_BY);
-        String limitBy = uri.getQueryParameter(QUERY_LIMIT_BY);
+        String limit = uri.getQueryParameter(QUERY_LIMIT);
         if (DEBUG)
             Log.d(TAG, "query uri=" + uri + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs) + " sortOrder=" + sortOrder
                     + " groupBy=" + groupBy);
         QueryParams queryParams = getQueryParams(uri, selection, projection);
         projection = ensureIdIsFullyQualified(projection, queryParams.table, queryParams.idColumn);
         Cursor res = m${config.sqliteOpenHelperClassName}.getReadableDatabase().query(queryParams.tablesWithJoins, projection, queryParams.selection, selectionArgs, groupBy,
-                null, sortOrder == null ? queryParams.orderBy : sortOrder, limitBy);
+                null, sortOrder == null ? queryParams.orderBy : sortOrder, limit);
         res.setNotificationUri(getContext().getContentResolver(), uri);
         return res;
     }
@@ -274,7 +274,7 @@ public class ${config.providerClassName} extends ContentProvider {
         return uri.buildUpon().appendQueryParameter(QUERY_GROUP_BY, groupBy).build();
     }
 
-    public static Uri limitBy(Uri uri, String limitBy) {
-        return uri.buildUpon().appendQueryParameter(QUERY_LIMIT_BY, limitBy).build();
+    public static Uri limit(Uri uri, String limit) {
+        return uri.buildUpon().appendQueryParameter(QUERY_LIMIT, limit).build();
     }
 }
