@@ -40,6 +40,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.jraf.androidcontentprovidergenerator.model.Constraint;
+import org.jraf.androidcontentprovidergenerator.model.DataSourceOutput;
 import org.jraf.androidcontentprovidergenerator.model.Entity;
 import org.jraf.androidcontentprovidergenerator.model.EnumValue;
 import org.jraf.androidcontentprovidergenerator.model.Field;
@@ -251,6 +252,35 @@ public class Main {
                     entity.addConstraint(constraint);
                 }
             }
+            
+            // DataSources
+            JSONArray dataSourcesJson = entityJson.optJSONArray(Entity.Json.DATA_SOURCES);
+            if (dataSourcesJson == null) {
+                dataSourcesJson = new JSONArray();
+                dataSourcesJson.put(Entity.Json.SOURCE_CONTENT_PROVIDER);
+                dataSourcesJson.put(Entity.Json.SOURCE_SQLITE);
+                dataSourcesJson.put(Entity.Json.SOURCE_SQLITE_MAP);
+            }
+            for (int i=0; i<dataSourcesJson.length(); ++i) {
+                String source = dataSourcesJson.getString(i);
+                if (Entity.Json.SOURCE_CONTENT_PROVIDER.equalsIgnoreCase(source)) {
+                    entity.addDataSource(new ContentProviderSourceOutput());
+                }
+                else if (Entity.Json.SOURCE_CONTENT_PROVIDER_ONLY.equalsIgnoreCase(source)) {
+                    entity.addDataSource(new ContentProviderOutput());
+                }
+                else if (Entity.Json.SOURCE_SQLITE.equalsIgnoreCase(source)) {
+                    entity.addDataSource(new SqliteSourceOutput());
+                }
+                else if (Entity.Json.SOURCE_SQLITE_MAP.equalsIgnoreCase(source)) {
+                    entity.addDataSource(new MapSqliteSourceOutput());
+                }
+                else {
+                    // Referenced field is not an index
+                    throw new IllegalArgumentException("Unknown dataSources type: '" + source + "' found in " + entityFile.getCanonicalPath() + ".");
+                }
+
+            }
 
             Model.get().addEntity(entity);
         }
@@ -374,319 +404,11 @@ public class Main {
     }
 
     private void generateModels(Arguments arguments) throws IOException, JSONException, TemplateException {
-        Template template = getFreeMarkerConfig().getTemplate("model.ftl");
-        JSONObject config = getConfig(arguments.inputDir);
-        String providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
-
-        File providerDir = new File(arguments.outputDir, providerJavaPackage.replace('.', '/'));
-        Map<String, Object> root = new HashMap<>();
-        root.put("config", getConfig(arguments.inputDir));
-        root.put("header", Model.get().getHeader());
-        root.put("model", Model.get());
-
         // Entities
         for (Entity entity : Model.get().getEntities()) {
-            File outputDir = new File(providerDir, entity.getPackageName());
-            outputDir.mkdirs();
-            File outputFile = new File(outputDir, entity.getNameCamelCase() + "Model.java");
-            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
-
-            root.put("entity", entity);
-
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-        }
-
-        template = getFreeMarkerConfig().getTemplate("modelimpl.ftl");
-        config = getConfig(arguments.inputDir);
-        providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
-/*
-        providerDir = new File(arguments.outputDir, providerJavaPackage.replace('.', '/'));
-        root = new HashMap<>();
-        root.put("config", getConfig(arguments.inputDir));
-        root.put("header", Model.get().getHeader());
-        root.put("model", Model.get());
-*/
-        // Entities
-        for (Entity entity : Model.get().getEntities()) {
-            File outputDir = new File(providerDir, entity.getPackageName());
-            outputDir.mkdirs();
-            File outputFile = new File(outputDir, entity.getNameCamelCase() + "Impl.java");
-            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
-
-            root.put("entity", entity);
-
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-        }
-        
-        template = getFreeMarkerConfig().getTemplate("modelkey.ftl");
-        config = getConfig(arguments.inputDir);
-        providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
-
-        // Entities
-        for (Entity entity : Model.get().getEntities()) {
-            File outputDir = new File(providerDir, entity.getPackageName());
-            outputDir.mkdirs();
-            File outputFile = new File(outputDir, entity.getNameCamelCase() + "Key.java");
-            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
-
-            root.put("entity", entity);
-
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-        }
-        
-        template = getFreeMarkerConfig().getTemplate("modelkeyimpl.ftl");
-        config = getConfig(arguments.inputDir);
-        providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
-/*
-        providerDir = new File(arguments.outputDir, providerJavaPackage.replace('.', '/'));
-        root = new HashMap<>();
-        root.put("config", getConfig(arguments.inputDir));
-        root.put("header", Model.get().getHeader());
-        root.put("model", Model.get());
-*/
-        // Entities
-        for (Entity entity : Model.get().getEntities()) {
-            File outputDir = new File(providerDir, entity.getPackageName());
-            outputDir.mkdirs();
-            File outputFile = new File(outputDir, entity.getNameCamelCase() + "KeyImpl.java");
-            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
-
-            root.put("entity", entity);
-
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-        }
-        
-        template = getFreeMarkerConfig().getTemplate("modelvalue.ftl");
-        config = getConfig(arguments.inputDir);
-        providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
-/*
-        providerDir = new File(arguments.outputDir, providerJavaPackage.replace('.', '/'));
-        root = new HashMap<>();
-        root.put("config", getConfig(arguments.inputDir));
-        root.put("header", Model.get().getHeader());
-        root.put("model", Model.get());
-*/
-        // Entities
-        for (Entity entity : Model.get().getEntities()) {
-            File outputDir = new File(providerDir, entity.getPackageName());
-            outputDir.mkdirs();
-            File outputFile = new File(outputDir, entity.getNameCamelCase() + "Value.java");
-            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
-
-            root.put("entity", entity);
-
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-        }
-        
-        template = getFreeMarkerConfig().getTemplate("modelvalueimpl.ftl");
-        config = getConfig(arguments.inputDir);
-        providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
-/*
-        providerDir = new File(arguments.outputDir, providerJavaPackage.replace('.', '/'));
-        root = new HashMap<>();
-        root.put("config", getConfig(arguments.inputDir));
-        root.put("header", Model.get().getHeader());
-        root.put("model", Model.get());
-*/
-        // Entities
-        for (Entity entity : Model.get().getEntities()) {
-            File outputDir = new File(providerDir, entity.getPackageName());
-            outputDir.mkdirs();
-            File outputFile = new File(outputDir, entity.getNameCamelCase() + "ValueImpl.java");
-            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
-
-            root.put("entity", entity);
-
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-        }
-
-        template = getFreeMarkerConfig().getTemplate("invalidkey.ftl");
-        config = getConfig(arguments.inputDir);
-        providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
-
-        // Entities
-        for (Entity entity : Model.get().getEntities()) {
-            File outputDir = new File(providerDir, entity.getPackageName());
-            outputDir.mkdirs();
-            File outputFile = new File(outputDir, entity.getNameCamelCase() + "InvalidKey.java");
-            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
-
-            root.put("entity", entity);
-
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-        }
-    }
-
-    private void generateAsyncDb(Arguments arguments) throws IOException, JSONException, TemplateException {
-        if (!arguments.asyncdb)
-            return;
-        
-        Template template = getFreeMarkerConfig().getTemplate("cpdatasource.ftl");
-        JSONObject config = getConfig(arguments.inputDir);
-        String providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
-
-        File providerDir = new File(arguments.outputDir, providerJavaPackage.replace('.', '/'));
-        Map<String, Object> root = new HashMap<>();
-        root.put("config", getConfig(arguments.inputDir));
-        root.put("header", Model.get().getHeader());
-        root.put("model", Model.get());
-
-        // Entities
-        for (Entity entity : Model.get().getEntities()) {
-            File outputDir = new File(providerDir, entity.getPackageName());
-            outputDir.mkdirs();
-            File outputFile = new File(outputDir, entity.getNameCamelCase() + "ContentProviderDataSource.java");
-            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
-
-            root.put("entity", entity);
-
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-        }
-
-        template = getFreeMarkerConfig().getTemplate("sqldatasource.ftl");
-        config = getConfig(arguments.inputDir);
-        providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
-/*
-        providerDir = new File(arguments.outputDir, providerJavaPackage.replace('.', '/'));
-        root = new HashMap<>();
-        root.put("config", getConfig(arguments.inputDir));
-        root.put("header", Model.get().getHeader());
-        root.put("model", Model.get());
-*/
-        // Entities
-        for (Entity entity : Model.get().getEntities()) {
-            File outputDir = new File(providerDir, entity.getPackageName());
-            outputDir.mkdirs();
-            File outputFile = new File(outputDir, entity.getNameCamelCase() + "SqliteDataSource.java");
-            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
-
-            root.put("entity", entity);
-
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-        }
-
-        template = getFreeMarkerConfig().getTemplate("sqlmapdatasource.ftl");
-        config = getConfig(arguments.inputDir);
-        providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
-/*
-        providerDir = new File(arguments.outputDir, providerJavaPackage.replace('.', '/'));
-        root = new HashMap<>();
-        root.put("config", getConfig(arguments.inputDir));
-        root.put("header", Model.get().getHeader());
-        root.put("model", Model.get());
-*/
-        // Entities
-        for (Entity entity : Model.get().getEntities()) {
-            File outputDir = new File(providerDir, entity.getPackageName());
-            outputDir.mkdirs();
-            File outputFile = new File(outputDir, entity.getNameCamelCase() + "SqliteMapDataSource.java");
-            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
-
-            root.put("entity", entity);
-
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-        }
-
-        template = getFreeMarkerConfig().getTemplate("elementhandler.ftl");
-        config = getConfig(arguments.inputDir);
-        providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
-/*
-        providerDir = new File(arguments.outputDir, providerJavaPackage.replace('.', '/'));
-        root = new HashMap<>();
-        root.put("config", getConfig(arguments.inputDir));
-        root.put("header", Model.get().getHeader());
-        root.put("model", Model.get());
-*/
-        // Entities
-        for (Entity entity : Model.get().getEntities()) {
-            File outputDir = new File(providerDir, entity.getPackageName());
-            outputDir.mkdirs();
-            File outputFile = new File(outputDir, entity.getNameCamelCase() + "DatabaseModelHandler.java");
-            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
-
-            root.put("entity", entity);
-
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-        }
-
-        template = getFreeMarkerConfig().getTemplate("mapelementhandler.ftl");
-        config = getConfig(arguments.inputDir);
-        providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
-/*
-        providerDir = new File(arguments.outputDir, providerJavaPackage.replace('.', '/'));
-        root = new HashMap<>();
-        root.put("config", getConfig(arguments.inputDir));
-        root.put("header", Model.get().getHeader());
-        root.put("model", Model.get());
-*/
-        // Entities
-        for (Entity entity : Model.get().getEntities()) {
-            File outputDir = new File(providerDir, entity.getPackageName());
-            outputDir.mkdirs();
-            File outputFile = new File(outputDir, entity.getNameCamelCase() + "MapDatabaseModelHandler.java");
-            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
-
-            root.put("entity", entity);
-
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-        }
-
-        template = getFreeMarkerConfig().getTemplate("abstractserializer.ftl");
-        config = getConfig(arguments.inputDir);
-        providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
-/*
-        providerDir = new File(arguments.outputDir, providerJavaPackage.replace('.', '/'));
-        root = new HashMap<>();
-        root.put("config", getConfig(arguments.inputDir));
-        root.put("header", Model.get().getHeader());
-        root.put("model", Model.get());
-*/
-        // Entities
-        for (Entity entity : Model.get().getEntities()) {
-            File outputDir = new File(providerDir, entity.getPackageName());
-            outputDir.mkdirs();
-            File outputFile = new File(outputDir, entity.getNameCamelCase() + "DatabaseSerializer.java");
-            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
-
-            root.put("entity", entity);
-
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-        }
-
-        template = getFreeMarkerConfig().getTemplate("abstractmapserializer.ftl");
-        config = getConfig(arguments.inputDir);
-        providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
-/*
-        providerDir = new File(arguments.outputDir, providerJavaPackage.replace('.', '/'));
-        root = new HashMap<>();
-        root.put("config", getConfig(arguments.inputDir));
-        root.put("header", Model.get().getHeader());
-        root.put("model", Model.get());
-*/
-        // Entities
-        for (Entity entity : Model.get().getEntities()) {
-            File outputDir = new File(providerDir, entity.getPackageName());
-            outputDir.mkdirs();
-            File outputFile = new File(outputDir, entity.getNameCamelCase() + "MapDatabaseSerializer.java");
-            Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
-
-            root.put("entity", entity);
-
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
+            for (DataSourceOutput output : entity.getOutput()) {
+                output.generateOutput(getFreeMarkerConfig(), arguments, getConfig(arguments.inputDir), entity);
+            }
         }
     }
 
@@ -705,141 +427,22 @@ public class Main {
         // AbstractCursor
         Template template = getFreeMarkerConfig().getTemplate("abstractcursor.ftl");
         File outputFile = new File(baseClassesDir, "AbstractCursor.java");
-        Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
-        template.process(root, out);
-        IOUtils.closeQuietly(out);
+        DataSourceOutput.writeOutput(template, outputFile, root);
 
         // AbstractContentValuesWrapper
         template = getFreeMarkerConfig().getTemplate("abstractcontentvalues.ftl");
         outputFile = new File(baseClassesDir, "AbstractContentValues.java");
-        out = new OutputStreamWriter(new FileOutputStream(outputFile));
-        template.process(root, out);
-        IOUtils.closeQuietly(out);
+        DataSourceOutput.writeOutput(template, outputFile, root);
 
         // AbstractSelection
         template = getFreeMarkerConfig().getTemplate("abstractselection.ftl");
         outputFile = new File(baseClassesDir, "AbstractSelection.java");
-        out = new OutputStreamWriter(new FileOutputStream(outputFile));
-        template.process(root, out);
-        IOUtils.closeQuietly(out);
-
-        // BaseContentProvider
-        template = getFreeMarkerConfig().getTemplate("basecontentprovider.ftl");
-        outputFile = new File(baseClassesDir, "BaseContentProvider.java");
-        out = new OutputStreamWriter(new FileOutputStream(outputFile));
-        template.process(root, out);
-        IOUtils.closeQuietly(out);
+        DataSourceOutput.writeOutput(template, outputFile, root);
 
         // BaseModel
         template = getFreeMarkerConfig().getTemplate("basemodel.ftl");
         outputFile = new File(baseClassesDir, "BaseModel.java");
-        out = new OutputStreamWriter(new FileOutputStream(outputFile));
-        template.process(root, out);
-        IOUtils.closeQuietly(out);
-
-        if (arguments.asyncdb) {
-            template = getFreeMarkerConfig().getTemplate("abstractcpdatasource.ftl");
-            outputFile = new File(baseClassesDir, "AbstractContentProviderDataSource.java");
-            out = new OutputStreamWriter(new FileOutputStream(outputFile));
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-
-            template = getFreeMarkerConfig().getTemplate("abstractsqldatasource.ftl");
-            outputFile = new File(baseClassesDir, "AbstractSqliteDataSource.java");
-            out = new OutputStreamWriter(new FileOutputStream(outputFile));
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-
-            template = getFreeMarkerConfig().getTemplate("abstractsqlmapdatasource.ftl");
-            outputFile = new File(baseClassesDir, "AbstractSqliteMapDataSource.java");
-            out = new OutputStreamWriter(new FileOutputStream(outputFile));
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-
-            template = getFreeMarkerConfig().getTemplate("databaseserializer.ftl");
-            outputFile = new File(baseClassesDir, "DatabaseSerializer.java");
-            out = new OutputStreamWriter(new FileOutputStream(outputFile));
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-
-            template = getFreeMarkerConfig().getTemplate("mapdatabaseserializer.ftl");
-            outputFile = new File(baseClassesDir, "MapDatabaseSerializer.java");
-            out = new OutputStreamWriter(new FileOutputStream(outputFile));
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-
-            template = getFreeMarkerConfig().getTemplate("abstractelementhandler.ftl");
-            outputFile = new File(baseClassesDir, "DatabaseModelHandler.java");
-            out = new OutputStreamWriter(new FileOutputStream(outputFile));
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-
-            template = getFreeMarkerConfig().getTemplate("abstractmapelementhandler.ftl");
-            outputFile = new File(baseClassesDir, "MapDatabaseModelHandler.java");
-            out = new OutputStreamWriter(new FileOutputStream(outputFile));
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-        }
-
-        // Entities
-        for (Entity entity : Model.get().getEntities()) {
-            File entityDir = new File(providerDir, entity.getPackageName());
-            entityDir.mkdirs();
-
-            // Cursor wrapper
-            outputFile = new File(entityDir, entity.getNameCamelCase() + "Cursor.java");
-            out = new OutputStreamWriter(new FileOutputStream(outputFile));
-            root.put("entity", entity);
-            template = getFreeMarkerConfig().getTemplate("cursor.ftl");
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-
-            // ContentValues wrapper
-            outputFile = new File(entityDir, entity.getNameCamelCase() + "ContentValues.java");
-            out = new OutputStreamWriter(new FileOutputStream(outputFile));
-            root.put("entity", entity);
-            template = getFreeMarkerConfig().getTemplate("contentvalues.ftl");
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-
-            // Selection builder
-            outputFile = new File(entityDir, entity.getNameCamelCase() + "Selection.java");
-            out = new OutputStreamWriter(new FileOutputStream(outputFile));
-            root.put("entity", entity);
-            template = getFreeMarkerConfig().getTemplate("selection.ftl");
-            template.process(root, out);
-            IOUtils.closeQuietly(out);
-
-            // Enums (if any)
-            for (Field field : entity.getFields()) {
-                if (field.isEnum()) {
-                    outputFile = new File(entityDir, field.getEnumName() + ".java");
-                    out = new OutputStreamWriter(new FileOutputStream(outputFile));
-                    root.put("entity", entity);
-                    root.put("field", field);
-                    template = getFreeMarkerConfig().getTemplate("enum.ftl");
-                    template.process(root, out);
-                    IOUtils.closeQuietly(out);
-                }
-            }
-        }
-    }
-
-    private void generateContentProvider(Arguments arguments) throws IOException, JSONException, TemplateException {
-        Template template = getFreeMarkerConfig().getTemplate("contentprovider.ftl");
-        JSONObject config = getConfig(arguments.inputDir);
-        String providerJavaPackage = config.getString(Json.PROVIDER_JAVA_PACKAGE);
-        File providerDir = new File(arguments.outputDir, providerJavaPackage.replace('.', '/'));
-        providerDir.mkdirs();
-        File outputFile = new File(providerDir, config.getString(Json.PROVIDER_CLASS_NAME) + ".java");
-        Writer out = new OutputStreamWriter(new FileOutputStream(outputFile));
-
-        Map<String, Object> root = new HashMap<>();
-        root.put("config", config);
-        root.put("model", Model.get());
-        root.put("header", Model.get().getHeader());
-
-        template.process(root, out);
+        DataSourceOutput.writeOutput(template, outputFile, root);
     }
 
     private void generateSqliteOpenHelper(Arguments arguments) throws IOException, JSONException, TemplateException {
@@ -913,8 +516,6 @@ public class Main {
         generateColumns(arguments);
         generateWrappers(arguments);
         generateModels(arguments);
-        generateAsyncDb(arguments);
-        generateContentProvider(arguments);
         generateSqliteOpenHelper(arguments);
         generateSqliteOpenHelperCallbacks(arguments);
 

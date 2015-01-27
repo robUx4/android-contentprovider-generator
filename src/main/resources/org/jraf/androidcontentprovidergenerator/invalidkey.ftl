@@ -13,10 +13,6 @@ public class ${entity.nameCamelCase}InvalidKey extends InvalidDbEntry {
         super(getInvalidEntry(key));
     }
 
-    public ${entity.nameCamelCase}InvalidKey(@NonNull ${entity.nameCamelCase}Cursor cursor) throws InvalidDbEntry {
-        this(${entity.nameCamelCase}MapDatabaseSerializer.INSTANCE.getKeyFromCursor(cursor));
-    }
-
     private static InvalidEntry getInvalidEntry(@NonNull ${entity.nameCamelCase}Key key) throws InvalidDbEntry {
         final ${entity.nameCamelCase}Selection invalidSelection = new ${entity.nameCamelCase}Selection(key);
         return new InvalidEntry() {

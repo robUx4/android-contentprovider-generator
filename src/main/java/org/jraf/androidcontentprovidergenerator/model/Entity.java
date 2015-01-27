@@ -25,11 +25,14 @@
 package org.jraf.androidcontentprovidergenerator.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.WordUtils;
 import org.jraf.androidcontentprovidergenerator.Constants;
@@ -42,6 +45,12 @@ public class Entity {
         public static final String CONSTRAINTS = "constraints";
         public static final String DOCUMENTATION = "documentation";
         public static final String ID_FIELD = "idField";
+        public static final String DATA_SOURCES = "dataSources";
+        
+        public static final String SOURCE_CONTENT_PROVIDER_ONLY = "ContentProvider";
+        public static final String SOURCE_CONTENT_PROVIDER = "ContentProviderSource";
+        public static final String SOURCE_SQLITE = "SqliteDataSource";
+        public static final String SOURCE_SQLITE_MAP = "SqliteMapDataSource";
     }
 
     private static final String CONCAT = "res.tablesWithJoins += ";
@@ -66,6 +75,7 @@ public class Entity {
     private final String mName;
     private final List<Field> mFields = new ArrayList<>();
     private final List<Constraint> mConstraints = new ArrayList<>();
+    private final Set<DataSourceOutput> mOutputs = new HashSet<>();
     private final String mDocumentation;
 
     public Entity(String name, String documentation) {
@@ -160,7 +170,15 @@ public class Entity {
     public List<Constraint> getConstraints() {
         return Collections.unmodifiableList(mConstraints);
     }
+    
+    public void addDataSource(DataSourceOutput output) {
+    	mOutputs.add(output);
+    }
 
+	public Collection<DataSourceOutput> getOutput() {
+		return mOutputs;
+	}
+    
     public String getNameCamelCase() {
         return WordUtils.capitalizeFully(mName, new char[] { '_' }).replaceAll("_", "");
     }

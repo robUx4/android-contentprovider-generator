@@ -25,7 +25,7 @@ public class ${entity.nameCamelCase}SqliteMapDataSource extends AbstractSqliteMa
     /**
      * Contructor.
      *
-     * <p>Uses a {@link ${config.providerJavaPackage}.${entity.packageName}.${entity.nameCamelCase}DatabaseModelHandler} to read/write data in the database.</p>
+     * <p>Uses a {@link ${config.providerJavaPackage}.${entity.packageName}.${entity.nameCamelCase}MapDatabaseModelHandler} to read/write data in the database.</p>
      *
      * @param context Context used to get the {@link android.database.sqlite.SQLiteOpenHelper SQLiteOpenHelper} used to access the data
      */
@@ -36,7 +36,7 @@ public class ${entity.nameCamelCase}SqliteMapDataSource extends AbstractSqliteMa
     /**
      * Contructor.
      *
-     * <p>Uses a {@link ${config.providerJavaPackage}.${entity.packageName}.${entity.nameCamelCase}DatabaseModelHandler} to read/write data in the database.</p>
+     * <p>Uses a {@link ${config.providerJavaPackage}.${entity.packageName}.${entity.nameCamelCase}MapDatabaseModelHandler} to read/write data in the database.</p>
      *
      * @param context Context used to get the {@link android.database.sqlite.SQLiteOpenHelper SQLiteOpenHelper} used to access the data
      */
@@ -47,7 +47,7 @@ public class ${entity.nameCamelCase}SqliteMapDataSource extends AbstractSqliteMa
     /**
      * Contructor.
      *
-     * <p>Uses a {@link ${config.providerJavaPackage}.${entity.packageName}.${entity.nameCamelCase}DatabaseModelHandler} to read/write data in the database.</p>
+     * <p>Uses a {@link ${config.providerJavaPackage}.${entity.packageName}.${entity.nameCamelCase}MapDatabaseModelHandler} to read/write data in the database.</p>
      *
      * @param context Context used to get the {@link android.database.sqlite.SQLiteOpenHelper SQLiteOpenHelper} used to access the data
      */
