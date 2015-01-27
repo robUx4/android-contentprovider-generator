@@ -64,6 +64,7 @@ public class Main {
 
     public static class Json {
         public static final String SYNTAX_VERSION = "syntaxVersion";
+        public static final String ASYNCDB_SYNTAX_VERSION = "asyncdbVersion";
         public static final String SYNTAX_VERSION_LEGACY = "toolVersion";
         public static final String PROJECT_PACKAGE_ID = "projectPackageId";
         public static final String PROVIDER_JAVA_PACKAGE = "providerJavaPackage";
@@ -75,7 +76,6 @@ public class Main {
         public static final String DATABASE_VERSION = "databaseVersion";
         public static final String ENABLE_FOREIGN_KEY = "enableForeignKeys";
         public static final String USE_ANNOTATIONS = "useAnnotations";
-        public static final String FIELD_CASE_NAME = "keepFieldCase";
     }
 
     private Configuration mFreemarkerConfig;
@@ -205,11 +205,7 @@ public class Main {
                 for (int i=0; i<tableKeys.size(); ++i) {
                     if (i != 0)
                         definition.append(", ");
-                    if (mConfig.optBoolean(Json.FIELD_CASE_NAME, false)) {
-                        definition.append(tableKeys.get(i).getCaseFieldNameOrPrefixed());
-                    } else {
-                        definition.append(tableKeys.get(i).getNameOrPrefixed());
-                    }
+                    definition.append(tableKeys.get(i).getNameOrPrefixed());
                 }
                 definition.append(") ON CONFLICT REPLACE");
                 Constraint constraint = new Constraint("unique_name", definition.toString());
@@ -279,6 +275,18 @@ public class Main {
                     + Constants.SYNTAX_VERSION + "'.");
         }
 
+        int asyncdbSyntaxVersion;
+        try {
+        	asyncdbSyntaxVersion = mConfig.optInt(Json.ASYNCDB_SYNTAX_VERSION);
+        } catch (JSONException e) {
+            throw new IllegalArgumentException("Could not find '" + Json.ASYNCDB_SYNTAX_VERSION
+                    + "' field in _config.json, which is mandatory and must be equal to " + Constants.ASYNCDB_SYNTAX_VERSION + ".");
+        }
+        if (asyncdbSyntaxVersion != Constants.ASYNCDB_SYNTAX_VERSION) {
+            throw new IllegalArgumentException("Invalid '" + Json.ASYNCDB_SYNTAX_VERSION + "' value in _config.json: found '" + asyncdbSyntaxVersion + "' but expected '"
+                    + Constants.ASYNCDB_SYNTAX_VERSION + "'.");
+        }
+        
         // Ensure mandatory fields are present
         ensureString(Json.PROJECT_PACKAGE_ID);
         ensureString(Json.PROVIDER_JAVA_PACKAGE);
@@ -290,7 +298,6 @@ public class Main {
         ensureInt(Json.DATABASE_VERSION);
         ensureBoolean(Json.ENABLE_FOREIGN_KEY);
         ensureBoolean(Json.USE_ANNOTATIONS);
-        ensureBoolean(Json.FIELD_CASE_NAME);
     }
 
     private void ensureString(String field) {

@@ -34,7 +34,7 @@ public class ${entity.nameCamelCase}Columns implements BaseColumns {
             <#else>
     public static final String _ID = "${field.nameOrPrefixed}";
 
-    public static final String ${field.nameUpperCase} = <#if config.keepFieldCase>"${field.caseFieldNameOrPrefixed}"<#else>"${field.nameOrPrefixed}"</#if>;
+    public static final String ${field.nameUpperCase} = "${field.nameOrPrefixed}";
             </#if>
         <#else>
     public static final String ${field.nameUpperCase} = "${field.nameOrPrefixed}";
