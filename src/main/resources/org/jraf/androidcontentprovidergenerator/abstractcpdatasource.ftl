@@ -14,8 +14,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 public abstract class AbstractContentProviderDataSource<MODEL extends BaseModel, CURSOR extends AbstractCursor, SELECTION extends AbstractSelection<SELECTION>> extends TypedContentProviderDataSource<MODEL, CURSOR> {
-    public static final String QUERY_LIMIT_BY = "QUERY_LIMIT_BY";
-
     @NonNull
     private final DatabaseModelHandler<MODEL, CURSOR, SELECTION> databaseModelHandler;
 
@@ -68,7 +66,7 @@ public abstract class AbstractContentProviderDataSource<MODEL extends BaseModel,
 
     @Override
     protected Uri getLimitUri(@NonNull Uri uri, @NonNull String limit) {
-        return uri.buildUpon().appendQueryParameter(QUERY_LIMIT_BY, limit).build();
+        return uri.buildUpon().appendQueryParameter(BaseContentProvider.QUERY_LIMIT, limit).build();
     }
 
     @NonNull
