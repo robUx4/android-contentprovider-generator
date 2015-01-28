@@ -12,6 +12,14 @@ It takes a set of entity (a.k.a "table") definitions as the input, and generates
 - one `Selection` class per entity
 - one `Model` interface per entity
 
+*This is a fork of the original project to generate extra code to be used with [Android InMemory/Async DB](https://github.com/robUx4/InMemoryDb/)*
+It generates the following extra code:
+- basic implementation Model (Key and Value) objects based on their JSON definition
+- a ContentProviderDataSource to be read/written asynchronously
+- a SqliteDataSource to access the database directly without going through the (slow) Content Provider
+- a MapSqliteDataSource similar to the SqliteDataSource but reading Key/Value pairs from the data source.
+- the possibility to have no `_id` field at all when a Content Provider is not generated
+- provide a built-in InvalidDbEntry class to thow when bogus data are read from source(s)
 
 How to use
 ----------
@@ -23,7 +31,8 @@ This is where you declare a few parameters that will be used to generate the cod
 These are self-explanatory so here is an example:
 ```json
 {
-	"syntaxVersion": 4,
+	"syntaxVersion": 3,
+	"asyncdbVersion": "1",
 	"projectPackageId": "com.example.app",
 	"authority": "com.example.app.provider",
 	"providerJavaPackage": "com.example.app.provider",
@@ -34,7 +43,6 @@ These are self-explanatory so here is an example:
 	"databaseVersion": 1,
 	"enableForeignKeys": true,
 	"useAnnotations": true,
-	"keepFieldCase": true,
 }
 ```
 
@@ -95,6 +103,9 @@ Here is a `person.json` file as an example:
 			"nullable": false,
 		},
 	],
+
+	"idField": ["first_name", "last_name"],
+	"dataSources": ["SqliteMapDataSource"],
 }
 ```
 
