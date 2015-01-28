@@ -1,6 +1,8 @@
 Android ContentProvider Generator
 =================================
 
+*This is a fork of the original project to generate extra code to be used with [Android InMemory/Async DB](https://github.com/robUx4/InMemoryDb/)*
+
 A tool to generate an Android ContentProvider.
 It takes a set of entity (a.k.a "table") definitions as the input, and generates:
 - a `ContentProvider` class
@@ -12,6 +14,25 @@ It takes a set of entity (a.k.a "table") definitions as the input, and generates
 - one `Selection` class per entity
 - one `Model` interface per entity
 
+It generates the following extra code:
+- basic implementation Model (Key and Value) objects based on their JSON definition
+- a `ContentProviderDataSource` to be read/written asynchronously
+- a `SqliteDataSource` to access the database directly without going through the (slow) Content Provider
+- a `SqliteMapDataSource` similar to the `SqliteDataSource` but reading Key/Value pairs from the data source.
+- the possibility to have no `_id` field at all when a Content Provider is not generated
+- provide a built-in `InvalidDbEntry` class to thow when bogus data are read from source(s)
+
+Extra elements compared to the original JSON:
+- In `_config.json`
+	- `asyncdbVersion` set to 1 for now to tell which extensions the JSON supports
+- Entity JSON files
+	- `isKey` a boolean to set a field as part the key. An `_id` field may still be generated but the `isKey` fields will be used when looking for a particular element to `update()` in the source.
+	- `idField` can be set to an array of fields to define the map fields used as the key
+	- `dataSources` is an array with the list of output types that will be generated. It can be
+		- `"ContentProvider"` the regular CPG output
+		- `"ContentProviderSource"` a Content-Provider with all the extra classes to work with asyncdb `ContentProviderDataSource`
+		- `"SqliteDataSource"` bare SQLite data source to work with asyncdb `SqliteDataSource`
+		- `"SqliteMapDataSource"` bare SQLite data source to work with asyncdb `SqliteMapDataSource`
 
 How to use
 ----------
@@ -23,7 +44,8 @@ This is where you declare a few parameters that will be used to generate the cod
 These are self-explanatory so here is an example:
 ```json
 {
-	"syntaxVersion": 4,
+	"syntaxVersion": 3,
+	"asyncdbVersion": 1,
 	"projectPackageId": "com.example.app",
 	"authority": "com.example.app.provider",
 	"providerJavaPackage": "com.example.app.provider",
@@ -34,7 +56,6 @@ These are self-explanatory so here is an example:
 	"databaseVersion": 1,
 	"enableForeignKeys": true,
 	"useAnnotations": true,
-	"keepFieldCase": true,
 }
 ```
 
@@ -95,6 +116,9 @@ Here is a `person.json` file as an example:
 			"nullable": false,
 		},
 	],
+
+	"idField": ["first_name", "last_name"],
+	"dataSources": ["SqliteMapDataSource"],
 }
 ```
 
