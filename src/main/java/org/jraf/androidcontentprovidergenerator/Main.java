@@ -232,12 +232,11 @@ public class Main {
                     definition.append(tableKeys.get(i).getNameOrPrefixed());
                 }
                 definition.append(") ON CONFLICT REPLACE");
-                Constraint constraint = new Constraint("unique_name", definition.toString());
+                Constraint constraint = new Constraint("unique_entry", definition.toString());
                 entity.addConstraint(constraint);
                 if (Config.LOGD) Log.i(TAG, "added constraint from isKey fields: " + constraint);
             }
             }
-
 
             // Constraints (optional)
             JSONArray constraintsJson = entityJson.optJSONArray(Entity.Json.CONSTRAINTS);
