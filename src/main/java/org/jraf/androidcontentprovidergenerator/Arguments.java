@@ -41,7 +41,4 @@ public class Arguments {
 
     @Parameter(names = { "-o", "--output" }, description = "Output folder, where the resulting files will be generated")
     public File outputDir = new File("generated");
-
-    @Parameter(names = { "--asyncdb" }, description = "Generate files that can be used with asyncdb")
-    public boolean asyncdb;
 }
