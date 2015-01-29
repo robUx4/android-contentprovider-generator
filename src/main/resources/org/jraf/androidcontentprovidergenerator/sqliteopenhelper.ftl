@@ -76,7 +76,7 @@ public class ${config.sqliteOpenHelperClassName} extends SQLiteOpenHelper {
 
     </#if>
     </#list>
-    <#if entity.keys?has_content>
+    <#if entity.keys?has_content && entity.keys?last.nameLowerCase != "_id">
     public static final String SQL_CREATE_INDEX_${entity.nameUpperCase}_KEYS = "CREATE INDEX IF NOT EXISTS IDX_${entity.nameUpperCase}_KEYS"
              + " ON "+ ${entity.nameCamelCase}Columns.TABLE_NAME + " ( "
       <#list entity.keys as key>
