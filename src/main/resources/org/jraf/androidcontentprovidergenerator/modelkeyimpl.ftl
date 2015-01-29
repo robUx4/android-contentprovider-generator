@@ -134,6 +134,9 @@ public class ${entity.nameCamelCase}KeyImpl implements ${entity.nameCamelCase}Ke
     public boolean equals(Object o) {
         if (o==this) return true;
         if (!(o instanceof ${entity.nameCamelCase}Key)) return false;
+    <#if !entity.keys?has_content || (entity.keys?last.isId && entity.keys?last.nameLowerCase == "_id")>
+        return id == ((${entity.nameCamelCase}Key) o).getId();
+    <#else>
         return
         <#list entity.keys as field>
       <#if field.nameLowerCase != "_id">
@@ -155,11 +158,15 @@ public class ${entity.nameCamelCase}KeyImpl implements ${entity.nameCamelCase}Ke
         </#switch>
       </#if>
     </#list>
+    </#if>
     }
 
     @Override
     public int hashCode() {
         int result = 17;
+    <#if !entity.keys?has_content || (entity.keys?last.isId && entity.keys?last.nameLowerCase == "_id")>
+        result = 31 * result + (int) (id ^ (id >>> 32));
+    <#else>
     <#list entity.keys as field>
       <#if field.nameLowerCase != "_id">
         <#switch field.type.name()>
@@ -186,6 +193,7 @@ public class ${entity.nameCamelCase}KeyImpl implements ${entity.nameCamelCase}Ke
         </#switch>
       </#if>
     </#list>
+    </#if>
         return result;
     }
 }
