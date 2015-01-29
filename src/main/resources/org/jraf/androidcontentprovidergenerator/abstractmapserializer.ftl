@@ -16,7 +16,7 @@ import ${config.providerJavaPackage}.base.MapDatabaseSerializer;
 <#else>
  * Default Map Serializer class for the {@code ${entity.nameLowerCase}} table.
 </#if>
- * @see ${entity.nameCamelCase}SqliteMapDataSource#${entity.nameCamelCase}SqliteMapDataSource(android.content.Context, com.levelup.touiteur.base.MapDatabaseSerializer)
+ * @see ${entity.nameCamelCase}SqliteMapDataSource#${entity.nameCamelCase}SqliteMapDataSource(android.content.Context, ${config.providerJavaPackage}.base.MapDatabaseSerializer)
  */
 public class ${entity.nameCamelCase}MapDatabaseSerializer implements MapDatabaseSerializer<${entity.nameCamelCase}Key, ${entity.nameCamelCase}Value, ${entity.nameCamelCase}Cursor> {
     public static final ${entity.nameCamelCase}MapDatabaseSerializer INSTANCE = new ${entity.nameCamelCase}MapDatabaseSerializer();

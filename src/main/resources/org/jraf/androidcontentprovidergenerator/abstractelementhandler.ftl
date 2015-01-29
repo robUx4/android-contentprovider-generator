@@ -15,8 +15,8 @@ import android.support.annotation.Nullable;
  * @param <MODEL>     type of the Object read/written from/to the database.
  * @param <CURSOR>    type of {@code Cursor} read from the database.
  * @param <SELECTION> type of the {@code Selection} object used to select items.
- * @see com.levelup.touiteur.base.AbstractCursor
- * @see com.levelup.touiteur.base.AbstractSelection
+ * @see ${config.providerJavaPackage}.base.AbstractCursor
+ * @see ${config.providerJavaPackage}.base.AbstractSelection
  */
 public abstract class DatabaseModelHandler<MODEL extends BaseModel, CURSOR extends AbstractCursor, SELECTION extends AbstractSelection<SELECTION>> implements TypedDatabaseElementHandler<MODEL, CURSOR> {
     @NonNull
@@ -38,7 +38,7 @@ public abstract class DatabaseModelHandler<MODEL extends BaseModel, CURSOR exten
     }
 
     /**
-     * Generate a {@link com.levelup.touiteur.base.AbstractSelection} object for the specified item.
+     * Generate a {@link ${config.providerJavaPackage}.base.AbstractSelection} object for the specified item.
      */
     protected abstract SELECTION getItemSelection(@NonNull MODEL itemToSelect);
 
