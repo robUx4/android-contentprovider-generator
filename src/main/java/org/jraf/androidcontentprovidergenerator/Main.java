@@ -222,20 +222,6 @@ public class Main {
                 }
                 idField.setIsId(true);
             }
-
-            // key constraint
-            if (!tableKeys.isEmpty()) {
-                StringBuilder definition = new StringBuilder("UNIQUE (");
-                for (int i=0; i<tableKeys.size(); ++i) {
-                    if (i != 0)
-                        definition.append(", ");
-                    definition.append(tableKeys.get(i).getNameOrPrefixed());
-                }
-                definition.append(") ON CONFLICT REPLACE");
-                Constraint constraint = new Constraint("unique_entry", definition.toString());
-                entity.addConstraint(constraint);
-                if (Config.LOGD) Log.i(TAG, "added constraint from isKey fields: " + constraint);
-            }
             }
 
             // Constraints (optional)

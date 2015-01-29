@@ -56,6 +56,8 @@ public class ${config.sqliteOpenHelperClassName} extends SQLiteOpenHelper {
             </#list>
             <#if entity.keys?has_content && !entity.keys?first.isId>
             + ", PRIMARY KEY (<#list entity.keys as key>"+ ${entity.nameCamelCase}Columns.${key.nameUpperCase} +<#if key_has_next>", </#if></#list>") "
+            <#elseif entity.keys?has_content && !entity.keys?last.isId>
+            + ", CONSTRAINT unique_entry UNIQUE (<#list entity.keys as key><#if key.nameLowerCase != "_id">" + ${entity.nameCamelCase}Columns.${key.nameUpperCase} + <#if key_has_next>", </#if></#if></#list>") ON CONFLICT REPLACE"
             </#if>
             <#if config.enableForeignKeys >
                 <#list entity.fields as field>
