@@ -36,6 +36,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.WordUtils;
 import org.jraf.androidcontentprovidergenerator.Constants;
+import org.jraf.androidcontentprovidergenerator.ContentProviderOutput;
+import org.jraf.androidcontentprovidergenerator.ContentProviderSourceOutput;
 
 public class Entity {
     private static final String TAG = Constants.TAG + Entity.class.getSimpleName();
@@ -125,16 +127,16 @@ public class Entity {
     public List<Field> getKeys() {
         List<Field> res = new ArrayList<>();
         for (Field field : mFields) {
-        	if (field.getIsKey()) {
-        		res.add(field);
-        	}
+            if (field.getIsKey()) {
+                res.add(field);
+            }
         }
         if (res.isEmpty()) {
             for (Field field : mFields) {
-            	if (field.getIsId()) {
-            		res.add(field);
-            		break;
-            	}
+                if (field.getIsId()) {
+                    res.add(field);
+                    break;
+                }
             }
         }
         
@@ -172,13 +174,21 @@ public class Entity {
     }
     
     public void addDataSource(DataSourceOutput output) {
-    	mOutputs.add(output);
+        mOutputs.add(output);
     }
 
-	public Collection<DataSourceOutput> getOutput() {
-		return mOutputs;
-	}
-    
+    public Collection<DataSourceOutput> getOutput() {
+        return mOutputs;
+    }
+
+    public boolean getHasContentProvider() {
+        for (DataSourceOutput output : mOutputs) {
+            if (output instanceof ContentProviderOutput || output instanceof ContentProviderSourceOutput)
+                return true;
+        }
+        return false;
+    }
+
     public String getNameCamelCase() {
         return WordUtils.capitalizeFully(mName, new char[] { '_' }).replaceAll("_", "");
     }

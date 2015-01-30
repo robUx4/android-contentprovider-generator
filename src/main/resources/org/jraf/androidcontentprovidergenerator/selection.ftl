@@ -5,8 +5,10 @@ package ${config.providerJavaPackage}.${entity.packageName};
 
 import java.util.Date;
 
+<#if entity.hasContentProvider>
 import android.content.ContentResolver;
 import android.database.Cursor;
+</#if>
 import android.net.Uri;
 <#if config.useAnnotations>
 import android.support.annotation.NonNull;
@@ -49,6 +51,13 @@ public class ${entity.nameCamelCase}Selection extends AbstractSelection<${entity
     }
     </#if>
 
+<#if !entity.hasContentProvider>
+    @Deprecated
+    @Override
+    public Uri uri() {
+        throw new AssertionError("no Content Provider for ${entity.nameCamelCase}");
+    }
+<#else>
     @Override
     public Uri uri() {
         return ${entity.nameCamelCase}Columns.CONTENT_URI;
@@ -82,6 +91,7 @@ public class ${entity.nameCamelCase}Selection extends AbstractSelection<${entity
     public ${entity.nameCamelCase}Cursor query(ContentResolver contentResolver) {
         return query(contentResolver, null, null);
     }
+</#if>
 
 
     public ${entity.nameCamelCase}Selection id(long... value) {
