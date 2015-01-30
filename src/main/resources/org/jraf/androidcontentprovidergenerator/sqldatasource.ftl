@@ -30,7 +30,7 @@ public class ${entity.nameCamelCase}SqliteDataSource extends AbstractSqliteDataS
      * @param context Context used to get the {@link android.database.sqlite.SQLiteOpenHelper SQLiteOpenHelper} used to access the data
      */
     public ${entity.nameCamelCase}SqliteDataSource(@NonNull Context context) {
-        this(context, new ${entity.nameCamelCase}DatabaseSerializer());
+        this(context, ${entity.nameCamelCase}DatabaseSerializer.INSTANCE);
     }
 
     /**

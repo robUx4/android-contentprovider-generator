@@ -29,7 +29,7 @@ public class ${entity.nameCamelCase}ContentProviderDataSource extends AbstractCo
      * @param contentResolver ContentResolver used to access the {@link android.content.ContentProvider ContentProvider}
      */
     public ${entity.nameCamelCase}ContentProviderDataSource(@NonNull ContentResolver contentResolver) {
-        this(contentResolver, new ${entity.nameCamelCase}DatabaseSerializer());
+        this(contentResolver, ${entity.nameCamelCase}DatabaseSerializer.INSTANCE);
     }
 
     /**
@@ -39,7 +39,7 @@ public class ${entity.nameCamelCase}ContentProviderDataSource extends AbstractCo
      * @param context    Context used to get the {@link android.content.ContentResolver ContentResolver} used to access the {@link android.content.ContentProvider ContentProvider}
      */
     public ${entity.nameCamelCase}ContentProviderDataSource(@NonNull Context context) {
-        this(context, new ${entity.nameCamelCase}DatabaseSerializer());
+        this(context, ${entity.nameCamelCase}DatabaseSerializer.INSTANCE);
     }
 
     /**

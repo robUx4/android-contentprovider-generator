@@ -22,7 +22,7 @@ public class ${entity.nameCamelCase}DatabaseModelHandler extends DatabaseModelHa
      * Default Constructor.
      */
     public ${entity.nameCamelCase}DatabaseModelHandler() {
-        this(new ${entity.nameCamelCase}DatabaseSerializer());
+        this(${entity.nameCamelCase}DatabaseSerializer.INSTANCE);
     }
 
     /**
