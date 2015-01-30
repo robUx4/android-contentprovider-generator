@@ -125,5 +125,9 @@ public class SqliteSourceOutput extends DataSourceOutput {
         template = freeMarkerConfig.getTemplate("elementhandler.ftl");
         outputFile = new File(outputDir, entity.getNameCamelCase() + "DatabaseModelHandler.java");
         DataSourceOutput.writeOutput(template, outputFile, root);
+
+        template = freeMarkerConfig.getTemplate("asynchandler.ftl");
+        outputFile = new File(outputDir, entity.getNameCamelCase() + "AsyncHandler.java");
+        DataSourceOutput.writeOutput(template, outputFile, root);
 	}
 }
