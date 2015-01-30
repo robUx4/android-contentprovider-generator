@@ -34,11 +34,13 @@ public class ${config.providerClassName} extends BaseContentProvider {
 
 	<#assign i=0>
     <#list model.entities as entity>
+    <#if entity.hasContentProvider>
     private static final int URI_TYPE_${entity.nameUpperCase} = ${i};
     <#assign i = i + 1>
     private static final int URI_TYPE_${entity.nameUpperCase}_ID = ${i};
     <#assign i = i + 1>
 
+    </#if>
     </#list>
 
 
@@ -46,8 +48,10 @@ public class ${config.providerClassName} extends BaseContentProvider {
 
     static {
         <#list model.entities as entity>
+        <#if entity.hasContentProvider>
         URI_MATCHER.addURI(AUTHORITY, ${entity.nameCamelCase}Columns.TABLE_NAME, URI_TYPE_${entity.nameUpperCase});
         URI_MATCHER.addURI(AUTHORITY, ${entity.nameCamelCase}Columns.TABLE_NAME + "/#", URI_TYPE_${entity.nameUpperCase}_ID);
+        </#if>
         </#list>
     }
 
@@ -66,11 +70,13 @@ public class ${config.providerClassName} extends BaseContentProvider {
         int match = URI_MATCHER.match(uri);
         switch (match) {
             <#list model.entities as entity>
+            <#if entity.hasContentProvider>
             case URI_TYPE_${entity.nameUpperCase}:
                 return TYPE_CURSOR_DIR + ${entity.nameCamelCase}Columns.TABLE_NAME;
             case URI_TYPE_${entity.nameUpperCase}_ID:
                 return TYPE_CURSOR_ITEM + ${entity.nameCamelCase}Columns.TABLE_NAME;
 
+            </#if>
             </#list>
         }
         return null;
@@ -115,6 +121,7 @@ public class ${config.providerClassName} extends BaseContentProvider {
         int matchedId = URI_MATCHER.match(uri);
         switch (matchedId) {
             <#list model.entities as entity>
+            <#if entity.hasContentProvider>
             case URI_TYPE_${entity.nameUpperCase}:
             case URI_TYPE_${entity.nameUpperCase}_ID:
                 res.table = ${entity.nameCamelCase}Columns.TABLE_NAME;
@@ -123,6 +130,7 @@ public class ${config.providerClassName} extends BaseContentProvider {
                 //res.orderBy = ${entity.nameCamelCase}Columns.DEFAULT_ORDER;
                 break;
 
+            </#if>
             </#list>
             default:
                 throw new IllegalArgumentException("The uri '" + uri + "' is not supported by this ContentProvider");
@@ -130,7 +138,9 @@ public class ${config.providerClassName} extends BaseContentProvider {
 
         switch (matchedId) {
             <#list model.entities as entity>
+            <#if entity.hasContentProvider>
             case URI_TYPE_${entity.nameUpperCase}_ID:
+            </#if>
             </#list>
                 id = uri.getLastPathSegment();
         }
