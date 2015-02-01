@@ -167,9 +167,9 @@ public class Main {
             }
 
             // ID Field
-            if (entityJson.opt(Entity.Json.ID_FIELD) instanceof JSONArray) {
-                // we are using multiple keys, with no _id
-                JSONArray idFields = entityJson.optJSONArray(Entity.Json.ID_FIELD);
+            // we are using multiple keys, with no _id
+            JSONArray idFields = entityJson.optJSONArray(Entity.Json.ID_FIELD);
+            if (null!=idFields && idFields.length()>1) {
                 for (int i=0; i<idFields.length(); ++i) {
                     String columnName = idFields.getString(i);
                     Field columnField = null;
@@ -187,12 +187,16 @@ public class Main {
                         throw new IllegalArgumentException("The idField '" + columnName + "' is not a key in " + entityFile.getCanonicalPath() + ".");
                     }
                 }
-                
             } else {
 
-            String idFieldName = entityJson.optString(Entity.Json.ID_FIELD, "_id");
-            if (idFieldName == null) {
-                throw new IllegalArgumentException("Invalid idField '" + idFieldName + "' value in " + entityFile.getCanonicalPath() + ".");
+            final String idFieldName;
+            if (idFields == null) {
+                idFieldName = "_id";
+            } else {
+                if (idFields.length() != 1) {
+                    throw new IllegalArgumentException("Invalid number of idField '" + idFields + "' value in " + entityFile.getCanonicalPath() + ".");
+                }
+                idFieldName = idFields.getString(0);
             }
             final Field idField;
             if ("_id".equals(idFieldName)) {
