@@ -31,6 +31,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import org.gawst.asyncdb.source.typed.TypedDatabaseSource;
+
 import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractSelection;
 
 /**
@@ -81,12 +83,26 @@ public class PersonSelection extends AbstractSelection<PersonSelection> {
         return query(contentResolver, null, null);
     }
 
+    public PersonCursor query(TypedDatabaseSource<?, ?, PersonCursor> databaseSource) {
+        return query(databaseSource, null);
+    }
+
+    public PersonCursor query(TypedDatabaseSource<?, ?, PersonCursor> databaseSource, String[] projection) {
+        return query(databaseSource, projection, null);
+    }
+
+    public PersonCursor query(TypedDatabaseSource<?, ?, PersonCursor> databaseSource, String[] projection, String sortOrder) {
+        return databaseSource.query(projection, sel(), args(), null, null, sortOrder, null);
+    }
+
+    public int delete(TypedDatabaseSource<?, ?, PersonCursor> databaseSource) {
+        return databaseSource.delete(sel(), args());
+    }
 
     public PersonSelection id(long... value) {
         addEquals("person." + PersonColumns._ID, toObjectArray(value));
         return this;
     }
-
 
     public PersonSelection firstName(String... value) {
         addEquals(PersonColumns.FIRST_NAME, value);

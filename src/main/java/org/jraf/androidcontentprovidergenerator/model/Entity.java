@@ -38,6 +38,8 @@ import org.apache.commons.lang.WordUtils;
 import org.jraf.androidcontentprovidergenerator.Constants;
 import org.jraf.androidcontentprovidergenerator.ContentProviderOutput;
 import org.jraf.androidcontentprovidergenerator.ContentProviderSourceOutput;
+import org.jraf.androidcontentprovidergenerator.MapSqliteSourceOutput;
+import org.jraf.androidcontentprovidergenerator.SqliteSourceOutput;
 
 public class Entity {
     private static final String TAG = Constants.TAG + Entity.class.getSimpleName();
@@ -184,6 +186,22 @@ public class Entity {
     public boolean getHasContentProvider() {
         for (DataSourceOutput output : mOutputs) {
             if (output instanceof ContentProviderOutput || output instanceof ContentProviderSourceOutput)
+                return true;
+        }
+        return false;
+    }
+
+    public boolean getHasDatabaseSource() {
+        for (DataSourceOutput output : mOutputs) {
+            if (output instanceof MapSqliteSourceOutput || output instanceof ContentProviderSourceOutput || output instanceof SqliteSourceOutput)
+                return true;
+        }
+        return false;
+    }
+
+    public boolean getHasSqliteDatabaseSource() {
+        for (DataSourceOutput output : mOutputs) {
+            if (output instanceof MapSqliteSourceOutput || output instanceof SqliteSourceOutput)
                 return true;
         }
         return false;

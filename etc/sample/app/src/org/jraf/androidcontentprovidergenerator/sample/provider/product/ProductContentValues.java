@@ -31,6 +31,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import org.gawst.asyncdb.source.typed.TypedDatabaseSource;
+
 import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractContentValues;
 
 /**
@@ -63,6 +65,15 @@ public class ProductContentValues extends AbstractContentValues {
      */
     public int update(ContentResolver contentResolver, @Nullable ProductSelection where) {
         return contentResolver.update(uri(), values(), where == null ? null : where.sel(), where == null ? null : where.args());
+    }
+
+    /**
+     * Inserts a row into a table using the values stored by this object.
+     * 
+     * @param databaseSource The database/table source to write the values to.
+     */
+    public Long insert(TypedDatabaseSource<Long, ?, ?> databaseSource) {
+        return databaseSource.insert(values());
     }
 
     public ProductContentValues putProductId(long value) {

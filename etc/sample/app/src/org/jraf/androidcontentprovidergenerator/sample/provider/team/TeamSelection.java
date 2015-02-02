@@ -31,6 +31,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import org.gawst.asyncdb.source.typed.TypedDatabaseSource;
+
 import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractSelection;
 import org.jraf.androidcontentprovidergenerator.sample.provider.company.*;
 import org.jraf.androidcontentprovidergenerator.sample.provider.serialnumber.*;
@@ -84,12 +86,26 @@ public class TeamSelection extends AbstractSelection<TeamSelection> {
         return query(contentResolver, null, null);
     }
 
+    public TeamCursor query(TypedDatabaseSource<?, ?, TeamCursor> databaseSource) {
+        return query(databaseSource, null);
+    }
+
+    public TeamCursor query(TypedDatabaseSource<?, ?, TeamCursor> databaseSource, String[] projection) {
+        return query(databaseSource, projection, null);
+    }
+
+    public TeamCursor query(TypedDatabaseSource<?, ?, TeamCursor> databaseSource, String[] projection, String sortOrder) {
+        return databaseSource.query(projection, sel(), args(), null, null, sortOrder, null);
+    }
+
+    public int delete(TypedDatabaseSource<?, ?, TeamCursor> databaseSource) {
+        return databaseSource.delete(sel(), args());
+    }
 
     public TeamSelection id(long... value) {
         addEquals("team." + TeamColumns._ID, toObjectArray(value));
         return this;
     }
-
 
     public TeamSelection companyId(long... value) {
         addEquals(TeamColumns.COMPANY_ID, toObjectArray(value));

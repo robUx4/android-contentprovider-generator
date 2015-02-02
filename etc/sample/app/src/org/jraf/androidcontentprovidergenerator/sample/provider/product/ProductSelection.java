@@ -31,6 +31,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import org.gawst.asyncdb.source.typed.TypedDatabaseSource;
+
 import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractSelection;
 
 /**
@@ -78,12 +80,26 @@ public class ProductSelection extends AbstractSelection<ProductSelection> {
         return query(contentResolver, null, null);
     }
 
+    public ProductCursor query(TypedDatabaseSource<?, ?, ProductCursor> databaseSource) {
+        return query(databaseSource, null);
+    }
+
+    public ProductCursor query(TypedDatabaseSource<?, ?, ProductCursor> databaseSource, String[] projection) {
+        return query(databaseSource, projection, null);
+    }
+
+    public ProductCursor query(TypedDatabaseSource<?, ?, ProductCursor> databaseSource, String[] projection, String sortOrder) {
+        return databaseSource.query(projection, sel(), args(), null, null, sortOrder, null);
+    }
+
+    public int delete(TypedDatabaseSource<?, ?, ProductCursor> databaseSource) {
+        return databaseSource.delete(sel(), args());
+    }
 
     public ProductSelection id(long... value) {
         addEquals("product." + ProductColumns._ID, toObjectArray(value));
         return this;
     }
-
 
     public ProductSelection productId(long... value) {
         addEquals(ProductColumns.PRODUCT_ID, toObjectArray(value));

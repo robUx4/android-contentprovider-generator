@@ -31,6 +31,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import org.gawst.asyncdb.source.typed.TypedDatabaseSource;
+
 import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractSelection;
 import org.jraf.androidcontentprovidergenerator.sample.provider.serialnumber.*;
 
@@ -82,12 +84,26 @@ public class CompanySelection extends AbstractSelection<CompanySelection> {
         return query(contentResolver, null, null);
     }
 
+    public CompanyCursor query(TypedDatabaseSource<?, ?, CompanyCursor> databaseSource) {
+        return query(databaseSource, null);
+    }
+
+    public CompanyCursor query(TypedDatabaseSource<?, ?, CompanyCursor> databaseSource, String[] projection) {
+        return query(databaseSource, projection, null);
+    }
+
+    public CompanyCursor query(TypedDatabaseSource<?, ?, CompanyCursor> databaseSource, String[] projection, String sortOrder) {
+        return databaseSource.query(projection, sel(), args(), null, null, sortOrder, null);
+    }
+
+    public int delete(TypedDatabaseSource<?, ?, CompanyCursor> databaseSource) {
+        return databaseSource.delete(sel(), args());
+    }
 
     public CompanySelection id(long... value) {
         addEquals("company." + CompanyColumns._ID, toObjectArray(value));
         return this;
     }
-
 
     public CompanySelection name(String... value) {
         addEquals(CompanyColumns.NAME, value);

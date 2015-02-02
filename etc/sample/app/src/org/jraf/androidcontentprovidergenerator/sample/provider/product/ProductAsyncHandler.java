@@ -24,6 +24,7 @@
  */
 package org.jraf.androidcontentprovidergenerator.sample.provider.product;
 
+import android.content.ContentValues;
 import android.net.Uri;
 
 import org.gawst.asyncdb.AsynchronousDbHelper;
@@ -41,5 +42,21 @@ public class ProductAsyncHandler extends TypedAsyncDatabaseHandler<ProductModel,
      */
     public ProductAsyncHandler(AsynchronousDbHelper<ProductModel, Long> asynchronousDbHelper) {
         super(asynchronousDbHelper, (TypedDatabaseSource<Long, Uri, ProductCursor>) asynchronousDbHelper.getDataSource());
+    }
+
+    public void startUpdate(int token, Object cookie, ProductModel itemUpdate) {
+        ProductSelection selection = new ProductSelection(itemUpdate);
+        startUpdate(token, cookie, itemUpdate, selection.sel(), selection.args());
+    }
+
+    public void startUpdate(int token, Object cookie, ProductModel itemUpdate, ProductContentValues values) {
+        final ProductSelection selection = new ProductSelection(itemUpdate);
+        final ContentValues updateValues = values.values();
+        startRunnable(token, cookie, new Runnable() {
+            @Override
+            public void run() {
+                dataSource.update(updateValues, selection.sel(), selection.args());
+            }
+        });
     }
 }

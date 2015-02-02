@@ -14,6 +14,10 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 </#if>
 
+<#if entity.hasDatabaseSource>
+import org.gawst.asyncdb.source.typed.TypedDatabaseSource;
+</#if>
+
 import ${config.providerJavaPackage}.base.AbstractSelection;
 <#list entity.joinedEntities as joinedEntity>
 import ${config.providerJavaPackage}.${joinedEntity.packageName}.*;
@@ -50,14 +54,15 @@ public class ${entity.nameCamelCase}Selection extends AbstractSelection<${entity
         id(key.getId());
     }
     </#if>
-
 <#if !entity.hasContentProvider>
+
     @Deprecated
     @Override
     public Uri uri() {
         throw new AssertionError("no Content Provider for ${entity.nameCamelCase}");
     }
 <#else>
+
     @Override
     public Uri uri() {
         return ${entity.nameCamelCase}Columns.CONTENT_URI;
@@ -92,13 +97,29 @@ public class ${entity.nameCamelCase}Selection extends AbstractSelection<${entity
         return query(contentResolver, null, null);
     }
 </#if>
+<#if entity.hasDatabaseSource>
 
+    public ${entity.nameCamelCase}Cursor query(TypedDatabaseSource<?, ?, ${entity.nameCamelCase}Cursor> databaseSource) {
+        return query(databaseSource, null);
+    }
+
+    public ${entity.nameCamelCase}Cursor query(TypedDatabaseSource<?, ?, ${entity.nameCamelCase}Cursor> databaseSource, String[] projection) {
+        return query(databaseSource, projection, null);
+    }
+
+    public ${entity.nameCamelCase}Cursor query(TypedDatabaseSource<?, ?, ${entity.nameCamelCase}Cursor> databaseSource, String[] projection, String sortOrder) {
+        return databaseSource.query(projection, sel(), args(), null, null, sortOrder, null);
+    }
+
+    public int delete(TypedDatabaseSource<?, ?, ${entity.nameCamelCase}Cursor> databaseSource) {
+        return databaseSource.delete(sel(), args());
+    }
+</#if>
 
     public ${entity.nameCamelCase}Selection id(long... value) {
         addEquals("${entity.nameLowerCase}." + ${entity.nameCamelCase}Columns._ID, toObjectArray(value));
         return this;
     }
-
     <#list entity.getFieldsIncludingJoins() as field>
     <#if field.nameLowerCase != "_id">
     <#switch field.type.name()>

@@ -24,6 +24,7 @@
  */
 package org.jraf.androidcontentprovidergenerator.sample.provider.serialnumber;
 
+import android.content.ContentValues;
 import android.net.Uri;
 
 import org.gawst.asyncdb.AsynchronousDbHelper;
@@ -41,5 +42,21 @@ public class SerialNumberAsyncHandler extends TypedAsyncDatabaseHandler<SerialNu
      */
     public SerialNumberAsyncHandler(AsynchronousDbHelper<SerialNumberModel, Long> asynchronousDbHelper) {
         super(asynchronousDbHelper, (TypedDatabaseSource<Long, Uri, SerialNumberCursor>) asynchronousDbHelper.getDataSource());
+    }
+
+    public void startUpdate(int token, Object cookie, SerialNumberModel itemUpdate) {
+        SerialNumberSelection selection = new SerialNumberSelection(itemUpdate);
+        startUpdate(token, cookie, itemUpdate, selection.sel(), selection.args());
+    }
+
+    public void startUpdate(int token, Object cookie, SerialNumberModel itemUpdate, SerialNumberContentValues values) {
+        final SerialNumberSelection selection = new SerialNumberSelection(itemUpdate);
+        final ContentValues updateValues = values.values();
+        startRunnable(token, cookie, new Runnable() {
+            @Override
+            public void run() {
+                dataSource.update(updateValues, selection.sel(), selection.args());
+            }
+        });
     }
 }

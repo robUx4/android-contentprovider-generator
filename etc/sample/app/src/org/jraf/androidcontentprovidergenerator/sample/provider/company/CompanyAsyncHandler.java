@@ -24,6 +24,7 @@
  */
 package org.jraf.androidcontentprovidergenerator.sample.provider.company;
 
+import android.content.ContentValues;
 import android.net.Uri;
 
 import org.gawst.asyncdb.AsynchronousDbHelper;
@@ -41,5 +42,21 @@ public class CompanyAsyncHandler extends TypedAsyncDatabaseHandler<CompanyModel,
      */
     public CompanyAsyncHandler(AsynchronousDbHelper<CompanyModel, Long> asynchronousDbHelper) {
         super(asynchronousDbHelper, (TypedDatabaseSource<Long, Uri, CompanyCursor>) asynchronousDbHelper.getDataSource());
+    }
+
+    public void startUpdate(int token, Object cookie, CompanyModel itemUpdate) {
+        CompanySelection selection = new CompanySelection(itemUpdate);
+        startUpdate(token, cookie, itemUpdate, selection.sel(), selection.args());
+    }
+
+    public void startUpdate(int token, Object cookie, CompanyModel itemUpdate, CompanyContentValues values) {
+        final CompanySelection selection = new CompanySelection(itemUpdate);
+        final ContentValues updateValues = values.values();
+        startRunnable(token, cookie, new Runnable() {
+            @Override
+            public void run() {
+                dataSource.update(updateValues, selection.sel(), selection.args());
+            }
+        });
     }
 }

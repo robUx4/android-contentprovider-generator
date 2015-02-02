@@ -31,6 +31,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import org.gawst.asyncdb.source.typed.TypedDatabaseSource;
+
 import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractSelection;
 
 /**
@@ -81,12 +83,26 @@ public class SerialNumberSelection extends AbstractSelection<SerialNumberSelecti
         return query(contentResolver, null, null);
     }
 
+    public SerialNumberCursor query(TypedDatabaseSource<?, ?, SerialNumberCursor> databaseSource) {
+        return query(databaseSource, null);
+    }
+
+    public SerialNumberCursor query(TypedDatabaseSource<?, ?, SerialNumberCursor> databaseSource, String[] projection) {
+        return query(databaseSource, projection, null);
+    }
+
+    public SerialNumberCursor query(TypedDatabaseSource<?, ?, SerialNumberCursor> databaseSource, String[] projection, String sortOrder) {
+        return databaseSource.query(projection, sel(), args(), null, null, sortOrder, null);
+    }
+
+    public int delete(TypedDatabaseSource<?, ?, SerialNumberCursor> databaseSource) {
+        return databaseSource.delete(sel(), args());
+    }
 
     public SerialNumberSelection id(long... value) {
         addEquals("serial_number." + SerialNumberColumns._ID, toObjectArray(value));
         return this;
     }
-
 
     public SerialNumberSelection part0(String... value) {
         addEquals(SerialNumberColumns.PART0, value);

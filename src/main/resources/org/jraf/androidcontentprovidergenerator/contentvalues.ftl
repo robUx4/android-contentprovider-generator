@@ -14,6 +14,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 </#if>
 
+<#if entity.hasDatabaseSource>
+import org.gawst.asyncdb.source.typed.TypedDatabaseSource;
+</#if>
+
 import ${config.providerJavaPackage}.base.AbstractContentValues;
 
 /**
@@ -41,14 +45,15 @@ public class ${entity.nameCamelCase}ContentValues extends AbstractContentValues 
     </#list>
     }
     </#if>
-
 <#if !entity.hasContentProvider>
+
     @Deprecated
     @Override
     public Uri uri() {
         throw new AssertionError("no Content Provider for ${entity.nameCamelCase}");
     }
 <#else>
+
     @Override
     public Uri uri() {
         return ${entity.nameCamelCase}Columns.CONTENT_URI;
@@ -62,6 +67,17 @@ public class ${entity.nameCamelCase}ContentValues extends AbstractContentValues 
      */
     public int update(ContentResolver contentResolver, <#if config.useAnnotations>@Nullable</#if> ${entity.nameCamelCase}Selection where) {
         return contentResolver.update(uri(), values(), where == null ? null : where.sel(), where == null ? null : where.args());
+    }
+</#if>
+<#if entity.hasSqliteDatabaseSource>
+
+    /**
+     * Inserts a row into a table using the values stored by this object.
+     * 
+     * @param databaseSource The database/table source to write the values to.
+     */
+    public Long insert(TypedDatabaseSource<Long, ?, ?> databaseSource) {
+        return databaseSource.insert(values());
     }
 </#if>
     <#list entity.fields as field>

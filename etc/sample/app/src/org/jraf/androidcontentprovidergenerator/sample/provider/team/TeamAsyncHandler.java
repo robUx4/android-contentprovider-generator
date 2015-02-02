@@ -24,6 +24,7 @@
  */
 package org.jraf.androidcontentprovidergenerator.sample.provider.team;
 
+import android.content.ContentValues;
 import android.net.Uri;
 
 import org.gawst.asyncdb.AsynchronousDbHelper;
@@ -41,5 +42,21 @@ public class TeamAsyncHandler extends TypedAsyncDatabaseHandler<TeamModel, TeamC
      */
     public TeamAsyncHandler(AsynchronousDbHelper<TeamModel, Long> asynchronousDbHelper) {
         super(asynchronousDbHelper, (TypedDatabaseSource<Long, Uri, TeamCursor>) asynchronousDbHelper.getDataSource());
+    }
+
+    public void startUpdate(int token, Object cookie, TeamModel itemUpdate) {
+        TeamSelection selection = new TeamSelection(itemUpdate);
+        startUpdate(token, cookie, itemUpdate, selection.sel(), selection.args());
+    }
+
+    public void startUpdate(int token, Object cookie, TeamModel itemUpdate, TeamContentValues values) {
+        final TeamSelection selection = new TeamSelection(itemUpdate);
+        final ContentValues updateValues = values.values();
+        startRunnable(token, cookie, new Runnable() {
+            @Override
+            public void run() {
+                dataSource.update(updateValues, selection.sel(), selection.args());
+            }
+        });
     }
 }
