@@ -37,6 +37,18 @@ import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractCon
  * Content values wrapper for the {@code person_team} table.
  */
 public class PersonTeamContentValues extends AbstractContentValues {
+    public PersonTeamContentValues() {
+    }
+
+    public PersonTeamContentValues(@NonNull PersonTeamModel model, boolean update) {
+        this(model, model, update);
+    }
+
+    public PersonTeamContentValues(@NonNull PersonTeamKey key, @NonNull PersonTeamValue value, boolean update) {
+        putPersonId(value.getPersonId());
+        putTeamId(value.getTeamId());
+    }
+
     @Override
     public Uri uri() {
         return PersonTeamColumns.CONTENT_URI;
@@ -58,11 +70,9 @@ public class PersonTeamContentValues extends AbstractContentValues {
     }
 
 
-
     public PersonTeamContentValues putTeamId(long value) {
         mContentValues.put(PersonTeamColumns.TEAM_ID, value);
         return this;
     }
-
 
 }

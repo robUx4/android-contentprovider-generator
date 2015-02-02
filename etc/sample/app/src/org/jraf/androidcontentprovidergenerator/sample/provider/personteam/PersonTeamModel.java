@@ -24,25 +24,11 @@
  */
 package org.jraf.androidcontentprovidergenerator.sample.provider.personteam;
 
-import org.jraf.androidcontentprovidergenerator.sample.provider.base.BaseModel;
-
-import java.util.Date;
-
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 /**
  * Entity joining people and teams.  A team contains several people, and a person can belong to several teams.
+ * @see PersonTeamImpl
+ * @see PersonTeamKey
+ * @see PersonTeamValue
  */
-public interface PersonTeamModel extends BaseModel {
-
-    /**
-     * Get the {@code person_id} value.
-     */
-    long getPersonId();
-
-    /**
-     * Get the {@code team_id} value.
-     */
-    long getTeamId();
+public interface PersonTeamModel extends PersonTeamKey, PersonTeamValue {
 }

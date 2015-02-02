@@ -37,6 +37,19 @@ import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractCon
  * Content values wrapper for the {@code product} table.
  */
 public class ProductContentValues extends AbstractContentValues {
+    public ProductContentValues() {
+    }
+
+    public ProductContentValues(@NonNull ProductModel model, boolean update) {
+        this(model, model, update);
+    }
+
+    public ProductContentValues(@NonNull ProductKey key, @NonNull ProductValue value, boolean update) {
+        if (!update)
+            putProductId(key.getProductId());
+        putName(value.getName());
+    }
+
     @Override
     public Uri uri() {
         return ProductColumns.CONTENT_URI;
@@ -52,11 +65,16 @@ public class ProductContentValues extends AbstractContentValues {
         return contentResolver.update(uri(), values(), where == null ? null : where.sel(), where == null ? null : where.args());
     }
 
+    public ProductContentValues putProductId(long value) {
+        mContentValues.put(ProductColumns.PRODUCT_ID, value);
+        return this;
+    }
+
+
     public ProductContentValues putName(@NonNull String value) {
         if (value == null) throw new IllegalArgumentException("name must not be null");
         mContentValues.put(ProductColumns.NAME, value);
         return this;
     }
-
 
 }

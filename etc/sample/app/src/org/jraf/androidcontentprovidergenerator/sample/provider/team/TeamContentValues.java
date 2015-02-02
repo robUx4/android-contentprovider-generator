@@ -37,6 +37,20 @@ import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractCon
  * Content values wrapper for the {@code team} table.
  */
 public class TeamContentValues extends AbstractContentValues {
+    public TeamContentValues() {
+    }
+
+    public TeamContentValues(@NonNull TeamModel model, boolean update) {
+        this(model, model, update);
+    }
+
+    public TeamContentValues(@NonNull TeamKey key, @NonNull TeamValue value, boolean update) {
+        putCompanyId(value.getCompanyId());
+        putName(value.getName());
+        putCountryCode(value.getCountryCode());
+        putSerialNumberId(value.getSerialNumberId());
+    }
+
     @Override
     public Uri uri() {
         return TeamColumns.CONTENT_URI;
@@ -58,13 +72,11 @@ public class TeamContentValues extends AbstractContentValues {
     }
 
 
-
     public TeamContentValues putName(@NonNull String value) {
         if (value == null) throw new IllegalArgumentException("name must not be null");
         mContentValues.put(TeamColumns.NAME, value);
         return this;
     }
-
 
 
     /**
@@ -77,7 +89,6 @@ public class TeamContentValues extends AbstractContentValues {
     }
 
 
-
     /**
      * The serial number of this team.
      */
@@ -85,6 +96,5 @@ public class TeamContentValues extends AbstractContentValues {
         mContentValues.put(TeamColumns.SERIAL_NUMBER_ID, value);
         return this;
     }
-
 
 }

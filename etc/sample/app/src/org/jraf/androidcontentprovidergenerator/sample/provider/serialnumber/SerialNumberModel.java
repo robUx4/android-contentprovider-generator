@@ -24,29 +24,11 @@
  */
 package org.jraf.androidcontentprovidergenerator.sample.provider.serialnumber;
 
-import org.jraf.androidcontentprovidergenerator.sample.provider.base.BaseModel;
-
-import java.util.Date;
-
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 /**
  * A serial number.
+ * @see SerialNumberImpl
+ * @see SerialNumberKey
+ * @see SerialNumberValue
  */
-public interface SerialNumberModel extends BaseModel {
-
-    /**
-     * Unique id, first part.
-     * Cannot be {@code null}.
-     */
-    @NonNull
-    String getPart0();
-
-    /**
-     * Unique id, second part.
-     * Cannot be {@code null}.
-     */
-    @NonNull
-    String getPart1();
+public interface SerialNumberModel extends SerialNumberKey, SerialNumberValue {
 }

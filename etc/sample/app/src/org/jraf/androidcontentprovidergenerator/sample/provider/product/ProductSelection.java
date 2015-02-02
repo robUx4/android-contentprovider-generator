@@ -29,6 +29,7 @@ import java.util.Date;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractSelection;
 
@@ -36,6 +37,13 @@ import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractSel
  * Selection for the {@code product} table.
  */
 public class ProductSelection extends AbstractSelection<ProductSelection> {
+    public ProductSelection() {
+    }
+
+    public ProductSelection(@NonNull ProductKey key) {
+        productId(key.getProductId());
+    }
+
     @Override
     public Uri uri() {
         return ProductColumns.CONTENT_URI;
@@ -76,6 +84,36 @@ public class ProductSelection extends AbstractSelection<ProductSelection> {
         return this;
     }
 
+
+    public ProductSelection productId(long... value) {
+        addEquals(ProductColumns.PRODUCT_ID, toObjectArray(value));
+        return this;
+    }
+
+    public ProductSelection productIdNot(long... value) {
+        addNotEquals(ProductColumns.PRODUCT_ID, toObjectArray(value));
+        return this;
+    }
+
+    public ProductSelection productIdGt(long value) {
+        addGreaterThan(ProductColumns.PRODUCT_ID, value);
+        return this;
+    }
+
+    public ProductSelection productIdGtEq(long value) {
+        addGreaterThanOrEquals(ProductColumns.PRODUCT_ID, value);
+        return this;
+    }
+
+    public ProductSelection productIdLt(long value) {
+        addLessThan(ProductColumns.PRODUCT_ID, value);
+        return this;
+    }
+
+    public ProductSelection productIdLtEq(long value) {
+        addLessThanOrEquals(ProductColumns.PRODUCT_ID, value);
+        return this;
+    }
 
     public ProductSelection name(String... value) {
         addEquals(ProductColumns.NAME, value);

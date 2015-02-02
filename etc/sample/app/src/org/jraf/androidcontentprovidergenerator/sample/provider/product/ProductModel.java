@@ -24,22 +24,11 @@
  */
 package org.jraf.androidcontentprovidergenerator.sample.provider.product;
 
-import org.jraf.androidcontentprovidergenerator.sample.provider.base.BaseModel;
-
-import java.util.Date;
-
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 /**
  * A product that the company sells.
+ * @see ProductImpl
+ * @see ProductKey
+ * @see ProductValue
  */
-public interface ProductModel extends BaseModel {
-
-    /**
-     * Get the {@code name} value.
-     * Cannot be {@code null}.
-     */
-    @NonNull
-    String getName();
+public interface ProductModel extends ProductKey, ProductValue {
 }

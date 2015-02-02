@@ -37,6 +37,18 @@ import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractCon
  * Content values wrapper for the {@code serial_number} table.
  */
 public class SerialNumberContentValues extends AbstractContentValues {
+    public SerialNumberContentValues() {
+    }
+
+    public SerialNumberContentValues(@NonNull SerialNumberModel model, boolean update) {
+        this(model, model, update);
+    }
+
+    public SerialNumberContentValues(@NonNull SerialNumberKey key, @NonNull SerialNumberValue value, boolean update) {
+        putPart0(value.getPart0());
+        putPart1(value.getPart1());
+    }
+
     @Override
     public Uri uri() {
         return SerialNumberColumns.CONTENT_URI;
@@ -62,7 +74,6 @@ public class SerialNumberContentValues extends AbstractContentValues {
     }
 
 
-
     /**
      * Unique id, second part.
      */
@@ -71,6 +82,5 @@ public class SerialNumberContentValues extends AbstractContentValues {
         mContentValues.put(SerialNumberColumns.PART1, value);
         return this;
     }
-
 
 }

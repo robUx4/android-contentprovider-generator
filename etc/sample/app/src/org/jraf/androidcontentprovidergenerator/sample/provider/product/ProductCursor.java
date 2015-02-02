@@ -40,9 +40,15 @@ public class ProductCursor extends AbstractCursor implements ProductModel {
         super(cursor);
     }
 
-    @Override
     public long getId() {
         return getLongOrNull(ProductColumns._ID);
+    }
+
+    /**
+     * Get the {@code product_id} value.
+     */
+    public long getProductId() {
+        return getLongOrNull(ProductColumns.PRODUCT_ID);
     }
 
     /**

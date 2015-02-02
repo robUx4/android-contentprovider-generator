@@ -37,6 +37,24 @@ import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractCon
  * Content values wrapper for the {@code person} table.
  */
 public class PersonContentValues extends AbstractContentValues {
+    public PersonContentValues() {
+    }
+
+    public PersonContentValues(@NonNull PersonModel model, boolean update) {
+        this(model, model, update);
+    }
+
+    public PersonContentValues(@NonNull PersonKey key, @NonNull PersonValue value, boolean update) {
+        putFirstName(value.getFirstName());
+        putLastName(value.getLastName());
+        putAge(value.getAge());
+        putBirthDate(value.getBirthDate());
+        putHasBlueEyes(value.getHasBlueEyes());
+        putHeight(value.getHeight());
+        putGender(value.getGender());
+        putCountryCode(value.getCountryCode());
+    }
+
     @Override
     public Uri uri() {
         return PersonColumns.CONTENT_URI;
@@ -62,7 +80,6 @@ public class PersonContentValues extends AbstractContentValues {
     }
 
 
-
     /**
      * Last name (a.k.a. Given name) of this person. For instance, Smith.
      */
@@ -73,12 +90,10 @@ public class PersonContentValues extends AbstractContentValues {
     }
 
 
-
     public PersonContentValues putAge(int value) {
         mContentValues.put(PersonColumns.AGE, value);
         return this;
     }
-
 
 
     public PersonContentValues putBirthDate(@Nullable Date value) {
@@ -96,7 +111,6 @@ public class PersonContentValues extends AbstractContentValues {
         return this;
     }
 
-
     /**
      * If {@code true}, this person has blue eyes. Otherwise, this person doesn't have blue eyes.
      */
@@ -104,7 +118,6 @@ public class PersonContentValues extends AbstractContentValues {
         mContentValues.put(PersonColumns.HAS_BLUE_EYES, value);
         return this;
     }
-
 
 
     public PersonContentValues putHeight(@Nullable Float value) {
@@ -117,7 +130,6 @@ public class PersonContentValues extends AbstractContentValues {
         return this;
     }
 
-
     public PersonContentValues putGender(@NonNull Gender value) {
         if (value == null) throw new IllegalArgumentException("gender must not be null");
         mContentValues.put(PersonColumns.GENDER, value.ordinal());
@@ -125,12 +137,10 @@ public class PersonContentValues extends AbstractContentValues {
     }
 
 
-
     public PersonContentValues putCountryCode(@NonNull String value) {
         if (value == null) throw new IllegalArgumentException("countryCode must not be null");
         mContentValues.put(PersonColumns.COUNTRY_CODE, value);
         return this;
     }
-
 
 }

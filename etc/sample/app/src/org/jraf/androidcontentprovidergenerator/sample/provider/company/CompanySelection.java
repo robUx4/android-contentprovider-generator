@@ -29,6 +29,7 @@ import java.util.Date;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractSelection;
 import org.jraf.androidcontentprovidergenerator.sample.provider.serialnumber.*;
@@ -37,6 +38,16 @@ import org.jraf.androidcontentprovidergenerator.sample.provider.serialnumber.*;
  * Selection for the {@code company} table.
  */
 public class CompanySelection extends AbstractSelection<CompanySelection> {
+    public CompanySelection() {
+    }
+
+    public CompanySelection(@NonNull CompanyKey key) {
+        if (key.getId() <= 0) {
+        } else {
+            id(key.getId());
+        }
+    }
+
     @Override
     public Uri uri() {
         return CompanyColumns.CONTENT_URI;

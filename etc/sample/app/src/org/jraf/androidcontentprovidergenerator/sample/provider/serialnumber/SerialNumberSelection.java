@@ -29,6 +29,7 @@ import java.util.Date;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractSelection;
 
@@ -36,6 +37,16 @@ import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractSel
  * Selection for the {@code serial_number} table.
  */
 public class SerialNumberSelection extends AbstractSelection<SerialNumberSelection> {
+    public SerialNumberSelection() {
+    }
+
+    public SerialNumberSelection(@NonNull SerialNumberKey key) {
+        if (key.getId() <= 0) {
+        } else {
+            id(key.getId());
+        }
+    }
+
     @Override
     public Uri uri() {
         return SerialNumberColumns.CONTENT_URI;

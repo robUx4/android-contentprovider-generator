@@ -24,34 +24,11 @@
  */
 package org.jraf.androidcontentprovidergenerator.sample.provider.company;
 
-import org.jraf.androidcontentprovidergenerator.sample.provider.base.BaseModel;
-
-import java.util.Date;
-
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 /**
  * A commercial business.
+ * @see CompanyImpl
+ * @see CompanyKey
+ * @see CompanyValue
  */
-public interface CompanyModel extends BaseModel {
-
-    /**
-     * The commercial name of this company.
-     * Cannot be {@code null}.
-     */
-    @NonNull
-    String getName();
-
-    /**
-     * The full address of this company.
-     * Can be {@code null}.
-     */
-    @Nullable
-    String getAddress();
-
-    /**
-     * The serial number of this company.
-     */
-    long getSerialNumberId();
+public interface CompanyModel extends CompanyKey, CompanyValue {
 }

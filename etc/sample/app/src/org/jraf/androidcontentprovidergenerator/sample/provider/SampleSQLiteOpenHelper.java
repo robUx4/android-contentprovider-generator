@@ -61,7 +61,7 @@ public class SampleSQLiteOpenHelper extends SQLiteOpenHelper {
             + ", CONSTRAINT fk_serial_number_id FOREIGN KEY (" + CompanyColumns.SERIAL_NUMBER_ID + ") REFERENCES serial_number (_id) ON DELETE CASCADE"
             + " );";
 
-    public static final String SQL_CREATE_INDEX_COMPANY_NAME = "CREATE INDEX IDX_COMPANY_NAME "
+    public static final String SQL_CREATE_INDEX_COMPANY_NAME = "CREATE INDEX IF NOT EXISTS IDX_COMPANY_NAME "
             + " ON " + CompanyColumns.TABLE_NAME + " ( " + CompanyColumns.NAME + " );";
 
     public static final String SQL_CREATE_TABLE_PERSON = "CREATE TABLE IF NOT EXISTS "
@@ -71,14 +71,14 @@ public class SampleSQLiteOpenHelper extends SQLiteOpenHelper {
             + PersonColumns.LAST_NAME + " TEXT NOT NULL, "
             + PersonColumns.AGE + " INTEGER NOT NULL, "
             + PersonColumns.BIRTH_DATE + " INTEGER, "
-            + PersonColumns.HAS_BLUE_EYES + " INTEGER NOT NULL DEFAULT '0', "
+            + PersonColumns.HAS_BLUE_EYES + " INTEGER NOT NULL DEFAULT 0, "
             + PersonColumns.HEIGHT + " REAL, "
             + PersonColumns.GENDER + " INTEGER NOT NULL, "
             + PersonColumns.COUNTRY_CODE + " TEXT NOT NULL "
             + ", CONSTRAINT unique_name UNIQUE (first_name, last_name) ON CONFLICT REPLACE"
             + " );";
 
-    public static final String SQL_CREATE_INDEX_PERSON_LAST_NAME = "CREATE INDEX IDX_PERSON_LAST_NAME "
+    public static final String SQL_CREATE_INDEX_PERSON_LAST_NAME = "CREATE INDEX IF NOT EXISTS IDX_PERSON_LAST_NAME "
             + " ON " + PersonColumns.TABLE_NAME + " ( " + PersonColumns.LAST_NAME + " );";
 
     public static final String SQL_CREATE_TABLE_PERSON_TEAM = "CREATE TABLE IF NOT EXISTS "
@@ -97,8 +97,12 @@ public class SampleSQLiteOpenHelper extends SQLiteOpenHelper {
             + ProductColumns.NAME + " TEXT NOT NULL "
             + " );";
 
-    public static final String SQL_CREATE_INDEX_PRODUCT_PRODUCT_ID = "CREATE INDEX IDX_PRODUCT_PRODUCT_ID "
+    public static final String SQL_CREATE_INDEX_PRODUCT_PRODUCT_ID = "CREATE INDEX IF NOT EXISTS IDX_PRODUCT_PRODUCT_ID "
             + " ON " + ProductColumns.TABLE_NAME + " ( " + ProductColumns.PRODUCT_ID + " );";
+
+    public static final String SQL_CREATE_INDEX_PRODUCT_KEYS = "CREATE INDEX IF NOT EXISTS IDX_PRODUCT_KEYS"
+             + " ON "+ ProductColumns.TABLE_NAME + " ( "
+             + ProductColumns.PRODUCT_ID + " );";
 
     public static final String SQL_CREATE_TABLE_SERIAL_NUMBER = "CREATE TABLE IF NOT EXISTS "
             + SerialNumberColumns.TABLE_NAME + " ( "

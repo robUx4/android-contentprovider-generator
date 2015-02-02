@@ -37,6 +37,19 @@ import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractCon
  * Content values wrapper for the {@code company} table.
  */
 public class CompanyContentValues extends AbstractContentValues {
+    public CompanyContentValues() {
+    }
+
+    public CompanyContentValues(@NonNull CompanyModel model, boolean update) {
+        this(model, model, update);
+    }
+
+    public CompanyContentValues(@NonNull CompanyKey key, @NonNull CompanyValue value, boolean update) {
+        putName(value.getName());
+        putAddress(value.getAddress());
+        putSerialNumberId(value.getSerialNumberId());
+    }
+
     @Override
     public Uri uri() {
         return CompanyColumns.CONTENT_URI;
@@ -62,7 +75,6 @@ public class CompanyContentValues extends AbstractContentValues {
     }
 
 
-
     /**
      * The full address of this company.
      */
@@ -76,7 +88,6 @@ public class CompanyContentValues extends AbstractContentValues {
         return this;
     }
 
-
     /**
      * The serial number of this company.
      */
@@ -84,6 +95,5 @@ public class CompanyContentValues extends AbstractContentValues {
         mContentValues.put(CompanyColumns.SERIAL_NUMBER_ID, value);
         return this;
     }
-
 
 }

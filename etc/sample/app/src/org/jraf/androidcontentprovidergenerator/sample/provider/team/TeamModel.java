@@ -24,39 +24,11 @@
  */
 package org.jraf.androidcontentprovidergenerator.sample.provider.team;
 
-import org.jraf.androidcontentprovidergenerator.sample.provider.base.BaseModel;
-
-import java.util.Date;
-
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 /**
  * A group of people who work together.
+ * @see TeamImpl
+ * @see TeamKey
+ * @see TeamValue
  */
-public interface TeamModel extends BaseModel {
-
-    /**
-     * Get the {@code company_id} value.
-     */
-    long getCompanyId();
-
-    /**
-     * Get the {@code name} value.
-     * Cannot be {@code null}.
-     */
-    @NonNull
-    String getName();
-
-    /**
-     * 2 letter country code where this team operates.
-     * Cannot be {@code null}.
-     */
-    @NonNull
-    String getCountryCode();
-
-    /**
-     * The serial number of this team.
-     */
-    long getSerialNumberId();
+public interface TeamModel extends TeamKey, TeamValue {
 }
