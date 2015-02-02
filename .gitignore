@@ -2,3 +2,5 @@ target
 .idea
 .DS_Store
 /package.bat
+*.iml
+*.bat
