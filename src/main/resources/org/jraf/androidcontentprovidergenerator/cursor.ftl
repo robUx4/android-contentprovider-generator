@@ -24,6 +24,12 @@ public class ${entity.nameCamelCase}Cursor extends AbstractCursor implements ${e
         super(cursor);
     }
     <#list entity.getFieldsIncludingJoins() as field>
+    <#if field.isId && field.nameLowerCase != '_id'>
+
+    public long getId() {
+        return getLongOrNull(${field.entity.nameCamelCase}Columns._ID);
+    }
+    </#if>
 
     /**
     <#if field.documentation??>
