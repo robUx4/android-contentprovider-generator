@@ -3,6 +3,7 @@ ${header}
 </#if>
 package ${config.providerJavaPackage}.${entity.packageName};
 
+import android.content.ContentValues;
 import android.net.Uri;
 
 import org.gawst.asyncdb.AsynchronousDbHelper;
@@ -20,5 +21,21 @@ public class ${entity.nameCamelCase}AsyncHandler extends TypedAsyncDatabaseHandl
      */
     public ${entity.nameCamelCase}AsyncHandler(AsynchronousDbHelper<${entity.nameCamelCase}Model, Long> asynchronousDbHelper) {
         super(asynchronousDbHelper, (TypedDatabaseSource<Long, Uri, ${entity.nameCamelCase}Cursor>) asynchronousDbHelper.getDataSource());
+    }
+
+    public void startUpdate(int token, Object cookie, ${entity.nameCamelCase}Model itemUpdate) {
+        ${entity.nameCamelCase}Selection selection = new ${entity.nameCamelCase}Selection(itemUpdate);
+        startUpdate(token, cookie, itemUpdate, selection.sel(), selection.args());
+    }
+
+    public void startUpdate(int token, Object cookie, ${entity.nameCamelCase}Model itemUpdate, ${entity.nameCamelCase}ContentValues values) {
+        final ${entity.nameCamelCase}Selection selection = new ${entity.nameCamelCase}Selection(itemUpdate);
+        final ContentValues updateValues = values.values();
+        startRunnable(token, cookie, new Runnable() {
+            @Override
+            public void run() {
+                dataSource.update(updateValues, selection.sel(), selection.args());
+            }
+        });
     }
 }
