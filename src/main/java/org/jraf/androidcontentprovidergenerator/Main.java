@@ -191,6 +191,7 @@ public class Main {
 
             final String idFieldName;
             if (idFields == null) {
+                // Implicit id field
                 idFieldName = "_id";
             } else {
                 if (idFields.length() != 1) {
