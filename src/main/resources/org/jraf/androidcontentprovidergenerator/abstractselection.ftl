@@ -34,10 +34,10 @@ public abstract class AbstractSelection<T extends AbstractSelection<?>> {
     private final StringBuilder mSelection = new StringBuilder();
     private final List<String> mSelectionArgs = new ArrayList<String>(5);
 
-    private Boolean mNotify;
-    private String mGroupBy;
-    private String mHaving;
-    private Integer mLimit;
+    Boolean mNotify;
+    String mGroupBy;
+    String mHaving;
+    Integer mLimit;
 
     protected void addEquals(String column, Object[] value) {
         mSelection.append(column);
