@@ -29,7 +29,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import org.gawst.asyncdb.source.typed.TypedDatabaseSource;
-import org.gawst.proxy.database.base.AbstractCursorLoader;
+import org.jraf.androidcontentprovidergenerator.sample.provider.base.AbstractCursorLoader;
 
 /**
  * Simple CursorLoader for the {@code person} table.

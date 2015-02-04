@@ -10,7 +10,7 @@ import android.support.annotation.Nullable;
 </#if>
 
 import org.gawst.asyncdb.source.typed.TypedDatabaseSource;
-import org.gawst.proxy.database.base.AbstractCursorLoader;
+import ${config.providerJavaPackage}.base.AbstractCursorLoader;
 
 /**
  * Simple CursorLoader for the {@code ${entity.nameLowerCase}} table.
