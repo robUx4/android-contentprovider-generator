@@ -72,6 +72,10 @@ public class SqliteSourceOutput extends DataSourceOutput {
         Template template;
         File outputFile;
         
+        template = freeMarkerConfig.getTemplate("abstractcursorloader.ftl");
+        outputFile = new File(baseClassesDir, "AbstractCursorLoader.java");
+        DataSourceOutput.writeOutput(template, outputFile, root);
+
         template = freeMarkerConfig.getTemplate("abstractsqldatasource.ftl");
         outputFile = new File(baseClassesDir, "AbstractSqliteDataSource.java");
         DataSourceOutput.writeOutput(template, outputFile, root);
@@ -128,6 +132,10 @@ public class SqliteSourceOutput extends DataSourceOutput {
 
         template = freeMarkerConfig.getTemplate("asynchandler.ftl");
         outputFile = new File(outputDir, entity.getNameCamelCase() + "AsyncHandler.java");
+        DataSourceOutput.writeOutput(template, outputFile, root);
+
+        template = freeMarkerConfig.getTemplate("cursorloader.ftl");
+        outputFile = new File(outputDir, entity.getNameCamelCase() + "CursorLoader.java");
         DataSourceOutput.writeOutput(template, outputFile, root);
 	}
 }

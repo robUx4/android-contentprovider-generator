@@ -50,7 +50,7 @@ public class SerialNumberSelection extends AbstractSelection<SerialNumberSelecti
     }
 
     @Override
-    public Uri uri() {
+    protected Uri baseUri() {
         return SerialNumberColumns.CONTENT_URI;
     }
 

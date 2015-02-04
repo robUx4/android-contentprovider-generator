@@ -85,6 +85,10 @@ public class ContentProviderSourceOutput extends DataSourceOutput {
         outputFile = new File(baseClassesDir, "AbstractContentProviderDataSource.java");
         DataSourceOutput.writeOutput(template, outputFile, root);
 
+        template = freeMarkerConfig.getTemplate("abstractcursorloader.ftl");
+        outputFile = new File(baseClassesDir, "AbstractCursorLoader.java");
+        DataSourceOutput.writeOutput(template, outputFile, root);
+
         template = freeMarkerConfig.getTemplate("abstractelementhandler.ftl");
         outputFile = new File(baseClassesDir, "DatabaseModelHandler.java");
         DataSourceOutput.writeOutput(template, outputFile, root);
@@ -129,6 +133,10 @@ public class ContentProviderSourceOutput extends DataSourceOutput {
 
         template = freeMarkerConfig.getTemplate("elementhandler.ftl");
         outputFile = new File(outputDir, entity.getNameCamelCase() + "DatabaseModelHandler.java");
+        DataSourceOutput.writeOutput(template, outputFile, root);
+
+        template = freeMarkerConfig.getTemplate("cursorloader.ftl");
+        outputFile = new File(outputDir, entity.getNameCamelCase() + "CursorLoader.java");
         DataSourceOutput.writeOutput(template, outputFile, root);
 	}
 }

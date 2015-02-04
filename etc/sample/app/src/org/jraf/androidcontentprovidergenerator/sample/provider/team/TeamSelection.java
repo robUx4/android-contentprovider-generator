@@ -53,7 +53,7 @@ public class TeamSelection extends AbstractSelection<TeamSelection> {
     }
 
     @Override
-    public Uri uri() {
+    protected Uri baseUri() {
         return TeamColumns.CONTENT_URI;
     }
 

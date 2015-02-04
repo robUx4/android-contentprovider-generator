@@ -80,6 +80,10 @@ public class MapSqliteSourceOutput extends DataSourceOutput {
         outputFile = new File(baseClassesDir, "MapDatabaseSerializer.java");
         DataSourceOutput.writeOutput(template, outputFile, root);
 
+        template = freeMarkerConfig.getTemplate("abstractcursorloader.ftl");
+        outputFile = new File(baseClassesDir, "AbstractCursorLoader.java");
+        DataSourceOutput.writeOutput(template, outputFile, root);
+
         template = freeMarkerConfig.getTemplate("abstractmapelementhandler.ftl");
         outputFile = new File(baseClassesDir, "MapDatabaseModelHandler.java");
         DataSourceOutput.writeOutput(template, outputFile, root);
@@ -124,6 +128,10 @@ public class MapSqliteSourceOutput extends DataSourceOutput {
         
         template = freeMarkerConfig.getTemplate("abstractmapserializer.ftl");
         outputFile = new File(outputDir, entity.getNameCamelCase() + "MapDatabaseSerializer.java");
+        DataSourceOutput.writeOutput(template, outputFile, root);
+
+        template = freeMarkerConfig.getTemplate("cursorloader.ftl");
+        outputFile = new File(outputDir, entity.getNameCamelCase() + "CursorLoader.java");
         DataSourceOutput.writeOutput(template, outputFile, root);
 	}
 	

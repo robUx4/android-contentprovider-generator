@@ -79,15 +79,33 @@ public abstract class AbstractContentProviderDataSource<MODEL extends BaseModel,
     }
 
     @Override
+    protected String getGroupOrderBy(@Nullable String orderBy, @NonNull String groupBy) {
+        return orderBy;
+    }
+
+    @Override
+    protected Uri getGroupUri(@NonNull Uri uri, @NonNull String groupBy) {
+        return BaseContentProvider.groupBy(uri, groupBy);
+    }
+
+    @Override
+    protected String getHavingOrderBy(@Nullable String orderBy, @NonNull String having) {
+        return orderBy;
+    }
+
+    @Override
+    protected Uri getHavingUri(@NonNull Uri uri, @NonNull String having) {
+        return BaseContentProvider.having(uri, having);
+    }
+
+    @Override
     protected String getLimitOrderBy(@Nullable String orderBy, @NonNull String limit) {
-        if (orderBy == null)
-            return null;
-        return super.getLimitOrderBy(orderBy, limit);
+        return orderBy;
     }
 
     @Override
     protected Uri getLimitUri(@NonNull Uri uri, @NonNull String limit) {
-        return uri.buildUpon().appendQueryParameter(BaseContentProvider.QUERY_LIMIT, limit).build();
+        return BaseContentProvider.limit(uri, limit);
     }
 
     @NonNull

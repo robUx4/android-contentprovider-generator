@@ -50,7 +50,7 @@ public class PersonSelection extends AbstractSelection<PersonSelection> {
     }
 
     @Override
-    public Uri uri() {
+    protected Uri baseUri() {
         return PersonColumns.CONTENT_URI;
     }
 
