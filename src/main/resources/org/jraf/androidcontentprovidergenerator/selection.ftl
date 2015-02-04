@@ -58,6 +58,12 @@ public class ${entity.nameCamelCase}Selection extends AbstractSelection<${entity
 
     @Deprecated
     @Override
+    protected Uri baseUri() {
+        throw new AssertionError("no Content Provider for ${entity.nameCamelCase}");
+    }
+
+    @Deprecated
+    @Override
     public Uri uri() {
         throw new AssertionError("no Content Provider for ${entity.nameCamelCase}");
     }
