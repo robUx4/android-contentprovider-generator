@@ -90,14 +90,14 @@ public class ${entity.nameCamelCase}Selection extends AbstractSelection<${entity
     }
 
     /**
-     * Equivalent of calling {@code query(contentResolver, projection, null}.
+     * Equivalent of calling {@code query(contentResolver, projection, null)}.
      */
     public ${entity.nameCamelCase}Cursor query(ContentResolver contentResolver, String[] projection) {
         return query(contentResolver, projection, null);
     }
 
     /**
-     * Equivalent of calling {@code query(contentResolver, projection, null, null}.
+     * Equivalent of calling {@code query(contentResolver, projection, null, null)}.
      */
     public ${entity.nameCamelCase}Cursor query(ContentResolver contentResolver) {
         return query(contentResolver, null, null);
