@@ -38,18 +38,18 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 
 public class AbstractCursorLoader<CURSOR extends Cursor> extends AsyncTaskLoader<CURSOR> {
-    final ForceLoadContentObserver mObserver;
+    private final ForceLoadContentObserver mObserver;
     private final TypedDatabaseSource<?, ?, CURSOR> databaseSource;
 
-    String[] mProjection;
-    String mSelection;
-    String[] mSelectionArgs;
-    String mGroupBy;
-    String mHaving;
-    String mSortOrder;
-    Integer mLimit;
+    private String[] mProjection;
+    private String mSelection;
+    private String[] mSelectionArgs;
+    private String mGroupBy;
+    private String mHaving;
+    private String mSortOrder;
+    private Integer mLimit;
 
-    CURSOR mCursor;
+    private CURSOR mCursor;
 
     /* Runs on a worker thread */
     @Override
@@ -91,8 +91,9 @@ public class AbstractCursorLoader<CURSOR extends Cursor> extends AsyncTaskLoader
      * ContentResolver.query()} for documentation on the meaning of the
      * parameters.  These will be passed as-is to that call.
      */
-    public AbstractCursorLoader(@NonNull Context context, @NonNull TypedDatabaseSource<?, ?, CURSOR> databaseSource, @Nullable String[] projection, String selection,
-                                String[] selectionArgs, String groupBy, String having, String sortOrder, Integer limit) {
+    public AbstractCursorLoader(@NonNull Context context, @NonNull TypedDatabaseSource<?, ?, CURSOR> databaseSource,
+                                @Nullable String[] projection, String selection, String[] selectionArgs,
+                                String groupBy, String having, String sortOrder, Integer limit) {
         super(context);
         this.databaseSource = databaseSource;
         mObserver = new ForceLoadContentObserver();
@@ -111,17 +112,9 @@ public class AbstractCursorLoader<CURSOR extends Cursor> extends AsyncTaskLoader
      * ContentResolver.query()} for documentation on the meaning of the
      * parameters.  These will be passed as-is to that call.
      */
-    public AbstractCursorLoader(@NonNull Context context, @NonNull TypedDatabaseSource<?, ?, CURSOR> databaseSource, @Nullable String[] projection, @NonNull AbstractSelection<?> selection, String sortOrder) {
-        super(context);
-        this.databaseSource = databaseSource;
-        mObserver = new ForceLoadContentObserver();
-        mProjection = projection;
-        mSelection = selection.sel();
-        mSelectionArgs = selection.args();
-        mGroupBy = selection.mGroupBy;
-        mHaving = selection.mHaving;
-        mSortOrder = sortOrder;
-        mLimit = selection.mLimit;
+    public AbstractCursorLoader(@NonNull Context context, @NonNull TypedDatabaseSource<?, ?, CURSOR> databaseSource,
+                                @Nullable String[] projection, @NonNull AbstractSelection<?> selection, String sortOrder) {
+        this(context, databaseSource, projection, selection.sel(), selection.args(), selection.mGroupBy, selection.mHaving, sortOrder, selection.mLimit);
     }
 
     /**

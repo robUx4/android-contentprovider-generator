@@ -38,7 +38,7 @@ public class ProductAsyncHandler extends TypedAsyncDatabaseHandler<ProductModel,
     /**
      * Constructor.
      *
-     * @param asynchronousDbHelper
+     * @param asynchronousDbHelper asynchronous database.
      */
     public ProductAsyncHandler(AsynchronousDbHelper<ProductModel, Long> asynchronousDbHelper) {
         super(asynchronousDbHelper, (TypedDatabaseSource<Long, Uri, ProductCursor>) asynchronousDbHelper.getDataSource());

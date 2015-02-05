@@ -38,7 +38,7 @@ public class PersonAsyncHandler extends TypedAsyncDatabaseHandler<PersonModel, P
     /**
      * Constructor.
      *
-     * @param asynchronousDbHelper
+     * @param asynchronousDbHelper asynchronous database.
      */
     public PersonAsyncHandler(AsynchronousDbHelper<PersonModel, Long> asynchronousDbHelper) {
         super(asynchronousDbHelper, (TypedDatabaseSource<Long, Uri, PersonCursor>) asynchronousDbHelper.getDataSource());

@@ -49,6 +49,7 @@ public class PersonTeamSelection extends AbstractSelection<PersonTeamSelection> 
 
     public PersonTeamSelection(@NonNull PersonTeamKey key) {
         if (key.getId() <= 0) {
+            throw new IllegalStateException("Can't select a PersonTeamKey with no id key="+key);
         } else {
             id(key.getId());
         }
@@ -75,14 +76,14 @@ public class PersonTeamSelection extends AbstractSelection<PersonTeamSelection> 
     }
 
     /**
-     * Equivalent of calling {@code query(contentResolver, projection, null}.
+     * Equivalent of calling {@code query(contentResolver, projection, null)}.
      */
     public PersonTeamCursor query(ContentResolver contentResolver, String[] projection) {
         return query(contentResolver, projection, null);
     }
 
     /**
-     * Equivalent of calling {@code query(contentResolver, projection, null, null}.
+     * Equivalent of calling {@code query(contentResolver, projection, null, null)}.
      */
     public PersonTeamCursor query(ContentResolver contentResolver) {
         return query(contentResolver, null, null);

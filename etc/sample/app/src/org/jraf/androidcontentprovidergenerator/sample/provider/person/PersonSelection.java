@@ -44,6 +44,7 @@ public class PersonSelection extends AbstractSelection<PersonSelection> {
 
     public PersonSelection(@NonNull PersonKey key) {
         if (key.getId() <= 0) {
+            throw new IllegalStateException("Can't select a PersonKey with no id key="+key);
         } else {
             id(key.getId());
         }
@@ -70,14 +71,14 @@ public class PersonSelection extends AbstractSelection<PersonSelection> {
     }
 
     /**
-     * Equivalent of calling {@code query(contentResolver, projection, null}.
+     * Equivalent of calling {@code query(contentResolver, projection, null)}.
      */
     public PersonCursor query(ContentResolver contentResolver, String[] projection) {
         return query(contentResolver, projection, null);
     }
 
     /**
-     * Equivalent of calling {@code query(contentResolver, projection, null, null}.
+     * Equivalent of calling {@code query(contentResolver, projection, null, null)}.
      */
     public PersonCursor query(ContentResolver contentResolver) {
         return query(contentResolver, null, null);

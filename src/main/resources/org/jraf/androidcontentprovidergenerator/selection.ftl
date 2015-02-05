@@ -38,11 +38,15 @@ public class ${entity.nameCamelCase}Selection extends AbstractSelection<${entity
         </#list>
         <#else>
         if (key.getId() <= 0) {
+        <#if entity.keys?last.isId>
+            throw new IllegalStateException("Can't select a ${entity.nameCamelCase}Key with no id key="+key);
+        <#else>
         <#list entity.keys as key>
             <#if key.nameLowerCase != "_id">
             <#if key.isForeign>${key.path?uncap_first}${key.nameCamelCase}<#else>${key.nameCamelCaseLowerCase}</#if>(key.get<#if key.isForeign>${key.path}</#if>${key.nameCamelCase}())<#if !(key_has_next)>;<#else>.and().</#if>
             </#if>
         </#list>
+        </#if>
         } else {
             id(key.getId());
         }

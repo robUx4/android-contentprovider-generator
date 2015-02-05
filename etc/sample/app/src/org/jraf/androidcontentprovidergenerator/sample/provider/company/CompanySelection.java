@@ -45,6 +45,7 @@ public class CompanySelection extends AbstractSelection<CompanySelection> {
 
     public CompanySelection(@NonNull CompanyKey key) {
         if (key.getId() <= 0) {
+            throw new IllegalStateException("Can't select a CompanyKey with no id key="+key);
         } else {
             id(key.getId());
         }
@@ -71,14 +72,14 @@ public class CompanySelection extends AbstractSelection<CompanySelection> {
     }
 
     /**
-     * Equivalent of calling {@code query(contentResolver, projection, null}.
+     * Equivalent of calling {@code query(contentResolver, projection, null)}.
      */
     public CompanyCursor query(ContentResolver contentResolver, String[] projection) {
         return query(contentResolver, projection, null);
     }
 
     /**
-     * Equivalent of calling {@code query(contentResolver, projection, null, null}.
+     * Equivalent of calling {@code query(contentResolver, projection, null, null)}.
      */
     public CompanyCursor query(ContentResolver contentResolver) {
         return query(contentResolver, null, null);

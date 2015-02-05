@@ -47,6 +47,7 @@ public class TeamSelection extends AbstractSelection<TeamSelection> {
 
     public TeamSelection(@NonNull TeamKey key) {
         if (key.getId() <= 0) {
+            throw new IllegalStateException("Can't select a TeamKey with no id key="+key);
         } else {
             id(key.getId());
         }
@@ -73,14 +74,14 @@ public class TeamSelection extends AbstractSelection<TeamSelection> {
     }
 
     /**
-     * Equivalent of calling {@code query(contentResolver, projection, null}.
+     * Equivalent of calling {@code query(contentResolver, projection, null)}.
      */
     public TeamCursor query(ContentResolver contentResolver, String[] projection) {
         return query(contentResolver, projection, null);
     }
 
     /**
-     * Equivalent of calling {@code query(contentResolver, projection, null, null}.
+     * Equivalent of calling {@code query(contentResolver, projection, null, null)}.
      */
     public TeamCursor query(ContentResolver contentResolver) {
         return query(contentResolver, null, null);

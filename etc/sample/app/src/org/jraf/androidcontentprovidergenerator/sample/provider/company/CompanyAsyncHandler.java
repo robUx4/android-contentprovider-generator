@@ -38,7 +38,7 @@ public class CompanyAsyncHandler extends TypedAsyncDatabaseHandler<CompanyModel,
     /**
      * Constructor.
      *
-     * @param asynchronousDbHelper
+     * @param asynchronousDbHelper asynchronous database.
      */
     public CompanyAsyncHandler(AsynchronousDbHelper<CompanyModel, Long> asynchronousDbHelper) {
         super(asynchronousDbHelper, (TypedDatabaseSource<Long, Uri, CompanyCursor>) asynchronousDbHelper.getDataSource());

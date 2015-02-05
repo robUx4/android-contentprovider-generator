@@ -38,7 +38,7 @@ public class PersonTeamAsyncHandler extends TypedAsyncDatabaseHandler<PersonTeam
     /**
      * Constructor.
      *
-     * @param asynchronousDbHelper
+     * @param asynchronousDbHelper asynchronous database.
      */
     public PersonTeamAsyncHandler(AsynchronousDbHelper<PersonTeamModel, Long> asynchronousDbHelper) {
         super(asynchronousDbHelper, (TypedDatabaseSource<Long, Uri, PersonTeamCursor>) asynchronousDbHelper.getDataSource());

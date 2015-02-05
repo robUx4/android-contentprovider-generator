@@ -17,7 +17,7 @@ public class ${entity.nameCamelCase}AsyncHandler extends TypedAsyncDatabaseHandl
     /**
      * Constructor.
      *
-     * @param asynchronousDbHelper
+     * @param asynchronousDbHelper asynchronous database.
      */
     public ${entity.nameCamelCase}AsyncHandler(AsynchronousDbHelper<${entity.nameCamelCase}Model, Long> asynchronousDbHelper) {
         super(asynchronousDbHelper, (TypedDatabaseSource<Long, Uri, ${entity.nameCamelCase}Cursor>) asynchronousDbHelper.getDataSource());

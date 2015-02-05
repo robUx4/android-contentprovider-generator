@@ -38,7 +38,7 @@ public class SerialNumberAsyncHandler extends TypedAsyncDatabaseHandler<SerialNu
     /**
      * Constructor.
      *
-     * @param asynchronousDbHelper
+     * @param asynchronousDbHelper asynchronous database.
      */
     public SerialNumberAsyncHandler(AsynchronousDbHelper<SerialNumberModel, Long> asynchronousDbHelper) {
         super(asynchronousDbHelper, (TypedDatabaseSource<Long, Uri, SerialNumberCursor>) asynchronousDbHelper.getDataSource());

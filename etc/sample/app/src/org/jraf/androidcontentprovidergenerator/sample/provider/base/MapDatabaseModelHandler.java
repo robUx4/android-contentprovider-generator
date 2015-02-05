@@ -31,9 +31,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
- * Abstract class to handle the read/write/query of {@link MODEL} objects with a database/content provider.
+ * Abstract class to handle the read/write/query of {@link KEY}/{@link VALUE} objects with a database/content provider.
  *
- * @param <MODEL>     type of the Object read/written from/to the database.
+ * @param <KEY>       type of the Key read/written from/to the database.
+ * @param <VALUE>     type of the Value read/written from/to the database.
  * @param <CURSOR>    type of {@code Cursor} read from the database.
  * @param <SELECTION> type of the {@code Selection} object used to select items.
  * @see AbstractCursor
@@ -46,7 +47,7 @@ public abstract class MapDatabaseModelHandler<KEY, VALUE, CURSOR extends Abstrac
     /**
      * Constructor.
      *
-     * @param serializer transforms a {@link CURSOR} to a {@link MODEL} or a {@link MODEL} into {@code ContentValues}
+     * @param serializer transforms a {@link CURSOR} to a {@link KEY}/{@link VALUE} or a {@link KEY}/{@link VALUE} into {@code ContentValues}
      */
     public MapDatabaseModelHandler(@NonNull MapDatabaseSerializer<KEY, VALUE, CURSOR> serializer) {
         this.serializer = serializer;
