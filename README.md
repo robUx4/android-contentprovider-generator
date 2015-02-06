@@ -1,7 +1,6 @@
-Android ContentProvider Generator
-=================================
+#Android ContentProvider Generator
 
-*This is a fork of the original project to generate extra code to be used with [Android InMemory/Async DB](https://github.com/robUx4/InMemoryDb/)*
+*This is a fork of the original project to generate extra code to be used with [Android InMemory/Async DB](https://github.com/robUx4/InMemoryDb/). It will generate the relevant data sources, element handlers and even CursorLoaders*
 
 A tool to generate an Android ContentProvider.
 It takes a set of entity (a.k.a "table") definitions as the input, and generates:
@@ -22,7 +21,7 @@ It generates the following extra code:
 - the possibility to have no `_id` field at all when a Content Provider is not generated
 - provide a built-in `InvalidDbEntry` class to thow when bogus data are read from source(s)
 
-Extra elements compared to the original JSON:
+## Extra elements compared to the original JSON:
 - In `_config.json`
 	- `asyncdbVersion` set to 1 for now to tell which extensions the JSON supports
 - Entity JSON files
@@ -34,8 +33,7 @@ Extra elements compared to the original JSON:
 		- `"SqliteDataSource"` bare SQLite data source to work with asyncdb `SqliteDataSource`
 		- `"SqliteMapDataSource"` bare SQLite data source to work with asyncdb `SqliteMapDataSource`
 
-How to use
-----------
+## How to use
 
 ### The `_config.json` file
 
